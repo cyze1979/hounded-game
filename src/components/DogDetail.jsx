@@ -1,4 +1,5 @@
 import { trainers } from '../data/trainers';
+import { getDogImage } from '../utils/assetLoader';
 
 export default function DogDetail({ dog, player, gameState, setGameState, onClose }) {
   
@@ -33,7 +34,18 @@ export default function DogDetail({ dog, player, gameState, setGameState, onClos
         <button className="modal-close-btn" onClick={onClose}>✕</button>
         
         <div className="dog-detail-header" style={{borderBottom: `3px solid ${player.color}`}}>
-          <div className="dog-detail-icon">🐕</div>
+          <div className="dog-detail-icon">
+            <img 
+              src={getDogImage(dog.imageNumber)} 
+              alt={dog.name}
+              style={{width: '120px', height: 'auto', borderRadius: '10px'}}
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'block';
+              }}
+            />
+            <div style={{fontSize: '4em', display: 'none'}}>🐕</div>
+          </div>
           <div>
             <h2>{dog.name} {genderIcon}</h2>
             <p style={{color: '#718096', margin: '5px 0'}}>{dog.breed} • {dog.age} Jahre</p>
