@@ -54,6 +54,7 @@
   overflow: hidden;
   border: 2px solid var(--cyan-primary);
   background: var(--bg-dark);
+  flex-shrink: 0;
 }
 
 .player-avatar img {
@@ -71,12 +72,26 @@
   font-size: 1.5em;
 }
 
+.player-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .player-name {
   font-family: 'Mona Sans', sans-serif;
   font-weight: 700;
   font-size: 0.95em;
   letter-spacing: 1px;
   color: var(--text-white);
+}
+
+.player-money {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.85em;
+  letter-spacing: 0.5px;
+  color: var(--text-gray);
 }
 
 .switch-icon {
@@ -358,7 +373,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 50;
   overflow-y: auto;
 }
 
@@ -366,8 +381,33 @@
   min-height: 100vh;
   background: rgba(10, 10, 20, 0.92);
   backdrop-filter: blur(15px);
-  padding: 100px 60px 60px 60px;
+  padding: 120px 60px 60px 60px;
   position: relative;
+}
+
+/* Close Button */
+.detail-close-btn {
+  position: fixed;
+  top: 90px;
+  right: 40px;
+  background: rgba(245, 101, 101, 0.9);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.8em;
+  cursor: pointer;
+  z-index: 60;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-close-btn:hover {
+  background: #f56565;
+  transform: scale(1.1);
 }
 
 /* Navigation Arrows */
@@ -384,7 +424,7 @@
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s;
-  z-index: 10;
+  z-index: 60;
   display: flex;
   align-items: center;
   justify-content: center;

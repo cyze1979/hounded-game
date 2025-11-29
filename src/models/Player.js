@@ -3,7 +3,7 @@ export class Player {
         this.name = name;
         this.color = color;
         this.index = index;
-        this.money = 5000;
+        this.money = 20000; // Increased for testing
         this.dogs = [];
         this.bets = [];
         this.totalWinnings = 0;

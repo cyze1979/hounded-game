@@ -16,6 +16,11 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
     { id: 'leaderboard', label: 'STATISTIKEN' }
   ];
   
+  // Format money with thousands separator
+  const formatMoney = (amount) => {
+    return amount.toLocaleString('de-DE');
+  };
+  
   return (
     <header className="game-header-new">
       {/* Left: Player Info */}
@@ -27,8 +32,9 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
             <div className="avatar-placeholder">🐕</div>
           )}
         </div>
-        <div className="player-name">
-          {currentPlayer.name.toUpperCase()}
+        <div className="player-info-text">
+          <div className="player-name">{currentPlayer.name.toUpperCase()}</div>
+          <div className="player-money">{formatMoney(currentPlayer.money)} €</div>
         </div>
         {players.length > 1 && <div className="switch-icon">▼</div>}
       </div>
@@ -70,7 +76,7 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
                 >
                   <strong>{player.name}</strong>
                   <div className="player-stats-small">
-                    💰 {player.money}€ | 🏆 {player.totalWins} Siege
+                    💰 {formatMoney(player.money)}€ | 🏆 {player.totalWins} Siege
                   </div>
                 </div>
               ))}

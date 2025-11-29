@@ -41,6 +41,15 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
     }
   };
   
+  // Close on ESC key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+  
   const genderIcon = currentDog.gender === 'männlich' ? '♂️' : '♀️';
   const overallRating = currentDog.getOverallRating();
   
@@ -50,10 +59,16 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
       style={{
         backgroundImage: `url(${getBackground('stable')})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
       }}
     >
       <div className="dog-detail-overlay">
+        
+        {/* Close Button */}
+        <button className="detail-close-btn" onClick={onClose}>
+          ✕
+        </button>
         
         {/* Navigation Arrows */}
         {allDogs.length > 1 && (
