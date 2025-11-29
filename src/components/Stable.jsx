@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import DogDetail from './DogDetail';
+import { getDogImage } from '../utils/assetLoader';
 
 export default function Stable({ player, gameState, setGameState }) {
   const [selectedDog, setSelectedDog] = useState(null);
@@ -28,7 +29,18 @@ export default function Stable({ player, gameState, setGameState }) {
             className="dog-card dog-card-clickable"
             onClick={() => setSelectedDog(dog)}
           >
-            <div className="dog-icon">🐕</div>
+            <div className="dog-icon">
+              <img 
+                src={getDogImage(dog.imageNumber)} 
+                alt={dog.name}
+                style={{width: '100%', height: 'auto', maxWidth: '200px'}}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'block';
+                }}
+              />
+              <div style={{fontSize: '4em', display: 'none'}}>🐕</div>
+            </div>
             <h3>{dog.name}</h3>
             <p className="dog-breed">{dog.breed}</p>
             <p className="dog-trait">{dog.specialTrait}</p>

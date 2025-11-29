@@ -1,3 +1,7 @@
+import { getDogImage } from '../utils/assetLoader';
+import { Dog } from '../models/Dog';
+import { dogNames, dogBreeds } from '../data/dogData';
+
 export default function Market({ player, marketDogs, stableLimit, gameState, setGameState }) {
   
   const buyDog = (dog) => {
@@ -20,8 +24,6 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
     const newMarketDogs = gameState.marketDogs.filter(d => d.id !== dog.id);
     
     // Generate replacement dog
-    const { dogNames, dogBreeds } = require('../data/dogData');
-    const { Dog } = require('../models/Dog');
     const name = dogNames[Math.floor(Math.random() * dogNames.length)];
     const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
     newMarketDogs.push(new Dog(name, breed));
@@ -47,7 +49,18 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
       <div className="dog-grid">
         {marketDogs.map(dog => (
           <div key={dog.id} className="dog-card">
-            <div className="dog-icon">🐕</div>
+            <div className="dog-icon">
+              <img 
+                src={getDogImage(dog.imageNumber)} 
+                alt={dog.name}
+                style={{width: '100%', height: 'auto', maxWidth: '200px'}}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'block';
+                }}
+              />
+              <div style={{fontSize: '4em', display: 'none'}}>🐕</div>
+            </div>
             <h3>{dog.name}</h3>
             <p className="dog-breed">{dog.breed}</p>
             <p className="dog-gender">{dog.gender === 'männlich' ? '♂️' : '♀️'} {dog.age} Jahre</p>

@@ -8,6 +8,9 @@ export class Dog {
         // Generate random gender
         this.gender = Math.random() > 0.5 ? 'männlich' : 'weiblich';
         
+        // Assign random dog image (1-19)
+        this.imageNumber = Math.floor(Math.random() * 19) + 1;
+        
         // Base performance attributes (0-100) - permanent, trainable
         this.speed = 40 + Math.floor(Math.random() * 40);
         this.stamina = 40 + Math.floor(Math.random() * 40);
@@ -143,6 +146,7 @@ export class Dog {
             name: this.name,
             breed: this.breed,
             gender: this.gender,
+            imageNumber: this.imageNumber,
             speed: this.speed,
             stamina: this.stamina,
             acceleration: this.acceleration,
