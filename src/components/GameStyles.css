@@ -40,6 +40,7 @@
   padding: 8px 15px;
   border-radius: 8px;
   transition: background 0.3s;
+  min-width: 200px;
 }
 
 .header-player:hover {
@@ -70,16 +71,11 @@
   font-size: 1.5em;
 }
 
-.player-name .label {
-  font-size: 0.75em;
-  color: var(--text-gray);
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-.player-name .name {
-  font-size: 1em;
+.player-name {
+  font-family: 'Mona Sans', sans-serif;
   font-weight: 700;
+  font-size: 0.95em;
+  letter-spacing: 1px;
   color: var(--text-white);
 }
 
@@ -147,9 +143,11 @@
 .header-week {
   font-family: 'Mona Sans', sans-serif;
   font-weight: 700;
-  font-size: 1.1em;
+  font-size: 0.9em;
   letter-spacing: 2px;
   color: var(--text-white);
+  min-width: 200px;
+  text-align: right;
 }
 
 /* Player Switcher */

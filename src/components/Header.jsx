@@ -28,8 +28,7 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
           )}
         </div>
         <div className="player-name">
-          <div className="label">SPIELER {currentPlayer.index + 1}</div>
-          <div className="name">{currentPlayer.name}</div>
+          {currentPlayer.name.toUpperCase()}
         </div>
         {players.length > 1 && <div className="switch-icon">▼</div>}
       </div>
