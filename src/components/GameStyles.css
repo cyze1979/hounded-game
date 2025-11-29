@@ -379,8 +379,8 @@
 
 .dog-detail-overlay {
   min-height: 100vh;
-  background: rgba(10, 10, 20, 0.92);
-  backdrop-filter: blur(15px);
+  background: rgba(10, 10, 20, 0.40);  /* REDUCED from 0.92 - now you can see the background! */
+  backdrop-filter: blur(8px);
   padding: 120px 60px 60px 60px;
   position: relative;
 }
