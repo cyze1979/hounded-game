@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getDogImage, getBackground } from '../utils/assetLoader';
+import { getDogImage } from '../utils/assetLoader';
 
 export default function DogDetailFull({ dog, player, allDogs, gameState, setGameState, onClose }) {
   const [currentDogIndex, setCurrentDogIndex] = useState(0);
@@ -53,14 +53,18 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
   const genderIcon = currentDog.gender === 'männlich' ? '♂️' : '♀️';
   const overallRating = currentDog.getOverallRating();
   
+  // Background image path
+  const backgroundUrl = '/assets/backgrounds/background_001.jpg';
+  
   return (
     <div 
       className="dog-detail-full"
       style={{
-        backgroundImage: `url(${getBackground('stable')})`,
+        backgroundImage: `url(${backgroundUrl})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#0a0a0a' // Fallback color
       }}
     >
       <div className="dog-detail-overlay">

@@ -21,17 +21,11 @@ export const getDogThumbnail = (dogNumber) => {
   return `/assets/thumbnails/dog_thumbnail_${paddedNum}.png`;
 };
 
-// Background images
+// Background images - FIXED PATH
 export const getBackground = (screenName) => {
-  // screenName: 'stable', 'race', 'market', 'leaderboard'
-  const backgroundMap = {
-    'stable': '/assets/backgrounds/background_001.jpg',
-    'race': '/assets/backgrounds/background_001.jpg', // Reuse for now
-    'market': '/assets/backgrounds/background_001.jpg',
-    'leaderboard': '/assets/backgrounds/background_001.jpg'
-  };
-  
-  return backgroundMap[screenName] || backgroundMap['stable'];
+  // For now, always use background_001.jpg since that's what we have
+  // Later we can add specific backgrounds per screen
+  return '/assets/backgrounds/background_001.jpg';
 };
 
 // Preload images for better performance
@@ -46,11 +40,9 @@ export const preloadImages = () => {
   }
   
   // Preload backgrounds
-  ['stable', 'race', 'market', 'leaderboard'].forEach(screen => {
-    const img = new Image();
-    img.src = getBackground(screen);
-    images.push(img);
-  });
+  const bgImg = new Image();
+  bgImg.src = getBackground('stable');
+  images.push(bgImg);
   
   return images;
 };
