@@ -347,3 +347,213 @@
   color: var(--text-gray);
   text-transform: uppercase;
 }
+
+/* ============================================
+   DOG DETAIL FULL SCREEN
+============================================ */
+
+.dog-detail-full {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.dog-detail-overlay {
+  min-height: 100vh;
+  background: rgba(10, 10, 20, 0.92);
+  backdrop-filter: blur(15px);
+  padding: 100px 60px 60px 60px;
+  position: relative;
+}
+
+/* Navigation Arrows */
+.arrow-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 3em;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.arrow-btn:hover {
+  background: rgba(0, 217, 255, 0.2);
+  border-color: var(--cyan-primary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.arrow-left {
+  left: 30px;
+}
+
+.arrow-right {
+  right: 30px;
+}
+
+/* Main Container */
+.dog-detail-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Left Side - Stats */
+.dog-stats-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.dog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.dog-title {
+  flex: 1;
+}
+
+.dog-name-xl {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 4.5em;
+  letter-spacing: 3px;
+  color: var(--text-white);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.dog-breed-info {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1em;
+  letter-spacing: 2px;
+  color: var(--text-gray);
+  text-transform: uppercase;
+}
+
+.dog-rating-badge {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.rating-number-xl {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-size: 5em;
+  color: var(--text-white);
+  line-height: 1;
+}
+
+.rating-trait {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  color: var(--text-gray);
+  text-transform: uppercase;
+}
+
+.divider {
+  height: 2px;
+  background: linear-gradient(
+    to right, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent
+  );
+  margin: 10px 0;
+}
+
+.dog-stats-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.dog-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Vertical Divider */
+.vertical-divider {
+  width: 2px;
+  height: 500px;
+  background: linear-gradient(
+    to bottom, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent
+  );
+}
+
+/* Right Side - Dog Image */
+.dog-image-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dog-image-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dog-image-large {
+  max-width: 500px;
+  max-height: 600px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 217, 255, 0.3));
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .dog-detail-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .vertical-divider {
+    display: none;
+  }
+  
+  .dog-name-xl {
+    font-size: 3em;
+  }
+  
+  .rating-number-xl {
+    font-size: 3.5em;
+  }
+}

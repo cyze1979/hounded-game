@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DogDetail from './DogDetail';
+import DogDetailFull from './DogDetailFull';
 import { getDogImage } from '../utils/assetLoader';
 
 export default function Stable({ player, gameState, setGameState }) {
@@ -16,75 +16,78 @@ export default function Stable({ player, gameState, setGameState }) {
   }
   
   return (
-    <div className="stable-view">
-      <h2>Mein Rennstall</h2>
-      <p style={{color: '#718096', marginBottom: '20px'}}>
-        Deine Hunde ({player.dogs.length}/{gameState.stableLimit})
-      </p>
-      
-      <div className="dog-grid">
-        {player.dogs.map(dog => (
-          <div 
-            key={dog.id} 
-            className="dog-card dog-card-clickable"
-            onClick={() => setSelectedDog(dog)}
-          >
-            <div className="dog-icon">
-              <img 
-                src={getDogImage(dog.imageNumber)} 
-                alt={dog.name}
-                style={{width: '100%', height: 'auto', maxWidth: '200px'}}
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <div style={{fontSize: '4em', display: 'none'}}>🐕</div>
-            </div>
-            <h3>{dog.name}</h3>
-            <p className="dog-breed">{dog.breed}</p>
-            <p className="dog-trait">{dog.specialTrait}</p>
-            
-            <div className="dog-rating">
-              <span className="rating-number">{dog.getOverallRating()}</span>
-              <span className="rating-label">Wertung</span>
-            </div>
-            
-            <div className="dog-fitness">
-              <div className="fitness-bar">
-                <div 
-                  className="fitness-fill" 
-                  style={{
-                    width: `${dog.fitness}%`,
-                    background: dog.fitness > 70 ? '#48bb78' : dog.fitness > 40 ? '#ed8936' : '#f56565'
+    <>
+      <div className="stable-view">
+        <h2>Mein Rennstall</h2>
+        <p style={{color: '#718096', marginBottom: '20px'}}>
+          Deine Hunde ({player.dogs.length}/{gameState.stableLimit})
+        </p>
+        
+        <div className="dog-grid">
+          {player.dogs.map(dog => (
+            <div 
+              key={dog.id} 
+              className="dog-card dog-card-clickable"
+              onClick={() => setSelectedDog(dog)}
+            >
+              <div className="dog-icon">
+                <img 
+                  src={getDogImage(dog.imageNumber)} 
+                  alt={dog.name}
+                  style={{width: '100%', height: 'auto', maxWidth: '200px'}}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'block';
                   }}
                 />
+                <div style={{fontSize: '4em', display: 'none'}}>🐕</div>
               </div>
-              <span className="fitness-label">Fitness: {dog.fitness}%</span>
+              <h3>{dog.name}</h3>
+              <p className="dog-breed">{dog.breed}</p>
+              <p className="dog-trait">{dog.specialTrait}</p>
+              
+              <div className="dog-rating">
+                <span className="rating-number">{dog.getOverallRating()}</span>
+                <span className="rating-label">Wertung</span>
+              </div>
+              
+              <div className="dog-fitness">
+                <div className="fitness-bar">
+                  <div 
+                    className="fitness-fill" 
+                    style={{
+                      width: `${dog.fitness}%`,
+                      background: dog.fitness > 70 ? '#48bb78' : dog.fitness > 40 ? '#ed8936' : '#f56565'
+                    }}
+                  />
+                </div>
+                <span className="fitness-label">Fitness: {dog.fitness}%</span>
+              </div>
+              
+              {dog.races > 0 && (
+                <div className="dog-stats-mini">
+                  🏁 {dog.races} Rennen | 🏆 {dog.wins} Siege
+                </div>
+              )}
+              
+              <button className="btn btn-primary btn-sm" style={{marginTop: '10px'}}>
+                Details ansehen
+              </button>
             </div>
-            
-            {dog.races > 0 && (
-              <div className="dog-stats-mini">
-                🏁 {dog.races} Rennen | 🏆 {dog.wins} Siege
-              </div>
-            )}
-            
-            <button className="btn btn-primary btn-sm" style={{marginTop: '10px'}}>
-              Details & Training
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       
       {selectedDog && (
-        <DogDetail 
+        <DogDetailFull 
           dog={selectedDog} 
           player={player}
+          allDogs={player.dogs}
           gameState={gameState}
           setGameState={setGameState}
           onClose={() => setSelectedDog(null)} 
         />
       )}
-    </div>
+    </>
   );
 }
