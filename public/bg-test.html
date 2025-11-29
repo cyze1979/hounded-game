@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Background Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-container {
+            width: 100vw;
+            height: 100vh;
+            background-image: url('/assets/backgrounds/background_001.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .test-box {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+        
+        .direct-img {
+            max-width: 500px;
+            border: 3px solid lime;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-box">
+            <h1>🎨 Background Test</h1>
+            <p><strong>Wenn du ein Fantasy-Background siehst → Es funktioniert!</strong></p>
+            <p>Wenn nicht → Pfad-Problem</p>
+        </div>
+        
+        <div class="test-box">
+            <h2>Direktes Bild (sollte sichtbar sein):</h2>
+            <img src="/assets/backgrounds/background_001.jpg" class="direct-img" alt="Background Test" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+            <p style="color: red; display: none; font-weight: bold;">
+                ❌ BILD NICHT GEFUNDEN! Pfad ist falsch!
+            </p>
+        </div>
+    </div>
+</body>
+</html>
