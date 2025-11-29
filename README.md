@@ -1,0 +1,77 @@
+# 🐕 HOUNDED - Hunderennen Manager
+
+React-basiertes Hunderennen-Management-Spiel
+
+## Features
+
+✅ **Vollständiges Spiel**
+- Hundemarkt (Hunde kaufen)
+- Rennstall-Management (Training, Pflege, Trainer)
+- Rennsystem mit realistischer Simulation
+- Hot-Seat Multiplayer (1-4 Spieler)
+- Rangliste
+
+✅ **Speichersystem**
+- Auto-Save bei jedem State-Change
+- LocalStorage-basiert
+- Load Game auf Start-Screen
+
+✅ **Strategische Tiefe**
+- 6 verschiedene Trainer
+- Attribute: Speed, Stamina, Acceleration, Focus
+- Fitness-Management
+- Tagesform
+- Renn-Historie
+
+## Installation & Start
+
+```bash
+# Dependencies installieren
+npm install
+
+# Development Server starten
+npm run dev
+
+# Production Build
+npm run build
+```
+
+## Projekt-Struktur
+
+```
+src/
+├── components/     # React Components
+│   ├── Setup.jsx
+│   ├── Header.jsx
+│   ├── Navigation.jsx
+│   ├── Stable.jsx
+│   ├── Market.jsx
+│   ├── Race.jsx
+│   ├── DogDetail.jsx
+│   └── Leaderboard.jsx
+├── models/         # Game Logic Classes
+│   ├── Dog.js
+│   └── Player.js
+├── data/           # Game Data
+│   ├── dogData.js
+│   └── trainers.js
+├── utils/          # Utilities
+│   └── saveGame.js
+├── App.jsx         # Main App Component
+└── main.jsx        # Entry Point
+```
+
+## Nächste Schritte
+
+- [ ] Grafiken einfügen (Nano Banana Assets)
+- [ ] Saison-System
+- [ ] Alterungssystem
+- [ ] Besseres Balancing
+- [ ] Sound-Effekte
+
+## Tech Stack
+
+- React 18
+- Vite
+- LocalStorage API
+- Pure CSS (no frameworks)

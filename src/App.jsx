@@ -1,0 +1,139 @@
+import { useState, useEffect } from 'react';
+import './App.css';
+import { Player } from './models/Player';
+import { Dog } from './models/Dog';
+import { dogNames, dogBreeds, playerColors } from './data/dogData';
+import { saveGame, loadGame, hasSave } from './utils/saveGame';
+
+// Import components (will create these next)
+import Setup from './components/Setup';
+import Header from './components/Header';
+import Navigation from './components/Navigation';
+import Stable from './components/Stable';
+import Market from './components/Market';
+import Race from './components/Race';
+import Leaderboard from './components/Leaderboard';
+
+function App() {
+  const [gameState, setGameState] = useState({
+    players: [],
+    currentPlayerIndex: 0,
+    marketDogs: [],
+    currentRace: null,
+    raceHistory: [],
+    gameDay: 1,
+    isSetup: true,
+    stableLimit: 4
+  });
+  
+  const [currentView, setCurrentView] = useState('stable');
+  
+  // Auto-save on state change
+  useEffect(() => {
+    if (!gameState.isSetup && gameState.players.length > 0) {
+      saveGame(gameState);
+    }
+  }, [gameState]);
+  
+  // Try to load save on mount
+  useEffect(() => {
+    const savedGame = loadGame();
+    if (savedGame) {
+      setGameState({
+        ...savedGame,
+        marketDogs: generateMarketDogs(),
+        currentRace: null,
+        isSetup: false
+      });
+    }
+  }, []);
+  
+  const generateMarketDogs = () => {
+    const dogs = [];
+    for (let i = 0; i < 8; i++) {
+      const name = dogNames[Math.floor(Math.random() * dogNames.length)];
+      const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
+      dogs.push(new Dog(name, breed));
+    }
+    return dogs;
+  };
+  
+  const startGame = (playerNames) => {
+    const players = playerNames.map((name, index) => 
+      new Player(name, playerColors[index], index)
+    );
+    
+    setGameState({
+      ...gameState,
+      players,
+      currentPlayerIndex: 0,
+      marketDogs: generateMarketDogs(),
+      isSetup: false
+    });
+  };
+  
+  const getCurrentPlayer = () => {
+    return gameState.players[gameState.currentPlayerIndex];
+  };
+  
+  if (gameState.isSetup) {
+    return <Setup onStartGame={startGame} hasSave={hasSave()} onLoadGame={() => {
+      const savedGame = loadGame();
+      if (savedGame) {
+        setGameState({
+          ...savedGame,
+          marketDogs: generateMarketDogs(),
+          currentRace: null,
+          isSetup: false
+        });
+      }
+    }} />;
+  }
+  
+  return (
+    <div className="game-container">
+      <Header 
+        currentPlayer={getCurrentPlayer()} 
+        gameDay={gameState.gameDay}
+        players={gameState.players}
+        onPlayerSwitch={(index) => setGameState({...gameState, currentPlayerIndex: index})}
+      />
+      
+      <Navigation 
+        currentView={currentView} 
+        onViewChange={setCurrentView} 
+      />
+      
+      <main className="main-content">
+        {currentView === 'stable' && (
+          <Stable 
+            player={getCurrentPlayer()} 
+            gameState={gameState}
+            setGameState={setGameState}
+          />
+        )}
+        {currentView === 'market' && (
+          <Market 
+            player={getCurrentPlayer()} 
+            marketDogs={gameState.marketDogs}
+            stableLimit={gameState.stableLimit}
+            gameState={gameState}
+            setGameState={setGameState}
+          />
+        )}
+        {currentView === 'race' && (
+          <Race 
+            gameState={gameState}
+            setGameState={setGameState}
+            getCurrentPlayer={getCurrentPlayer}
+          />
+        )}
+        {currentView === 'leaderboard' && (
+          <Leaderboard players={gameState.players} />
+        )}
+      </main>
+    </div>
+  );
+}
+
+export default App;
