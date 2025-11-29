@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import './components/GameStyles.css';
 import { Player } from './models/Player';
 import { Dog } from './models/Dog';
-import { dogNames, dogBreeds, playerColors } from './data/dogData';
+import { dogNames, dogBreeds } from './data/dogData';
 import { saveGame, loadGame, hasSave } from './utils/saveGame';
 
-// Import components (will create these next)
+// Import components
 import Setup from './components/Setup';
 import Header from './components/Header';
-import Navigation from './components/Navigation';
 import Stable from './components/Stable';
 import Market from './components/Market';
 import Race from './components/Race';
@@ -97,11 +97,9 @@ function App() {
         gameDay={gameState.gameDay}
         players={gameState.players}
         onPlayerSwitch={(index) => setGameState({...gameState, currentPlayerIndex: index})}
-      />
-      
-      <Navigation 
-        currentView={currentView} 
-        onViewChange={setCurrentView} 
+        currentView={currentView}
+        onViewChange={setCurrentView}
+        marketNotifications={0}
       />
       
       <main className="main-content">

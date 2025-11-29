@@ -1,0 +1,18 @@
+/* Mona Sans Font from GitHub */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('https://github.com/github/mona-sans/raw/main/fonts/variable/Mona-Sans.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+/* Font weight shortcuts */
+.font-light { font-weight: 300; }
+.font-regular { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-black { font-weight: 900; }
+
+/* Italic variants */
+.font-italic { font-style: italic; }

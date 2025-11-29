@@ -1,0 +1,351 @@
+/* ============================================
+   HOUNDED - New Design System
+   Mockup-based styling
+============================================ */
+
+/* Color Variables */
+:root {
+  --cyan-primary: #00D9FF;
+  --yellow-primary: #F4D03F;
+  --bg-dark: #0a0a0a;
+  --bg-overlay: rgba(10, 10, 20, 0.85);
+  --text-white: #ffffff;
+  --text-gray: #a0aec0;
+  --bar-bg: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   HEADER - New Design
+============================================ */
+
+.game-header-new {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: var(--bg-overlay);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Player Section */
+.header-player {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.header-player:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.player-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--cyan-primary);
+  background: var(--bg-dark);
+}
+
+.player-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+}
+
+.player-name .label {
+  font-size: 0.75em;
+  color: var(--text-gray);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.player-name .name {
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.switch-icon {
+  font-size: 0.8em;
+  color: var(--text-gray);
+  margin-left: 5px;
+}
+
+/* Navigation */
+.header-nav {
+  display: flex;
+  gap: 50px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: var(--text-gray);
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  padding: 10px 5px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-item:hover {
+  color: var(--text-white);
+}
+
+.nav-item.active {
+  color: var(--text-white);
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--yellow-primary);
+}
+
+.nav-badge {
+  position: absolute;
+  top: 0;
+  right: -15px;
+  background: #ff4757;
+  color: white;
+  font-size: 0.7em;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Week Display */
+.header-week {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.1em;
+  letter-spacing: 2px;
+  color: var(--text-white);
+}
+
+/* Player Switcher */
+.player-switcher-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  z-index: 200;
+  padding-top: 80px;
+  padding-left: 40px;
+}
+
+.player-switcher-menu {
+  background: var(--bg-overlay);
+  backdrop-filter: blur(20px);
+  border-radius: 15px;
+  padding: 25px;
+  min-width: 300px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-switcher-menu h3 {
+  color: var(--text-white);
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.player-option {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.player-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.player-stats-small {
+  font-size: 0.85em;
+  color: var(--text-gray);
+  margin-top: 5px;
+}
+
+/* ============================================
+   BUTTONS - Mockup Style
+============================================ */
+
+/* White Tab Buttons (Angled) */
+.btn-tab {
+  background: white;
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 30px;
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  cursor: pointer;
+  position: relative;
+  transform: skewX(-10deg);
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.btn-tab span {
+  display: block;
+  transform: skewX(10deg);
+}
+
+.btn-tab:hover {
+  background: var(--cyan-primary);
+  transform: skewX(-10deg) translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+}
+
+.btn-tab:active {
+  transform: skewX(-10deg) translateY(0);
+}
+
+/* Yellow CTA Buttons (Rounded) */
+.btn-cta {
+  background: var(--yellow-primary);
+  color: #1a1a1a;
+  border: none;
+  padding: 15px 40px;
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1em;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.3s;
+  box-shadow: 0 5px 20px rgba(244, 208, 63, 0.3);
+}
+
+.btn-cta:hover {
+  background: #f5e050;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(244, 208, 63, 0.5);
+}
+
+.btn-cta:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   PROGRESS BARS - Cyan Style
+============================================ */
+
+.stat-bar-new {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 12px 0;
+}
+
+.stat-label-new {
+  min-width: 160px;
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  color: var(--text-white);
+  text-align: right;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+.stat-bar-container {
+  flex: 1;
+  height: 12px;
+  background: var(--bar-bg);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.stat-bar-fill-new {
+  height: 100%;
+  background: var(--cyan-primary);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.stat-value-new {
+  min-width: 40px;
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1em;
+  color: var(--text-white);
+  text-align: right;
+}
+
+/* ============================================
+   TYPOGRAPHY
+============================================ */
+
+.heading-xl {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 4em;
+  letter-spacing: 3px;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+
+.heading-lg {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 2em;
+  letter-spacing: 2px;
+  color: var(--text-white);
+}
+
+.label-sm {
+  font-family: 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  color: var(--text-gray);
+  text-transform: uppercase;
+}
