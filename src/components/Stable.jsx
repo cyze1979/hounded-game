@@ -7,10 +7,12 @@ export default function Stable({ player, gameState, setGameState }) {
   
   if (player.dogs.length === 0) {
     return (
-      <div className="empty-state">
-        <div className="empty-state-icon">🐕</div>
-        <h2>Noch keine Hunde im Stall</h2>
-        <p>Gehe zum Hundemarkt und kaufe deinen ersten Rennhund!</p>
+      <div className="stable-view">
+        <div className="empty-state">
+          <div className="empty-state-icon">🐕</div>
+          <h2>Noch keine Hunde im Stall</h2>
+          <p>Gehe zum Hundemarkt und kaufe deinen ersten Rennhund!</p>
+        </div>
       </div>
     );
   }
@@ -19,9 +21,7 @@ export default function Stable({ player, gameState, setGameState }) {
     <>
       <div className="stable-view">
         <h2>Mein Rennstall</h2>
-        <p style={{color: '#718096', marginBottom: '20px'}}>
-          Deine Hunde ({player.dogs.length}/{gameState.stableLimit})
-        </p>
+        <p>Deine Hunde ({player.dogs.length}/{gameState.stableLimit})</p>
         
         <div className="dog-grid">
           {player.dogs.map(dog => (
@@ -34,14 +34,12 @@ export default function Stable({ player, gameState, setGameState }) {
                 <img 
                   src={getDogImage(dog.imageNumber)} 
                   alt={dog.name}
-                  style={{width: '100%', height: 'auto', maxWidth: '200px'}}
                   onError={(e) => {
                     e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
                   }}
                 />
-                <div style={{fontSize: '4em', display: 'none'}}>🐕</div>
               </div>
+              
               <h3>{dog.name}</h3>
               <p className="dog-breed">{dog.breed}</p>
               <p className="dog-trait">{dog.specialTrait}</p>
@@ -57,7 +55,7 @@ export default function Stable({ player, gameState, setGameState }) {
                     className="fitness-fill" 
                     style={{
                       width: `${dog.fitness}%`,
-                      background: dog.fitness > 70 ? '#48bb78' : dog.fitness > 40 ? '#ed8936' : '#f56565'
+                      background: dog.fitness > 70 ? '#00D9FF' : dog.fitness > 40 ? '#ed8936' : '#f56565'
                     }}
                   />
                 </div>
@@ -69,10 +67,6 @@ export default function Stable({ player, gameState, setGameState }) {
                   🏁 {dog.races} Rennen | 🏆 {dog.wins} Siege
                 </div>
               )}
-              
-              <button className="btn btn-primary btn-sm" style={{marginTop: '10px'}}>
-                Details ansehen
-              </button>
             </div>
           ))}
         </div>

@@ -830,3 +830,250 @@
   margin-top: 30px;
   justify-content: center;
 }
+
+/* ============================================
+   DOG CARDS - NEW DESIGN (Stable & Market)
+============================================ */
+
+.dog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+}
+
+.dog-card {
+  background: rgba(10, 10, 20, 0.85);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 25px;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.dog-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--cyan-primary), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.dog-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--cyan-primary);
+  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+}
+
+.dog-card:hover::before {
+  opacity: 1;
+}
+
+.dog-card-clickable {
+  cursor: pointer;
+}
+
+/* Dog Image in Card */
+.dog-icon {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.dog-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 217, 255, 0.2));
+  transition: transform 0.3s;
+}
+
+.dog-card:hover .dog-icon img {
+  transform: scale(1.05);
+}
+
+/* Dog Card Header */
+.dog-card h3 {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.8em;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+.dog-breed {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.85em;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.dog-trait {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.8em;
+  color: var(--cyan-primary);
+  font-style: italic;
+  margin-bottom: 15px;
+  min-height: 20px;
+}
+
+/* Dog Rating Badge */
+.dog-rating {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rating-number {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 2.5em;
+  color: var(--cyan-primary);
+  line-height: 1;
+}
+
+.rating-label {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.75em;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Fitness Bar in Card */
+.dog-fitness {
+  margin: 15px 0;
+}
+
+.fitness-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--bar-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.fitness-fill {
+  height: 100%;
+  background: var(--cyan-primary);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.fitness-label {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.8em;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Mini Stats in Card */
+.dog-stats-mini {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.85em;
+  color: var(--text-gray);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Price Tag (Market) */
+.dog-price {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--yellow-primary);
+  margin: 15px 0;
+  text-align: center;
+}
+
+/* Buttons in Cards */
+.dog-card .btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background: var(--cyan-primary);
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 20px;
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background: #00f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.btn-primary:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.btn-sm {
+  padding: 10px 15px;
+  font-size: 0.85em;
+}
+
+.btn-success {
+  background: #48bb78;
+}
+
+.btn-success:hover {
+  background: #38a169;
+}
+
+/* View Headers */
+.stable-view h2,
+.market-view h2 {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 2.5em;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.stable-view p,
+.market-view p {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.1em;
+  color: var(--text-gray);
+  margin-bottom: 20px;
+}
