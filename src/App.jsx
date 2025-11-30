@@ -9,10 +9,13 @@ import { saveGame, loadGame, hasSave } from './utils/saveGame';
 // Import components
 import Setup from './components/Setup';
 import Header from './components/Header';
+import GameMenu from './components/GameMenu';
 import Stable from './components/Stable';
 import Market from './components/Market';
 import Race from './components/Race';
 import Leaderboard from './components/Leaderboard';
+
+const playerColors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
 
 function App() {
   const [gameState, setGameState] = useState({
@@ -27,6 +30,7 @@ function App() {
   });
   
   const [currentView, setCurrentView] = useState('stable');
+  const [showMenu, setShowMenu] = useState(false);
   
   // Auto-save on state change
   useEffect(() => {
@@ -47,6 +51,17 @@ function App() {
       });
     }
   }, []);
+  
+  // Close menu on ESC key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && showMenu) {
+        setShowMenu(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [showMenu]);
   
   const generateMarketDogs = () => {
     const dogs = [];
@@ -70,6 +85,20 @@ function App() {
       marketDogs: generateMarketDogs(),
       isSetup: false
     });
+  };
+  
+  const handleNewGame = () => {
+    setGameState({
+      players: [],
+      currentPlayerIndex: 0,
+      marketDogs: [],
+      currentRace: null,
+      raceHistory: [],
+      gameDay: 1,
+      isSetup: true,
+      stableLimit: 4
+    });
+    setCurrentView('stable');
   };
   
   const getCurrentPlayer = () => {
@@ -100,6 +129,7 @@ function App() {
         currentView={currentView}
         onViewChange={setCurrentView}
         marketNotifications={0}
+        onMenuClick={() => setShowMenu(true)}
       />
       
       <main className="main-content">
@@ -130,6 +160,13 @@ function App() {
           <Leaderboard players={gameState.players} />
         )}
       </main>
+      
+      {showMenu && (
+        <GameMenu 
+          onNewGame={handleNewGame}
+          onClose={() => setShowMenu(false)}
+        />
+      )}
     </div>
   );
 }

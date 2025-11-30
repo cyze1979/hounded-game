@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
-export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0 }) {
+export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick }) {
   const [showSwitcher, setShowSwitcher] = useState(false);
   
   // Get player's first dog for avatar, or use placeholder
@@ -53,9 +53,12 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
         ))}
       </nav>
       
-      {/* Right: Week Info */}
-      <div className="header-week">
-        WOCHE {gameDay}
+      {/* Right: Week Info & Menu Button */}
+      <div className="header-right">
+        <div className="header-week">WOCHE {gameDay}</div>
+        <button className="burger-menu-btn" onClick={onMenuClick}>
+          ☰
+        </button>
       </div>
       
       {/* Player Switcher Modal */}
