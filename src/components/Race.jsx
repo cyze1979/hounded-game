@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Dog } from '../models/Dog';
 import { dogNames, dogBreeds } from '../data/dogData';
+import { getDogImage } from '../utils/assetLoader';
 
 export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [raceInterval, setRaceInterval] = useState(null);
+  const [commentary, setCommentary] = useState([]);
+  
+  const addCommentary = (text) => {
+    setCommentary(prev => [...prev.slice(-3), text]); // Keep last 4 messages
+  };
   
   const startRace = () => {
     // Get all player dogs
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
-        if (dog.fitness >= 20) { // Only if not too tired
+        if (dog.fitness >= 20) {
           participants.push(dog);
         }
       });
@@ -40,7 +46,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           odds: Math.max(1.2, Math.min(10, odds)),
           dailyForm: 0,
           fitnessFactor: 1,
-          energy: 100
+          energy: 100,
+          position: 0,
+          lastPosition: 0
         };
       }),
       finished: false,
@@ -52,6 +60,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       ...gameState,
       currentRace: newRace
     });
+    
+    setCommentary([]);
   };
   
   const runRace = () => {
@@ -59,6 +69,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     let finished = [];
     let tick = 0;
     const maxTicks = 80;
+    
+    addCommentary("🏁 UND SIE SIND WEG!");
     
     // Pre-calculate performance factors
     race.participants.forEach(p => {
@@ -73,6 +85,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       p.effectiveRating *= p.fitnessFactor;
       p.energy = 100;
       p.position = 0;
+      p.lastPosition = 0;
     });
     
     const interval = setInterval(() => {
@@ -80,6 +93,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       race.elapsedTime = tick / 10;
       
       let racePhase = tick < 20 ? 'start' : tick < 60 ? 'middle' : 'sprint';
+      
+      // Commentary based on phase
+      if (tick === 20) addCommentary("⚡ Sie erreichen die Mitte der Strecke!");
+      if (tick === 60) addCommentary("🔥 ENDSPURT! Wer hat noch Kraft?");
       
       race.participants.forEach(p => {
         if (p.progress < 100) {
@@ -106,13 +123,25 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           if (p.progress >= 100 && !p.finishTick) {
             p.finishTick = tick;
             finished.push(p);
+            if (finished.length === 1) {
+              addCommentary(`🏆 ${dog.name.toUpperCase()} GEWINNT DAS RENNEN!`);
+            }
           }
         }
       });
       
+      // Update positions and detect overtakes
+      race.participants.forEach(p => p.lastPosition = p.position);
       race.participants.sort((a, b) => b.progress - a.progress);
       race.participants.forEach((p, index) => {
         p.position = index + 1;
+        
+        // Detect overtake
+        if (p.lastPosition > 0 && p.position < p.lastPosition && tick > 10 && tick < 75) {
+          if (p.lastPosition - p.position >= 2) {
+            addCommentary(`⚡ ${p.dog.name} überholt mehrere Hunde!`);
+          }
+        }
       });
       
       setGameState({...gameState});
@@ -145,9 +174,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
-        // IMPORTANT: Mark race as completed
         const updatedGameState = {...gameState, raceCompleted: true};
         setGameState(updatedGameState);
+        
+        addCommentary("🏁 Rennen beendet!");
       }
     }, 100);
     
@@ -164,14 +194,28 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   
   if (!gameState.currentRace) {
     return (
-      <div className="race-container">
-        <h2>Rennen</h2>
-        <p style={{color: '#718096', marginBottom: '30px'}}>
-          Bereit für das Rennen dieser Woche?
-        </p>
-        <button className="btn btn-primary" onClick={startRace} style={{fontSize: '1.2em', padding: '15px 30px'}}>
-          🏁 Rennen starten
-        </button>
+      <div className="race-view">
+        <div className="race-start-screen">
+          <h2 className="race-title">RENNEN DER WOCHE</h2>
+          <p className="race-subtitle">Woche {gameState.gameDay}</p>
+          
+          <div className="race-info-box">
+            <div className="race-info-item">
+              <span className="race-info-label">Teilnehmer</span>
+              <span className="race-info-value">
+                {gameState.players.reduce((sum, p) => sum + p.dogs.filter(d => d.fitness >= 20).length, 0)} Hunde
+              </span>
+            </div>
+            <div className="race-info-item">
+              <span className="race-info-label">Streckenlänge</span>
+              <span className="race-info-value">800m</span>
+            </div>
+          </div>
+          
+          <button className="btn-cta race-start-btn" onClick={startRace}>
+            RENNEN STARTEN
+          </button>
+        </div>
       </div>
     );
   }
@@ -179,58 +223,124 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const race = gameState.currentRace;
   
   return (
-    <div className="race-container">
-      <h2>Rennen läuft... ({race.elapsedTime.toFixed(1)}s)</h2>
+    <div className="race-view">
       
-      {!race.finished && !raceInterval && (
-        <button className="btn btn-success" onClick={runRace} style={{marginBottom: '20px'}}>
-          ▶️ Los geht's!
-        </button>
-      )}
-      
-      <div className="race-track">
-        {race.participants.map((p, index) => (
-          <div key={index} className="race-lane">
-            <div className="lane-info">
-              <span className="position">#{p.position}</span>
-              <span className="dog-name">{p.dog.name}</span>
-              <span className="dog-rating">{p.dog.getOverallRating()}</span>
-              <span className="dog-odds">{p.odds.toFixed(1)}x</span>
-            </div>
-            <div className="progress-track">
-              <div 
-                className="progress-dog" 
-                style={{
-                  left: `${p.progress}%`,
-                  transition: 'left 0.1s linear'
-                }}
-              >
-                🐕
-              </div>
-            </div>
-            <div className="progress-percent">{p.progress.toFixed(1)}%</div>
-          </div>
-        ))}
+      {/* Race Header */}
+      <div className="race-header">
+        <h2 className="race-title">RENNEN LÄUFT</h2>
+        <div className="race-timer">{race.elapsedTime.toFixed(1)}s</div>
       </div>
       
+      {/* Start Button */}
+      {!race.finished && !raceInterval && (
+        <div className="race-controls">
+          <button className="btn-cta race-go-btn" onClick={runRace}>
+            ▶ LOS GEHT'S!
+          </button>
+        </div>
+      )}
+      
+      {/* Race Track - Side Scroller */}
+      <div className="race-track-container">
+        {race.participants.map((p, index) => {
+          const isPlayerDog = gameState.players.some(player => 
+            player.dogs.some(dog => dog.id === p.dog.id)
+          );
+          
+          return (
+            <div key={index} className={`race-lane ${isPlayerDog ? 'player-lane' : ''}`}>
+              
+              {/* Lane Number & Dog Info */}
+              <div className="lane-header">
+                <span className="lane-position">#{p.position}</span>
+                <div className="lane-dog-info">
+                  <span className="lane-dog-name">{p.dog.name}</span>
+                  <span className="lane-dog-breed">{p.dog.breed}</span>
+                </div>
+                <span className="lane-rating">{p.dog.getOverallRating()}</span>
+              </div>
+              
+              {/* Track */}
+              <div className="race-track-lane">
+                {/* Start Line */}
+                <div className="track-marker track-start">START</div>
+                
+                {/* Dog on Track */}
+                <div 
+                  className="track-dog" 
+                  style={{
+                    left: `${p.progress}%`,
+                    transition: 'left 0.1s linear'
+                  }}
+                >
+                  <img 
+                    src={getDogImage(p.dog.imageNumber)} 
+                    alt={p.dog.name}
+                    className="dog-sprite"
+                  />
+                </div>
+                
+                {/* Finish Line */}
+                <div className="track-marker track-finish">ZIEL</div>
+                
+                {/* Energy Bar */}
+                <div className="track-energy-bar">
+                  <div 
+                    className="energy-fill" 
+                    style={{
+                      width: `${p.energy}%`,
+                      background: p.energy > 70 ? '#48bb78' : p.energy > 40 ? '#ed8936' : '#f56565'
+                    }}
+                  />
+                </div>
+              </div>
+              
+              {/* Progress % */}
+              <div className="lane-progress">{p.progress.toFixed(1)}%</div>
+              
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Live Commentary */}
+      <div className="race-commentary">
+        <h3 className="commentary-title">📢 LIVE-KOMMENTAR</h3>
+        <div className="commentary-feed">
+          {commentary.map((msg, i) => (
+            <div key={i} className="commentary-message">
+              {msg}
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Results */}
       {race.finished && (
         <div className="race-results">
-          <h3>🏆 Ergebnisse</h3>
-          <div className="results-list">
+          <h3 className="results-title">🏆 ERGEBNISSE</h3>
+          <div className="results-grid">
             {race.results.map((result, index) => (
-              <div key={index} className="result-item">
-                <span className="result-position">
+              <div key={index} className="result-card">
+                <div className="result-position">
                   {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`}
-                </span>
-                <span className="result-name">{result.dog.name}</span>
-                <span className="result-breed">{result.dog.breed}</span>
-                <span className="result-rating">{result.dog.getOverallRating()}</span>
-                <span className="result-time">{(result.finishTick / 10).toFixed(2)}s</span>
+                </div>
+                <img 
+                  src={getDogImage(result.dog.imageNumber)} 
+                  alt={result.dog.name}
+                  className="result-dog-image"
+                />
+                <div className="result-info">
+                  <div className="result-name">{result.dog.name}</div>
+                  <div className="result-breed">{result.dog.breed}</div>
+                  <div className="result-time">{(result.finishTick / 10).toFixed(2)}s</div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       )}
+      
     </div>
   );
 }
