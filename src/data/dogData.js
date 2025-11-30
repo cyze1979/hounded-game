@@ -1,10 +1,7 @@
 // Hommage an das originale Hounded Game aus den 80ern!
 export const dogNames = [
     // Original Hounded Namen (hier kannst du die Namen aus dem 80er Spiel eintragen!)
-    'Blitz', 'Shadow', 'Luna', 'Max', 'Bella', 'Rocky', 'Daisy', 'Duke',
-    'Lucy', 'Cooper', 'Sadie', 'Bear', 'Molly', 'Jack', 'Bailey', 'Buddy',
-    'Stella', 'Zeus', 'Lily', 'Oliver', 'Maggie', 'Charlie', 'Sophie', 'Toby',
-    
+'Sidewinder', 'Refracter', 'Manic Drive', 'Jasmine´s Fancy', 'Atomic Habit', 'Missy', 'Prime Mover', 'Realtime', 'Gazzas Champ', 'Lunatic', 'Kings Pride', 'Ram Runner', 'Electroblast', 'Power On', 'Holding On', 'Master Blaster', 'Short Circuit', 'Overload', 'Loco', 'Timewarp', 'Jaws', 'Ozzi Battler', 'Hotdog', 'Flying Pixels', 'Coffee Time', 'Spriteflight', 'Star Tracker', 'Byte Bandit', 'Harehunter', 'Trackeater', 'Solomun Gundy', 'Ghostdog', ' Twilight', 'Guybrush', 'Doc Snyder', 'Megalodon', 'Shadow', 'Zeus X', 'Mister Mister'   
     // Füge hier mehr Namen hinzu aus dem Original-Spiel!
     // z.B.: 'Sparky', 'Flash', 'Thunder', 'Lightning', etc.
 ];
