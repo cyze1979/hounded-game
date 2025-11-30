@@ -19,67 +19,67 @@ export default function Stable({ player, gameState, setGameState }) {
   
   return (
     <>
-      <div className="stable-view">
-        <h2>Mein Rennstall</h2>
-        <p>Deine Hunde ({player.dogs.length}/{gameState.stableLimit})</p>
-        
-        <div className="dog-grid">
-          {player.dogs.map(dog => (
-            <div 
-              key={dog.id} 
-              className="dog-card dog-card-clickable"
-              onClick={() => setSelectedDog(dog)}
-            >
-              <div className="dog-icon">
-                <img 
-                  src={getDogImage(dog.imageNumber)} 
-                  alt={dog.name}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
+      {!selectedDog && (
+        <div className="stable-view">
+          <h2>Mein Rennstall</h2>
+          <p>Deine Hunde ({player.dogs.length}/{gameState.stableLimit})</p>
+          
+          <div className="dog-grid">
+            {player.dogs.map(dog => (
+              <div 
+                key={dog.id} 
+                className="dog-card dog-card-clickable"
+                onClick={() => setSelectedDog(dog)}
+              >
+                <div className="dog-icon">
+                  <img 
+                    src={getDogImage(dog.imageNumber)} 
+                    alt={dog.name}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                </div>
+                
+                {/* Header with Name & Rating */}
+                <div className="dog-card-header">
+                  <div className="dog-card-title">
+                    <h3>{dog.name}</h3>
+                    <p className="dog-breed">{dog.breed} • {dog.age} Jahre</p>
+                  </div>
+                  <div className="dog-card-rating">
+                    <span className="rating-number">{dog.getOverallRating()}</span>
+                  </div>
+                </div>
+                
+                {/* Stats - 5 Attributes (with Fitness) */}
+                <div className="dog-card-stats">
+                  <div className="card-stat-row">
+                    <span className="card-stat-label">Geschwindigkeit</span>
+                    <span className="card-stat-value">{dog.speed}</span>
+                  </div>
+                  <div className="card-stat-row">
+                    <span className="card-stat-label">Ausdauer</span>
+                    <span className="card-stat-value">{dog.stamina}</span>
+                  </div>
+                  <div className="card-stat-row">
+                    <span className="card-stat-label">Beschleunigung</span>
+                    <span className="card-stat-value">{dog.acceleration}</span>
+                  </div>
+                  <div className="card-stat-row">
+                    <span className="card-stat-label">Fokus</span>
+                    <span className="card-stat-value">{dog.focus}</span>
+                  </div>
+                  <div className="card-stat-row">
+                    <span className="card-stat-label">Fitness</span>
+                    <span className="card-stat-value card-stat-fitness">{dog.fitness}</span>
+                  </div>
+                </div>
               </div>
-              
-              {/* Header with Name & Rating */}
-              <div className="dog-card-header">
-                <div className="dog-card-title">
-                  <h3>{dog.name}</h3>
-                  <p className="dog-breed">{dog.breed} • {dog.age} Jahre</p>
-                </div>
-                <div className="dog-card-rating">
-                  <span className="rating-number">{dog.getOverallRating()}</span>
-                </div>
-              </div>
-              
-              {/* Stats - 5 Attributes (with Fitness) */}
-              <div className="dog-card-stats">
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Geschwindigkeit</span>
-                  <span className="card-stat-value">{dog.speed}</span>
-                </div>
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Ausdauer</span>
-                  <span className="card-stat-value">{dog.stamina}</span>
-                </div>
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Beschleunigung</span>
-                  <span className="card-stat-value">{dog.acceleration}</span>
-                </div>
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Fokus</span>
-                  <span className="card-stat-value">{dog.focus}</span>
-                </div>
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Fitness</span>
-                  <span className="card-stat-value" style={{
-                    color: dog.fitness > 70 ? '#00D9FF' : dog.fitness > 40 ? '#ed8936' : '#f56565'
-                  }}>{dog.fitness}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       
       {selectedDog && (
         <DogDetailFull 

@@ -70,18 +70,13 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
     >
       <div className="dog-detail-overlay">
         
-        {/* Close Button */}
-        <button className="detail-close-btn" onClick={onClose}>
-          ✕
-        </button>
-        
-        {/* Navigation Arrows */}
+        {/* Navigation Arrows - NO CIRCLES */}
         {allDogs.length > 1 && (
           <>
-            <button className="arrow-btn arrow-left" onClick={goToPrevious}>
+            <button className="arrow-btn arrow-btn-simple arrow-left" onClick={goToPrevious}>
               ❮
             </button>
-            <button className="arrow-btn arrow-right" onClick={goToNext}>
+            <button className="arrow-btn arrow-btn-simple arrow-right" onClick={goToNext}>
               ❯
             </button>
           </>
