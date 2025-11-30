@@ -1236,3 +1236,245 @@
 .card-stat-fitness {
   color: var(--text-white) !important;
 }
+
+/* ============================================
+   FIXED CARD HEIGHTS - UNIFORM LAYOUT
+============================================ */
+
+.dog-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 550px; /* Fixed minimum height */
+}
+
+.dog-card-header {
+  min-height: 80px; /* Fixed space for header (allows 2 lines) */
+}
+
+.dog-card-title h3 {
+  min-height: 50px; /* Space for 2 lines of name */
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.dog-card-title .dog-breed {
+  height: 20px; /* Fixed height for breed line */
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dog-card-rating {
+  flex-shrink: 0;
+  align-self: flex-start; /* Keep rating at top right */
+}
+
+.dog-icon {
+  flex-shrink: 0; /* Prevent image area from shrinking */
+}
+
+.dog-card-stats {
+  flex: 1; /* Take remaining space */
+}
+
+.market-card-footer {
+  margin-top: auto; /* Push to bottom */
+}
+
+/* ============================================
+   SETUP SCREEN - NEW DESIGN
+============================================ */
+
+.setup-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/assets/backgrounds/background_001.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.setup-overlay {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 20, 0.75);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+}
+
+.setup-container {
+  max-width: 700px;
+  width: 100%;
+  background: rgba(10, 10, 20, 0.90);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 2px solid rgba(0, 217, 255, 0.3);
+  padding: 50px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Title */
+.setup-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.setup-logo {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 5em;
+  letter-spacing: 5px;
+  color: var(--text-white);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 15px;
+  text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+}
+
+.setup-subtitle {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.95em;
+  letter-spacing: 3px;
+  color: var(--text-gray);
+  text-transform: uppercase;
+}
+
+/* Load Button */
+.setup-load-btn {
+  width: 100%;
+  margin-bottom: 40px;
+  padding: 18px;
+  font-size: 1.1em;
+}
+
+/* Form Section */
+.setup-form {
+  margin-top: 30px;
+}
+
+.setup-section-title {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.5em;
+  letter-spacing: 2px;
+  color: var(--text-white);
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.setup-description {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1em;
+  color: var(--text-gray);
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Player Count Selector */
+.player-count-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.player-count-btn {
+  padding: 20px;
+  font-size: 1.2em;
+  opacity: 0.5;
+  transition: all 0.3s;
+}
+
+.player-count-btn.selected {
+  opacity: 1;
+  background: var(--cyan-primary);
+  transform: skewX(-10deg) scale(1.05);
+  box-shadow: 0 5px 20px rgba(0, 217, 255, 0.5);
+}
+
+.player-count-btn:hover {
+  opacity: 1;
+}
+
+/* Player Names Form */
+.player-names-form {
+  margin-top: 30px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.player-name-input {
+  margin-bottom: 20px;
+}
+
+.player-input-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.player-color-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.player-label-text {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  color: var(--text-gray);
+  text-transform: uppercase;
+}
+
+.setup-input {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: var(--text-white);
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.setup-input:focus {
+  outline: none;
+  border-color: var(--cyan-primary);
+  background: rgba(0, 217, 255, 0.05);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+.setup-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Start Button */
+.setup-start-btn {
+  width: 100%;
+  margin-top: 30px;
+  padding: 18px;
+  font-size: 1.2em;
+  letter-spacing: 2px;
+}

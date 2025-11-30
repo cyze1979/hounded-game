@@ -25,56 +25,70 @@ export default function Setup({ onStartGame, hasSave, onLoadGame }) {
   
   return (
     <div className="setup-screen">
-      <div className="setup-container">
-        <h1>🐕 HOUNDED</h1>
-        <h2>Hunderennen-Manager</h2>
-        
-        {hasSave && (
-          <button className="btn btn-success" onClick={onLoadGame} style={{marginBottom: '30px'}}>
-            📁 Gespeichertes Spiel laden
-          </button>
-        )}
-        
-        <div className="setup-form">
-          <h3>Neues Spiel starten</h3>
-          <p style={{color: '#718096', marginBottom: '20px'}}>
-            Wie viele Spieler nehmen teil?
-          </p>
+      <div className="setup-overlay">
+        <div className="setup-container">
           
-          <div className="player-count-selector">
-            {[1, 2, 3, 4].map(count => (
-              <button 
-                key={count}
-                className={`count-btn ${playerCount === count ? 'selected' : ''}`}
-                onClick={() => handlePlayerCount(count)}
-              >
-                {count} Spieler
-              </button>
-            ))}
+          {/* Title */}
+          <div className="setup-title">
+            <h1 className="setup-logo">HOUNDED</h1>
+            <p className="setup-subtitle">A MYSTICAL DOG RACING SIMULATION</p>
           </div>
           
-          {playerCount && (
-            <div className="player-names-form">
-              <h3>Spieler-Namen</h3>
-              {playerNames.map((name, index) => (
-                <div key={index} className="player-name-input">
-                  <label>
-                    <span className="player-color-badge" style={{background: playerColors[index]}}></span>
-                    Spieler {index + 1}:
-                  </label>
-                  <input 
-                    type="text" 
-                    value={name}
-                    onChange={(e) => handleNameChange(index, e.target.value)}
-                    placeholder="Name eingeben"
-                  />
-                </div>
-              ))}
-              <button className="btn btn-primary" onClick={handleStart} style={{marginTop: '20px'}}>
-                🎮 Spiel starten
-              </button>
-            </div>
+          {/* Load Game Button */}
+          {hasSave && (
+            <button className="btn-cta setup-load-btn" onClick={onLoadGame}>
+              Gespeichertes Spiel laden
+            </button>
           )}
+          
+          {/* New Game Section */}
+          <div className="setup-form">
+            <h3 className="setup-section-title">Neues Spiel starten</h3>
+            <p className="setup-description">Wie viele Spieler nehmen teil?</p>
+            
+            {/* Player Count Selector */}
+            <div className="player-count-selector">
+              {[1, 2, 3, 4].map(count => (
+                <button 
+                  key={count}
+                  className={`btn-tab player-count-btn ${playerCount === count ? 'selected' : ''}`}
+                  onClick={() => handlePlayerCount(count)}
+                >
+                  <span>{count}</span>
+                </button>
+              ))}
+            </div>
+            
+            {/* Player Names Form */}
+            {playerCount && (
+              <div className="player-names-form">
+                <h3 className="setup-section-title">Spieler-Namen</h3>
+                {playerNames.map((name, index) => (
+                  <div key={index} className="player-name-input">
+                    <div className="player-input-label">
+                      <span 
+                        className="player-color-badge" 
+                        style={{background: playerColors[index]}}
+                      ></span>
+                      <span className="player-label-text">SPIELER {index + 1}</span>
+                    </div>
+                    <input 
+                      type="text" 
+                      className="setup-input"
+                      value={name}
+                      onChange={(e) => handleNameChange(index, e.target.value)}
+                      placeholder="Name eingeben..."
+                    />
+                  </div>
+                ))}
+                
+                <button className="btn-cta setup-start-btn" onClick={handleStart}>
+                  Spiel starten
+                </button>
+              </div>
+            )}
+          </div>
+          
         </div>
       </div>
     </div>
