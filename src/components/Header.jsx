@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
-export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick }) {
+export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay }) {
   const [showSwitcher, setShowSwitcher] = useState(false);
   
   // Get player's first dog for avatar, or use placeholder
@@ -23,20 +23,26 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
   
   return (
     <header className="game-header-new">
-      {/* Left: Player Info */}
-      <div className="header-player" onClick={() => players.length > 1 && setShowSwitcher(!showSwitcher)}>
-        <div className="player-avatar">
-          {playerAvatar ? (
-            <img src={playerAvatar} alt={currentPlayer.name} />
-          ) : (
-            <div className="avatar-placeholder">🐕</div>
-          )}
+      {/* Left: Burger Menu & Player Info */}
+      <div className="header-left">
+        <button className="burger-menu-btn burger-menu-simple" onClick={onMenuClick}>
+          ☰
+        </button>
+        
+        <div className="header-player" onClick={() => players.length > 1 && setShowSwitcher(!showSwitcher)}>
+          <div className="player-avatar">
+            {playerAvatar ? (
+              <img src={playerAvatar} alt={currentPlayer.name} />
+            ) : (
+              <div className="avatar-placeholder">🐕</div>
+            )}
+          </div>
+          <div className="player-info-text">
+            <div className="player-name">{currentPlayer.name.toUpperCase()}</div>
+            <div className="player-money">{formatMoney(currentPlayer.money)} €</div>
+          </div>
+          {players.length > 1 && <div className="switch-icon">▼</div>}
         </div>
-        <div className="player-info-text">
-          <div className="player-name">{currentPlayer.name.toUpperCase()}</div>
-          <div className="player-money">{formatMoney(currentPlayer.money)} €</div>
-        </div>
-        {players.length > 1 && <div className="switch-icon">▼</div>}
       </div>
       
       {/* Center: Navigation */}
@@ -53,11 +59,11 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
         ))}
       </nav>
       
-      {/* Right: Week Info & Menu Button */}
+      {/* Right: Week Info & WEITER Button */}
       <div className="header-right">
         <div className="header-week">WOCHE {gameDay}</div>
-        <button className="burger-menu-btn" onClick={onMenuClick}>
-          ☰
+        <button className="btn-cta btn-next-day" onClick={onNextDay}>
+          WEITER
         </button>
       </div>
       

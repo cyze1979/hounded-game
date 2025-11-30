@@ -1478,3 +1478,48 @@
   font-size: 1.2em;
   letter-spacing: 2px;
 }
+
+/* ============================================
+   HEADER OPTION A - BURGER LEFT, WEITER RIGHT
+============================================ */
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 280px;
+}
+
+.burger-menu-simple {
+  background: none;
+  border: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  font-size: 1.8em;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s;
+}
+
+.burger-menu-simple:hover {
+  color: var(--cyan-primary);
+  transform: scale(1.1);
+  background: none;
+  border: none;
+}
+
+/* Header Right with WEITER Button */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 280px;
+  justify-content: flex-end;
+}
+
+.btn-next-day {
+  padding: 12px 35px;
+  font-size: 0.95em;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}

@@ -67,13 +67,12 @@ function App() {
     const dogs = [];
     for (let i = 0; i < 8; i++) {
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-      dogs.push(new Dog(null, breed)); // null = unique name wird automatisch vergeben
+      dogs.push(new Dog(null, breed));
     }
     return dogs;
   };
   
   const startGame = (playerNames) => {
-    // Reset used names beim Start
     resetUsedNames();
     
     const players = playerNames.map((name, index) => 
@@ -90,7 +89,6 @@ function App() {
   };
   
   const handleNewGame = () => {
-    // Reset used names beim Neustart
     resetUsedNames();
     
     setGameState({
@@ -104,6 +102,32 @@ function App() {
       stableLimit: 4
     });
     setCurrentView('stable');
+  };
+  
+  // WEITER Button Logic
+  const handleNextDay = () => {
+    const newGameState = { ...gameState };
+    
+    // Increase day/week
+    newGameState.gameDay += 1;
+    
+    // All dogs lose fitness
+    newGameState.players.forEach(player => {
+      player.dogs.forEach(dog => {
+        dog.fitness = Math.max(0, dog.fitness - 10);
+      });
+    });
+    
+    // Refresh market (new dogs)
+    newGameState.marketDogs = generateMarketDogs();
+    
+    // Clear current race
+    newGameState.currentRace = null;
+    
+    setGameState(newGameState);
+    
+    // Show notification
+    alert(`⏭️ Woche ${newGameState.gameDay}\n\n🏥 Alle Hunde verlieren 10 Fitness\n🛒 Neuer Hundemarkt verfügbar!`);
   };
   
   const getCurrentPlayer = () => {
@@ -135,6 +159,7 @@ function App() {
         onViewChange={setCurrentView}
         marketNotifications={0}
         onMenuClick={() => setShowMenu(true)}
+        onNextDay={handleNextDay}
       />
       
       <main className="main-content">
