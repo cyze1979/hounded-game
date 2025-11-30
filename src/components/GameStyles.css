@@ -604,3 +604,57 @@
     font-size: 3.5em;
   }
 }
+
+/* ============================================
+   RACE STATISTICS SECTION
+============================================ */
+
+.race-stats-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.race-stat-item {
+  text-align: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+}
+
+.race-stat-label {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.race-stat-value {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--cyan-primary);
+  line-height: 1;
+}
+
+/* ============================================
+   LARGER BUTTON & CENTERING
+============================================ */
+
+.dog-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.btn-tab-large {
+  padding: 16px 50px;
+  font-size: 1.1em;
+  letter-spacing: 2px;
+}

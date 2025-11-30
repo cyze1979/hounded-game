@@ -52,6 +52,7 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
   
   const genderIcon = currentDog.gender === 'männlich' ? '♂️' : '♀️';
   const overallRating = currentDog.getOverallRating();
+  const winRate = currentDog.races > 0 ? ((currentDog.wins / currentDog.races) * 100).toFixed(0) : 0;
   
   // Background image path
   const backgroundUrl = '/assets/backgrounds/background_001.jpg';
@@ -64,7 +65,7 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: '#0a0a0a' // Fallback color
+        backgroundColor: '#0a0a0a'
       }}
     >
       <div className="dog-detail-overlay">
@@ -106,6 +107,31 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
             </div>
             
             <div className="divider"></div>
+            
+            {/* Renn-Statistiken */}
+            {currentDog.races > 0 && (
+              <>
+                <div className="race-stats-section">
+                  <div className="race-stat-item">
+                    <div className="race-stat-label">RENNEN</div>
+                    <div className="race-stat-value">{currentDog.races}</div>
+                  </div>
+                  <div className="race-stat-item">
+                    <div className="race-stat-label">SIEGE</div>
+                    <div className="race-stat-value">{currentDog.wins}</div>
+                  </div>
+                  <div className="race-stat-item">
+                    <div className="race-stat-label">SIEGRATE</div>
+                    <div className="race-stat-value">{winRate}%</div>
+                  </div>
+                  <div className="race-stat-item">
+                    <div className="race-stat-label">ERFAHRUNG</div>
+                    <div className="race-stat-value">{currentDog.experience}</div>
+                  </div>
+                </div>
+                <div className="divider"></div>
+              </>
+            )}
             
             {/* Stats */}
             <div className="dog-stats-bars">
@@ -169,9 +195,9 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </div>
             </div>
             
-            {/* Action Buttons */}
+            {/* Action Buttons - CENTERED */}
             <div className="dog-actions">
-              <button className="btn-tab" onClick={handleSell}>
+              <button className="btn-tab btn-tab-large" onClick={handleSell}>
                 <span>VERKAUFEN</span>
               </button>
             </div>
