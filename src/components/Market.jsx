@@ -42,34 +42,48 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
                 />
               </div>
               
-              <h3>{dog.name}</h3>
-              <p className="dog-breed">{dog.breed}</p>
-              <p className="dog-trait">{dog.specialTrait}</p>
-              
-              <div className="dog-rating">
-                <span className="rating-number">{dog.getOverallRating()}</span>
-                <span className="rating-label">Wertung</span>
-              </div>
-              
-              <div className="dog-price">{dog.price}€</div>
-              
-              <div className="dog-fitness">
-                <div className="fitness-bar">
-                  <div 
-                    className="fitness-fill" 
-                    style={{width: `${dog.fitness}%`}}
-                  />
+              {/* Header with Name & Rating */}
+              <div className="dog-card-header">
+                <div className="dog-card-title">
+                  <h3>{dog.name}</h3>
+                  <p className="dog-breed">{dog.breed}</p>
                 </div>
-                <span className="fitness-label">Fitness: {dog.fitness}%</span>
+                <div className="dog-card-rating">
+                  <span className="rating-number">{dog.getOverallRating()}</span>
+                </div>
               </div>
               
-              <button 
-                className="btn btn-primary"
-                onClick={() => handleBuy(dog)}
-                disabled={!canBuy}
-              >
-                {!hasSpace ? 'Stall voll' : !canAfford ? 'Zu teuer' : 'Kaufen'}
-              </button>
+              {/* Stats - 4 Attributes (no Fitness) */}
+              <div className="dog-card-stats">
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Geschwindigkeit</span>
+                  <span className="card-stat-value">{dog.speed}</span>
+                </div>
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Ausdauer</span>
+                  <span className="card-stat-value">{dog.stamina}</span>
+                </div>
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Beschleunigung</span>
+                  <span className="card-stat-value">{dog.acceleration}</span>
+                </div>
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Fokus</span>
+                  <span className="card-stat-value">{dog.focus}</span>
+                </div>
+              </div>
+              
+              {/* Price & Buy Button */}
+              <div className="market-card-footer">
+                <div className="dog-price">{dog.price.toLocaleString('de-DE')} €</div>
+                <button 
+                  className="btn-tab btn-tab-market"
+                  onClick={() => handleBuy(dog)}
+                  disabled={!canBuy}
+                >
+                  <span>{!hasSpace ? 'STALL VOLL' : !canAfford ? 'ZU TEUER' : 'KAUFEN'}</span>
+                </button>
+              </div>
             </div>
           );
         })}

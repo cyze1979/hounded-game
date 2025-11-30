@@ -40,15 +40,38 @@ export default function Stable({ player, gameState, setGameState }) {
                 />
               </div>
               
-              <h3>{dog.name}</h3>
-              <p className="dog-breed">{dog.breed}</p>
-              <p className="dog-trait">{dog.specialTrait}</p>
-              
-              <div className="dog-rating">
-                <span className="rating-number">{dog.getOverallRating()}</span>
-                <span className="rating-label">Wertung</span>
+              {/* Header with Name & Rating */}
+              <div className="dog-card-header">
+                <div className="dog-card-title">
+                  <h3>{dog.name}</h3>
+                  <p className="dog-breed">{dog.breed}</p>
+                </div>
+                <div className="dog-card-rating">
+                  <span className="rating-number">{dog.getOverallRating()}</span>
+                </div>
               </div>
               
+              {/* Stats - 4 Attributes (no Fitness) */}
+              <div className="dog-card-stats">
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Geschwindigkeit</span>
+                  <span className="card-stat-value">{dog.speed}</span>
+                </div>
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Ausdauer</span>
+                  <span className="card-stat-value">{dog.stamina}</span>
+                </div>
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Beschleunigung</span>
+                  <span className="card-stat-value">{dog.acceleration}</span>
+                </div>
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Fokus</span>
+                  <span className="card-stat-value">{dog.focus}</span>
+                </div>
+              </div>
+              
+              {/* Fitness Bar */}
               <div className="dog-fitness">
                 <div className="fitness-bar">
                   <div 
