@@ -3,7 +3,7 @@ import './App.css';
 import './components/GameStyles.css';
 import { Player } from './models/Player';
 import { Dog } from './models/Dog';
-import { dogNames, dogBreeds } from './data/dogData';
+import { dogBreeds, resetUsedNames } from './data/dogData';
 import { saveGame, loadGame, hasSave } from './utils/saveGame';
 
 // Import components
@@ -66,14 +66,16 @@ function App() {
   const generateMarketDogs = () => {
     const dogs = [];
     for (let i = 0; i < 8; i++) {
-      const name = dogNames[Math.floor(Math.random() * dogNames.length)];
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-      dogs.push(new Dog(name, breed));
+      dogs.push(new Dog(null, breed)); // null = unique name wird automatisch vergeben
     }
     return dogs;
   };
   
   const startGame = (playerNames) => {
+    // Reset used names beim Start
+    resetUsedNames();
+    
     const players = playerNames.map((name, index) => 
       new Player(name, playerColors[index], index)
     );
@@ -88,6 +90,9 @@ function App() {
   };
   
   const handleNewGame = () => {
+    // Reset used names beim Neustart
+    resetUsedNames();
+    
     setGameState({
       players: [],
       currentPlayerIndex: 0,

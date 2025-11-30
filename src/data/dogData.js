@@ -1,7 +1,9 @@
 export const dogNames = [
-    'Blitz', 'Shadow', 'Luna', 'Max', 'Bella', 'Rocky', 'Daisy', 'Duke',
-    'Lucy', 'Cooper', 'Sadie', 'Bear', 'Molly', 'Jack', 'Bailey', 'Buddy',
-    'Stella', 'Zeus', 'Lily', 'Oliver', 'Maggie', 'Charlie', 'Sophie', 'Toby'
+    'Sidewinder', 'Refracter', 'Manic Drive', 'Jasmine´s Fancy', 'Atomic Habit', 'Missy', 'Prime Mover', 
+	'Realtime', 'Gazzas Champ', 'Lunatic', 'Kings Pride', 'Ram Runner', 'Electroblast', 'Power On', 'Holding On', 
+	'Master Blaster', 'Short Circuit', 'Overload', 'Loco', 'Timewarp', 'Jaws', 'Ozzi Battler', 'Hotdog', 'Flying Pixels', 
+	'Coffee Time', 'Spriteflight', 'Star Tracker', 'Byte Bandit', 'Harehunter', 'Trackeater', 'Solomun Gundy', 'Ghostdog', ' Twilight', 
+	'Guybrush', 'Doc Snyder', 'Megalodon', 'Shadow', 'Zeus X', 'Mister Mister'
 ];
 
 export const dogBreeds = [
