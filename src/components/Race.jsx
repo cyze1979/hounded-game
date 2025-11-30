@@ -149,6 +149,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     });
     
     race.finished = true;
+    
+    // Mark race as completed
+    gameState.raceCompleted = true;
     race.results = finished;
     
     // Update dog stats

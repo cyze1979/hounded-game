@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
-export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay }) {
+export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
   const [showSwitcher, setShowSwitcher] = useState(false);
   
   // Get player's first dog for avatar, or use placeholder
@@ -20,6 +20,9 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
   const formatMoney = (amount) => {
     return amount.toLocaleString('de-DE');
   };
+  
+  // Button text changes based on race status
+  const nextButtonText = raceCompleted ? 'WEITER' : 'ZUM RENNEN';
   
   return (
     <header className="game-header-new">
@@ -59,11 +62,14 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
         ))}
       </nav>
       
-      {/* Right: Week Info & WEITER Button */}
+      {/* Right: Week Info & Next Button */}
       <div className="header-right">
         <div className="header-week">WOCHE {gameDay}</div>
-        <button className="btn-cta btn-next-day" onClick={onNextDay}>
-          WEITER
+        <button 
+          className={`btn-cta btn-next-day ${!raceCompleted ? 'btn-race-required' : ''}`}
+          onClick={onNextDay}
+        >
+          {nextButtonText}
         </button>
       </div>
       

@@ -26,7 +26,8 @@ function App() {
     raceHistory: [],
     gameDay: 1,
     isSetup: true,
-    stableLimit: 4
+    stableLimit: 4,
+    raceCompleted: false // Track if current week's race is done
   });
   
   const [currentView, setCurrentView] = useState('stable');
@@ -84,7 +85,8 @@ function App() {
       players,
       currentPlayerIndex: 0,
       marketDogs: generateMarketDogs(),
-      isSetup: false
+      isSetup: false,
+      raceCompleted: false
     });
   };
   
@@ -99,35 +101,62 @@ function App() {
       raceHistory: [],
       gameDay: 1,
       isSetup: true,
-      stableLimit: 4
+      stableLimit: 4,
+      raceCompleted: false
     });
     setCurrentView('stable');
   };
   
-  // WEITER Button Logic
+  // WEITER Button Logic - 2 States
   const handleNextDay = () => {
+    // State 1: Race not completed → Go to race
+    if (!gameState.raceCompleted) {
+      setCurrentView('race');
+      return;
+    }
+    
+    // State 2: Race completed → Next week
     const newGameState = { ...gameState };
     
-    // Increase day/week
+    // Increase week
     newGameState.gameDay += 1;
     
-    // All dogs lose fitness
-    newGameState.players.forEach(player => {
-      player.dogs.forEach(dog => {
-        dog.fitness = Math.max(0, dog.fitness - 10);
+    // Dogs that raced lose fitness (-20)
+    // Dogs that didn't race lose less (-5)
+    if (gameState.currentRace && gameState.currentRace.results) {
+      const racedDogIds = new Set(
+        gameState.currentRace.results.map(result => result.dog.id)
+      );
+      
+      newGameState.players.forEach(player => {
+        player.dogs.forEach(dog => {
+          if (racedDogIds.has(dog.id)) {
+            dog.fitness = Math.max(0, dog.fitness - 20); // Raced: -20
+          } else {
+            dog.fitness = Math.max(0, dog.fitness - 5);  // Didn't race: -5
+          }
+        });
       });
-    });
+    } else {
+      // Fallback if no race data: all dogs -5
+      newGameState.players.forEach(player => {
+        player.dogs.forEach(dog => {
+          dog.fitness = Math.max(0, dog.fitness - 5);
+        });
+      });
+    }
     
-    // Refresh market (new dogs)
+    // Refresh market
     newGameState.marketDogs = generateMarketDogs();
     
-    // Clear current race
+    // Reset race status
     newGameState.currentRace = null;
+    newGameState.raceCompleted = false;
     
     setGameState(newGameState);
     
     // Show notification
-    alert(`⏭️ Woche ${newGameState.gameDay}\n\n🏥 Alle Hunde verlieren 10 Fitness\n🛒 Neuer Hundemarkt verfügbar!`);
+    alert(`⏭️ Woche ${newGameState.gameDay}\n\n🏥 Gerannte Hunde: -20 Fitness\n🏥 Andere Hunde: -5 Fitness\n🛒 Neuer Hundemarkt verfügbar!`);
   };
   
   const getCurrentPlayer = () => {
@@ -160,6 +189,7 @@ function App() {
         marketNotifications={0}
         onMenuClick={() => setShowMenu(true)}
         onNextDay={handleNextDay}
+        raceCompleted={gameState.raceCompleted}
       />
       
       <main className="main-content">
