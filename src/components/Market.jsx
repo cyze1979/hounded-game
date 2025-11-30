@@ -46,7 +46,7 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
               <div className="dog-card-header">
                 <div className="dog-card-title">
                   <h3>{dog.name}</h3>
-                  <p className="dog-breed">{dog.breed}</p>
+                  <p className="dog-breed">{dog.breed} • {dog.age} Jahre</p>
                 </div>
                 <div className="dog-card-rating">
                   <span className="rating-number">{dog.getOverallRating()}</span>

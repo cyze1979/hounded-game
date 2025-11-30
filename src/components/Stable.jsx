@@ -44,14 +44,14 @@ export default function Stable({ player, gameState, setGameState }) {
               <div className="dog-card-header">
                 <div className="dog-card-title">
                   <h3>{dog.name}</h3>
-                  <p className="dog-breed">{dog.breed}</p>
+                  <p className="dog-breed">{dog.breed} • {dog.age} Jahre</p>
                 </div>
                 <div className="dog-card-rating">
                   <span className="rating-number">{dog.getOverallRating()}</span>
                 </div>
               </div>
               
-              {/* Stats - 4 Attributes (no Fitness) */}
+              {/* Stats - 5 Attributes (with Fitness) */}
               <div className="dog-card-stats">
                 <div className="card-stat-row">
                   <span className="card-stat-label">Geschwindigkeit</span>
@@ -69,27 +69,13 @@ export default function Stable({ player, gameState, setGameState }) {
                   <span className="card-stat-label">Fokus</span>
                   <span className="card-stat-value">{dog.focus}</span>
                 </div>
-              </div>
-              
-              {/* Fitness Bar */}
-              <div className="dog-fitness">
-                <div className="fitness-bar">
-                  <div 
-                    className="fitness-fill" 
-                    style={{
-                      width: `${dog.fitness}%`,
-                      background: dog.fitness > 70 ? '#00D9FF' : dog.fitness > 40 ? '#ed8936' : '#f56565'
-                    }}
-                  />
+                <div className="card-stat-row">
+                  <span className="card-stat-label">Fitness</span>
+                  <span className="card-stat-value" style={{
+                    color: dog.fitness > 70 ? '#00D9FF' : dog.fitness > 40 ? '#ed8936' : '#f56565'
+                  }}>{dog.fitness}</span>
                 </div>
-                <span className="fitness-label">Fitness: {dog.fitness}%</span>
               </div>
-              
-              {dog.races > 0 && (
-                <div className="dog-stats-mini">
-                  🏁 {dog.races} Rennen | 🏆 {dog.wins} Siege
-                </div>
-              )}
             </div>
           ))}
         </div>

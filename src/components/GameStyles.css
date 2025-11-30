@@ -1189,3 +1189,13 @@
   transform: skewX(-10deg);
   box-shadow: none;
 }
+
+/* ============================================
+   CARD BREED & AGE - SMALLER FONT
+============================================ */
+
+.dog-card .dog-breed {
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
