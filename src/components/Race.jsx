@@ -7,9 +7,51 @@ import DogDetailFull from './DogDetailFull';
 const raceData = {
   name: "STADTPARK SPRINT",
   distance: 800,
-  bestTime: 42.3,
-  bestTimeHolder: "Shadow",
-  lastWinner: "Blitz"
+  bestTime: null,
+  bestTimeHolder: null,
+  lastWinner: null
+};
+
+// Dynamic commentary system
+const commentaryPhrases = {
+  start: [
+    "🏁 UND SIE SIND WEG!",
+    "🏁 DAS RENNEN BEGINNT!",
+    "🏁 DIE HUNDE STÜRMEN LOS!"
+  ],
+  middle: [
+    "⚡ Mittelteil erreicht!",
+    "⚡ Jetzt zeigt sich die Ausdauer!",
+    "⚡ Die Hälfte ist geschafft!"
+  ],
+  sprint: [
+    "🔥 ENDSPURT BEGINNT!",
+    "🔥 JETZT WIRD ES ERNST!",
+    "🔥 WER HAT NOCH KRAFT?!"
+  ],
+  overtake: [
+    "⚡ {dog} EXPLODIERT nach vorn!",
+    "⚡ {dog} überholt mit POWER!",
+    "⚡ WAHNSINN! {dog} zieht vorbei!",
+    "⚡ {dog} zeigt was er drauf hat!"
+  ],
+  win: [
+    "🏆 {dog} GEWINNT DAS RENNEN!",
+    "🏆 SIEG FÜR {dog}!",
+    "🏆 {dog} TRIUMPHIERT!",
+    "🏆 FANTASTISCH! {dog} ist der Sieger!"
+  ],
+  finish: [
+    "🏁 Rennen beendet!",
+    "🏁 Alle im Ziel!",
+    "🏁 Das war spannend!"
+  ]
+};
+
+const getRandomPhrase = (category, dogName = null) => {
+  const phrases = commentaryPhrases[category];
+  const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+  return dogName ? phrase.replace('{dog}', dogName.toUpperCase()) : phrase;
 };
 
 export default function Race({ gameState, setGameState, getCurrentPlayer }) {
@@ -17,6 +59,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [commentary, setCommentary] = useState([]);
   const [selectedDog, setSelectedDog] = useState(null);
   const [allParticipants, setAllParticipants] = useState([]);
+  const [raceStartTime, setRaceStartTime] = useState(null);
+  const [currentRaceTime, setCurrentRaceTime] = useState(0);
   
   const addCommentary = (text) => {
     setCommentary(prev => [...prev.slice(-5), text]);
@@ -45,7 +89,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
-    // Fill up to EXACTLY 8 dogs
     while (participants.length < 8) {
       const name = dogNames[Math.floor(Math.random() * dogNames.length)];
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
@@ -69,7 +112,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           fitnessFactor: 1,
           energy: 100,
           position: 0,
-          lastPosition: 0
+          lastPosition: 0,
+          finishTick: null
         };
       }),
       finished: false,
@@ -84,6 +128,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     });
     
     setCommentary([]);
+    setRaceStartTime(null);
+    setCurrentRaceTime(0);
   };
   
   const runRace = () => {
@@ -94,7 +140,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     let tick = 0;
     const maxTicks = 80;
     
-    addCommentary("🏁 UND SIE SIND WEG!");
+    setRaceStartTime(Date.now());
+    addCommentary(getRandomPhrase('start'));
     
     race.participants.forEach(p => {
       const dog = p.dog;
@@ -109,6 +156,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       p.energy = 100;
       p.position = 0;
       p.lastPosition = 0;
+      p.finishTick = null;
     });
     
     const interval = setInterval(() => {
@@ -117,8 +165,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       
       let racePhase = tick < 20 ? 'start' : tick < 60 ? 'middle' : 'sprint';
       
-      if (tick === 20) addCommentary("⚡ Mittelteil erreicht!");
-      if (tick === 60) addCommentary("🔥 ENDSPURT BEGINNT!");
+      if (tick === 20) addCommentary(getRandomPhrase('middle'));
+      if (tick === 60) addCommentary(getRandomPhrase('sprint'));
       
       race.participants.forEach(p => {
         if (p.progress < 100) {
@@ -146,7 +194,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             p.finishTick = tick;
             finished.push(p);
             if (finished.length === 1) {
-              addCommentary(`🏆 ${dog.name.toUpperCase()} GEWINNT!`);
+              addCommentary(getRandomPhrase('win', dog.name));
             }
           }
         }
@@ -159,16 +207,24 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         
         if (p.lastPosition > 0 && p.position < p.lastPosition && tick > 10 && tick < 75) {
           if (p.lastPosition - p.position >= 2) {
-            addCommentary(`⚡ ${p.dog.name} überholt!`);
+            addCommentary(getRandomPhrase('overtake', p.dog.name));
           }
         }
       });
       
       setGameState({...gameState});
       
+      // Race ends when ALL dogs finish or max ticks reached
       if (finished.length === race.participants.length || tick >= maxTicks) {
         clearInterval(interval);
         setRaceInterval(null);
+        
+        // Ensure all dogs have finish ticks
+        race.participants.forEach(p => {
+          if (!p.finishTick) {
+            p.finishTick = tick;
+          }
+        });
         
         finished.sort((a, b) => {
           if (a.finishTick && b.finishTick) return a.finishTick - b.finishTick;
@@ -178,6 +234,13 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         race.finished = true;
         race.results = finished;
         
+        // Update best time if this is faster
+        const winnerTime = finished[0].finishTick / 10;
+        if (!raceData.bestTime || winnerTime < raceData.bestTime) {
+          raceData.bestTime = winnerTime;
+          raceData.bestTimeHolder = finished[0].dog.name;
+        }
+        
         finished.forEach((result, index) => {
           const dog = result.dog;
           if (dog.races !== undefined) {
@@ -185,6 +248,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             dog.experience += 10;
             if (index === 0) {
               dog.wins++;
+              raceData.lastWinner = dog.name;
               const owner = gameState.players.find(p => p.dogs.includes(dog));
               if (owner) {
                 owner.totalWins = (owner.totalWins || 0) + 1;
@@ -196,14 +260,24 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         const updatedGameState = {...gameState, raceCompleted: true};
         setGameState(updatedGameState);
         
-        addCommentary("🏁 Rennen beendet!");
+        addCommentary(getRandomPhrase('finish'));
       }
     }, 100);
     
     setRaceInterval(interval);
   };
   
-  // Auto-start race when it's created
+  // Update real-time clock
+  useEffect(() => {
+    if (raceStartTime && !gameState.currentRace?.finished) {
+      const timer = setInterval(() => {
+        setCurrentRaceTime((Date.now() - raceStartTime) / 1000);
+      }, 100);
+      return () => clearInterval(timer);
+    }
+  }, [raceStartTime, gameState.currentRace?.finished]);
+  
+  // Auto-start race
   useEffect(() => {
     if (gameState.currentRace && !gameState.currentRace.autoStarted && !raceInterval) {
       gameState.currentRace.autoStarted = true;
@@ -230,7 +304,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
-    // Fill up to EXACTLY 8 dogs
     while (participants.length < 8) {
       const name = dogNames[Math.floor(Math.random() * dogNames.length)];
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
@@ -259,9 +332,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
               <div className="race-meta">
                 <span className="race-distance">{raceData.distance}m</span>
                 <span className="race-separator">•</span>
-                <span className="race-record">Bestzeit: {raceData.bestTime}s ({raceData.bestTimeHolder})</span>
-                <span className="race-separator">•</span>
-                <span className="race-champion">Vorjahressieger: {raceData.lastWinner}</span>
+                <span className="race-record">
+                  Bestzeit: {raceData.bestTime ? `${raceData.bestTime.toFixed(2)}s (${raceData.bestTimeHolder})` : 'N/A'}
+                </span>
+                {raceData.lastWinner && (
+                  <>
+                    <span className="race-separator">•</span>
+                    <span className="race-champion">Vorjahressieger: {raceData.lastWinner}</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -393,12 +472,18 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           <div className="race-meta">
             <span className="race-distance">{raceData.distance}m</span>
             <span className="race-separator">•</span>
-            <span className="race-record">Bestzeit: {raceData.bestTime}s ({raceData.bestTimeHolder})</span>
-            <span className="race-separator">•</span>
-            <span className="race-champion">Vorjahressieger: {raceData.lastWinner}</span>
+            <span className="race-record">
+              Bestzeit: {raceData.bestTime ? `${raceData.bestTime.toFixed(2)}s (${raceData.bestTimeHolder})` : 'N/A'}
+            </span>
+            {raceData.lastWinner && (
+              <>
+                <span className="race-separator">•</span>
+                <span className="race-champion">Vorjahressieger: {raceData.lastWinner}</span>
+              </>
+            )}
           </div>
         </div>
-        <div className="race-timer">{race.elapsedTime.toFixed(1)}s</div>
+        <div className="race-timer">{currentRaceTime.toFixed(1)}s</div>
       </div>
       
       <div className="race-running-layout">
@@ -416,11 +501,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                     <div className="col-position">#{p.position}</div>
                     
                     <div className="col-dog-compact">
-                      <img 
-                        src={getDogImage(p.dog.imageNumber)} 
-                        alt={p.dog.name}
-                        className="participant-icon-small"
-                      />
                       <div className="participant-dog-info">
                         <span className="participant-name-small">{p.dog.name}</span>
                         <span className="participant-owner-small">{owner}</span>
@@ -435,13 +515,11 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                           alt={p.dog.name}
                           className="running-dog-sprite"
                           style={{
-                            left: `${p.progress}%`,
-                            transition: 'left 0.1s linear'
+                            left: `${p.progress}%`
                           }}
                         />
                         <div className="track-finish-marker">ZIEL</div>
                       </div>
-                      <span className="progress-text">{p.progress.toFixed(0)}%</span>
                     </div>
                     
                   </div>

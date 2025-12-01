@@ -2133,3 +2133,56 @@
   align-items: center;
   gap: 10px;
 }
+
+/* Updated Running Dog Sprites - Larger, No Glow, Animated */
+.running-dog-sprite {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  z-index: 10;
+  filter: none;
+  transition: left 0.1s linear;
+  animation: dogRun 0.4s steps(2) infinite;
+}
+
+@keyframes dogRun {
+  0%, 100% { 
+    transform: translateY(-50%) translateX(-50%) scaleX(1);
+  }
+  50% { 
+    transform: translateY(-50%) translateX(-50%) scaleX(0.95) translateY(-52%);
+  }
+}
+
+/* Remove dog icon from running view */
+.participant-icon-small {
+  display: none;
+}
+
+/* Adjust dog-compact column without icon */
+.col-dog-compact {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* Update participant row grid for running view - no icon column */
+.participant-row-running {
+  display: grid;
+  grid-template-columns: 60px 1.5fr 4fr;
+  gap: 15px;
+  padding: 15px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: center;
+  transition: all 0.3s;
+}
+
+/* Ensure progress text is visible */
+.progress-text {
+  display: none;
+}
