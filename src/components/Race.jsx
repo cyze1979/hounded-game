@@ -16,6 +16,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [selectedDog, setSelectedDog] = useState(null);
   const [allParticipants, setAllParticipants] = useState([]);
   const [displayTime, setDisplayTime] = useState(0);
+  const [raceState, setRaceState] = useState(null); // LOCAL race state!
   
   const raceRef = useRef(null);
   const timerRef = useRef(null);
@@ -60,23 +61,25 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         dog: dog,
         progress: 0,
         position: index + 1,
-        speed: dog.getOverallRating() / 100, // Simple for now
+        speed: dog.getOverallRating() / 100,
         finishTime: null
       })),
       isRunning: false,
       isFinished: false
     };
     
-    // Update game state
+    // Set LOCAL race state (not gameState yet!)
+    setRaceState(newRace);
+    setDisplayTime(0);
+    
+    // Mark in gameState that race exists
     setGameState({
       ...gameState,
-      currentRace: newRace,
+      currentRace: { exists: true },
       raceCompleted: false
     });
     
-    setDisplayTime(0);
-    
-    // Auto-start after brief delay
+    // Auto-start
     setTimeout(() => {
       runRace(newRace);
     }, 500);
@@ -89,29 +92,26 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     startTimeRef.current = Date.now();
     let finishedCount = 0;
     
-    // Timer for display (updates every 10ms for smooth hundredths)
+    // Timer for display
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       setDisplayTime(elapsed);
     }, 10);
     
-    // Race logic (updates every 50ms)
+    // Race logic
     raceRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       let allDone = true;
       
-      // Update each participant
       race.participants.forEach(p => {
         if (p.progress < 100) {
           allDone = false;
           
-          // Simple progress calculation
-          const randomness = 0.9 + (Math.random() * 0.2); // 0.9 to 1.1
+          const randomness = 0.9 + (Math.random() * 0.2);
           const step = p.speed * randomness;
           
           p.progress = Math.min(100, p.progress + step);
           
-          // Check if finished
           if (p.progress >= 100 && !p.finishTime) {
             p.finishTime = elapsed;
             finishedCount++;
@@ -120,7 +120,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         }
       });
       
-      // Sort by position (finished first by time, then by progress)
+      // Sort
       race.participants.sort((a, b) => {
         if (a.finishTime && b.finishTime) return a.finishTime - b.finishTime;
         if (a.finishTime) return -1;
@@ -128,15 +128,13 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         return b.progress - a.progress;
       });
       
-      // Update positions
       race.participants.forEach((p, i) => {
         p.position = i + 1;
       });
       
-      // Trigger re-render
-      setGameState({...gameState});
+      // Update LOCAL state only!
+      setRaceState({...race});
       
-      // Check if race is complete
       if (allDone) {
         console.log('🏁 Race finished!');
         
@@ -169,12 +167,13 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
+        // NOW update gameState once at the end
         setGameState({...gameState, raceCompleted: true});
+        setRaceState({...race});
       }
     }, 50);
   };
   
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (raceRef.current) clearInterval(raceRef.current);
@@ -182,9 +181,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     };
   }, []);
   
-  // ========================================
   // PRE-RACE OVERVIEW
-  // ========================================
   if (!gameState.currentRace) {
     const participants = [];
     gameState.players.forEach(player => {
@@ -329,10 +326,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   }
   
-  // ========================================
-  // RUNNING RACE - MINIMAL VIEW
-  // ========================================
-  const race = gameState.currentRace;
+  // RUNNING RACE - Use LOCAL raceState!
+  if (!raceState) {
+    return <div className="race-view">Loading race...</div>;
+  }
   
   return (
     <div className="race-view">
@@ -342,7 +339,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       </div>
       
       <div className="race-minimal-container">
-        {race.participants.map((p) => {
+        {raceState.participants.map((p) => {
           const isOwned = isPlayerDog(p.dog);
           const owner = getDogOwner(p.dog);
           
@@ -370,7 +367,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                 />
               </div>
               
-              {race.isFinished && p.finishTime && (
+              {raceState.isFinished && p.finishTime && (
                 <div className="race-time">{p.finishTime.toFixed(2)}s</div>
               )}
             </div>
