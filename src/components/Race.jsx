@@ -20,17 +20,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [allParticipants, setAllParticipants] = useState([]);
   
   const addCommentary = (text) => {
-    setCommentary(prev => [...prev.slice(-5), text]); // Keep last 6
+    setCommentary(prev => [...prev.slice(-5), text]);
   };
   
-  // Check if dog is owned by a player
   const isPlayerDog = (dog) => {
     return gameState.players.some(player => 
       player.dogs.some(d => d.id === dog.id)
     );
   };
   
-  // Get dog owner name
   const getDogOwner = (dog) => {
     const owner = gameState.players.find(player => 
       player.dogs.some(d => d.id === dog.id)
@@ -85,6 +83,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     });
     
     setCommentary([]);
+    
+    // AUTO-START RACE immediately
+    setTimeout(() => runRace(), 100);
   };
   
   const runRace = () => {
@@ -243,7 +244,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       <>
         <div className="race-view">
           
-          {/* Race Info Header */}
           <div className="race-info-header">
             <div className="race-info-main">
               <h2 className="race-name">{raceData.name}</h2>
@@ -257,12 +257,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             </div>
           </div>
           
-          {/* Participants Table */}
           <div className="participants-table-container">
             <h3 className="participants-title">TEILNEHMER</h3>
             
             <div className="participants-table">
-              {/* Table Header */}
               <div className="participants-header">
                 <div className="col-dog">HUND</div>
                 <div className="col-stats">ATTRIBUTE</div>
@@ -272,7 +270,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                 <div className="col-actions">AKTIONEN</div>
               </div>
               
-              {/* Table Rows */}
               {participantsWithOdds.map((p, index) => {
                 const isOwned = isPlayerDog(p.dog);
                 const owner = getDogOwner(p.dog);
@@ -351,7 +348,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             </div>
           </div>
           
-          {/* Start Race CTA */}
           <div className="race-start-cta">
             <button className="btn-cta race-start-btn" onClick={startRace}>
               RENNEN STARTEN
@@ -376,26 +372,26 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   }
   
-  // Running race view - NEW COMPACT LAYOUT
+  // Running race view
   const race = gameState.currentRace;
   
   return (
     <div className="race-view">
       
-      {/* Race Header */}
+      {/* Race Header with Meta Info */}
       <div className="race-header-compact">
-        <h2 className="race-title">{raceData.name}</h2>
+        <div>
+          <h2 className="race-title">{raceData.name}</h2>
+          <div className="race-meta">
+            <span className="race-distance">{raceData.distance}m</span>
+            <span className="race-separator">•</span>
+            <span className="race-record">Bestzeit: {raceData.bestTime}s ({raceData.bestTimeHolder})</span>
+            <span className="race-separator">•</span>
+            <span className="race-champion">Vorjahressieger: {raceData.lastWinner}</span>
+          </div>
+        </div>
         <div className="race-timer">{race.elapsedTime.toFixed(1)}s</div>
       </div>
-      
-      {/* Start Button */}
-      {!race.finished && !raceInterval && (
-        <div className="race-controls">
-          <button className="btn-cta race-go-btn" onClick={runRace}>
-            ▶ LOS GEHT'S!
-          </button>
-        </div>
-      )}
       
       {/* Main Race Layout: 2/3 Table + 1/3 Live Info */}
       <div className="race-running-layout">
@@ -445,14 +441,17 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         {/* Right: Live Info (1/3) */}
         <div className="race-sidebar">
           
-          {/* Standings */}
+          {/* Standings - with finish times when race is over */}
           <div className="race-standings-box">
-            <h3 className="standings-title">STANDINGS</h3>
+            <h3 className="standings-title">{race.finished ? 'ERGEBNISSE' : 'STANDINGS'}</h3>
             <div className="standings-list">
-              {race.participants.slice(0, 5).map((p, i) => (
+              {race.participants.map((p, i) => (
                 <div key={i} className="standing-item">
                   <span className="standing-pos">{i + 1}.</span>
                   <span className="standing-name">{p.dog.name}</span>
+                  {race.finished && p.finishTick && (
+                    <span className="standing-time">{(p.finishTick / 10).toFixed(2)}s</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -473,32 +472,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         </div>
         
       </div>
-      
-      {/* Results */}
-      {race.finished && (
-        <div className="race-results">
-          <h3 className="results-title">🏆 ERGEBNISSE</h3>
-          <div className="results-grid">
-            {race.results.map((result, index) => (
-              <div key={index} className="result-card">
-                <div className="result-position">
-                  {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`}
-                </div>
-                <img 
-                  src={getDogImage(result.dog.imageNumber)} 
-                  alt={result.dog.name}
-                  className="result-dog-image"
-                />
-                <div className="result-info">
-                  <div className="result-name">{result.dog.name}</div>
-                  <div className="result-breed">{result.dog.breed}</div>
-                  <div className="result-time">{(result.finishTick / 10).toFixed(2)}s</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
       
     </div>
   );

@@ -2041,3 +2041,45 @@
     min-height: 200px;
   }
 }
+
+/* Update standing item to show times */
+.standing-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  justify-content: space-between;
+}
+
+.standing-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.standing-time {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--yellow-primary);
+  margin-left: auto;
+}
+
+/* Add race meta to running header */
+.race-header-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.race-header-compact .race-meta {
+  margin-top: 8px;
+}
