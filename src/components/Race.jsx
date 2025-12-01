@@ -180,9 +180,21 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       
       // Update positions (visualPosition will be used for smooth transitions)
       race.participants.forEach((p, i) => {
+        const oldPosition = p.position;
         p.position = i + 1;
-        // Smooth transition to new position
-        p.visualPosition = i + 1;
+        
+        // Detect position change for visual feedback
+        if (oldPosition && oldPosition !== p.position) {
+          if (p.position < oldPosition) {
+            p.positionChange = 'up'; // Moving up
+          } else {
+            p.positionChange = 'down'; // Moving down
+          }
+          // Clear after brief moment
+          setTimeout(() => {
+            p.positionChange = null;
+          }, 600);
+        }
       });
       
       setRaceState({...race});
@@ -385,6 +397,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     return <div className="race-view">Loading race...</div>;
   }
   
+  // Sort participants by position for visual ordering
+  const sortedParticipants = [...raceState.participants].sort((a, b) => a.position - b.position);
+  
   return (
     <div className="race-view">
       <div className="race-header-simple">
@@ -393,18 +408,14 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       </div>
       
       <div className="race-minimal-container">
-        {raceState.participants.map((p) => {
+        {sortedParticipants.map((p) => {
           const isOwned = isPlayerDog(p.dog);
           const owner = getDogOwner(p.dog);
           
           return (
             <div 
               key={p.id} 
-              className={`race-row-minimal ${isOwned ? 'owned-dog' : ''}`}
-              style={{
-                order: p.visualPosition,
-                transition: 'order 0.5s ease-in-out'
-              }}
+              className={`race-row-minimal ${isOwned ? 'owned-dog' : ''} ${p.positionChange ? `position-change-${p.positionChange}` : ''}`}
             >
               <div className="race-position">#{p.position}</div>
               
