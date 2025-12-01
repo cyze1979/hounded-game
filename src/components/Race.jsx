@@ -13,11 +13,22 @@ const raceData = {
   lastWinner: null
 };
 
+// Prize money structure
+const RACE_PRIZES = {
+  "STADTPARK SPRINT": {
+    1: 1000,
+    2: 750,
+    3: 500
+  }
+};
+
 export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [selectedDog, setSelectedDog] = useState(null);
   const [allParticipants, setAllParticipants] = useState([]);
   const [displayTime, setDisplayTime] = useState(0);
   const [raceState, setRaceState] = useState(null);
+  const [showResults, setShowResults] = useState(false);
+  const [playerEarnings, setPlayerEarnings] = useState(0);
   
   const raceRef = useRef(null);
   const timerRef = useRef(null);
@@ -36,9 +47,11 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     return owner ? owner.name : dog.owner || AI_OWNER_NAME;
   };
   
-  const continueAfterRace = () => {
-    // Clear race state
+  const continueAfterResults = () => {
+    // Clear race state completely
     setRaceState(null);
+    setShowResults(false);
+    setPlayerEarnings(0);
     setGameState({
       ...gameState,
       currentRace: null,
@@ -63,10 +76,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const raceDogs = participants.slice(0, 8);
     raceDogs.sort(() => Math.random() - 0.5);
     
-    // PHASE 3: Better balanced speed calculation
     const newRace = {
       participants: raceDogs.map((dog, index) => {
-        // Base speed from all attributes (weighted)
         const baseSpeed = (
           dog.speed * 0.4 +
           dog.stamina * 0.25 +
@@ -74,10 +85,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           dog.focus * 0.15
         ) / 100;
         
-        // Fitness multiplier (85% to 100% - tighter range!)
         const fitnessFactor = Math.max(0.85, dog.fitness / 100);
-        
-        // Focus affects variance (high focus = less random)
         const focusFactor = dog.focus / 100;
         
         return {
@@ -85,9 +93,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           dog: dog,
           progress: 0,
           position: index + 1,
-          visualPosition: index + 1, // For smooth transitions
-          // Attribute factors - PHASE 3: Better balanced
-          baseSpeed: baseSpeed * fitnessFactor * 0.5, // Increased from 0.4
+          baseSpeed: baseSpeed * fitnessFactor * 0.5,
           accelerationBoost: (dog.acceleration / 100) * 0.15,
           staminaFactor: dog.stamina / 100,
           focusFactor: focusFactor,
@@ -96,11 +102,14 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         };
       }),
       isRunning: false,
-      isFinished: false
+      isFinished: false,
+      raceName: raceData.name
     };
     
     setRaceState(newRace);
     setDisplayTime(0);
+    setShowResults(false);
+    setPlayerEarnings(0);
     
     setGameState({
       ...gameState,
@@ -119,7 +128,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     race.isRunning = true;
     startTimeRef.current = Date.now();
     let finishedCount = 0;
-    let tickCount = 0;
     
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
@@ -127,11 +135,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     }, 10);
     
     raceRef.current = setInterval(() => {
-      tickCount++;
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       let allDone = true;
       
-      // Determine race phase
       const avgProgress = race.participants.reduce((sum, p) => sum + p.progress, 0) / 8;
       let phase = 'start';
       if (avgProgress > 25) phase = 'middle';
@@ -143,21 +149,18 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           
           let currentSpeed = p.baseSpeed;
           
-          // Start phase: Acceleration boost
           if (phase === 'start') {
             currentSpeed += p.accelerationBoost;
           }
           
-          // Sprint phase: Stamina crucial
           if (phase === 'sprint') {
-            const energyDrain = (1 - p.staminaFactor) * 1.5; // Reduced from 2
+            const energyDrain = (1 - p.staminaFactor) * 1.5;
             p.energy = Math.max(40, p.energy - energyDrain);
             const energyMultiplier = p.energy / 100;
-            currentSpeed *= (0.75 + energyMultiplier * 0.25); // Less punishing
+            currentSpeed *= (0.75 + energyMultiplier * 0.25);
           }
           
-          // PHASE 3: Reduced variance for tighter races
-          const maxVariance = 0.2 * (1 - p.focusFactor); // Reduced from 0.3
+          const maxVariance = 0.2 * (1 - p.focusFactor);
           const variance = 1 + ((Math.random() - 0.5) * maxVariance * 2);
           
           const step = currentSpeed * variance;
@@ -171,7 +174,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         }
       });
       
-      // Sort by position
       race.participants.sort((a, b) => {
         if (a.finishTime && b.finishTime) return a.finishTime - b.finishTime;
         if (a.finishTime) return -1;
@@ -179,7 +181,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         return b.progress - a.progress;
       });
       
-      // Update positions
       race.participants.forEach((p, i) => {
         p.position = i + 1;
       });
@@ -188,10 +189,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       
       if (allDone) {
         console.log('🏁 Race finished!');
-        console.log('📊 Final Results:');
-        race.participants.forEach((p, i) => {
-          console.log(`  ${i+1}. ${p.dog.name} - ${p.finishTime.toFixed(2)}s (Rating: ${p.dog.getOverallRating()})`);
-        });
         
         clearInterval(raceRef.current);
         clearInterval(timerRef.current);
@@ -205,24 +202,45 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           raceData.bestTimeHolder = winner.dog.name;
         }
         
+        // Calculate prize money
+        const prizes = RACE_PRIZES[race.raceName] || {};
+        let totalEarnings = 0;
+        
         race.participants.forEach((p, idx) => {
+          const position = idx + 1;
+          const prize = prizes[position] || 0;
+          p.prize = prize;
+          
           if (p.dog.races !== undefined) {
             p.dog.races++;
             p.dog.experience += 10;
-            if (idx === 0) {
+            
+            if (position === 1) {
               p.dog.wins++;
               raceData.lastWinner = p.dog.name;
+            }
+            
+            // Award prize money to player if it's their dog
+            if (isPlayerDog(p.dog)) {
               const owner = gameState.players.find(pl => pl.dogs.includes(p.dog));
               if (owner) {
-                owner.totalWins = (owner.totalWins || 0) + 1;
+                owner.money += prize;
+                totalEarnings += prize;
+                if (position === 1) {
+                  owner.totalWins = (owner.totalWins || 0) + 1;
+                }
               }
             }
           }
         });
         
-        // DON'T update gameState to avoid jumping back to overview
-        // Just mark race as finished
+        setPlayerEarnings(totalEarnings);
         setRaceState({...race});
+        
+        // Show results screen after brief delay
+        setTimeout(() => {
+          setShowResults(true);
+        }, 1000);
       }
     }, 20);
   };
@@ -379,12 +397,68 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   }
   
+  // RESULTS SCREEN
+  if (showResults && raceState) {
+    const prizes = RACE_PRIZES[raceState.raceName] || {};
+    
+    return (
+      <div className="race-view">
+        <div className="results-screen">
+          <div className="results-header">
+            <h2 className="results-title">🏆 RACE RESULTS</h2>
+            <h3 className="results-track">{raceState.raceName}</h3>
+          </div>
+          
+          <div className="results-table">
+            {raceState.participants.map((p, idx) => {
+              const position = idx + 1;
+              const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : '';
+              const isOwned = isPlayerDog(p.dog);
+              const owner = getDogOwner(p.dog);
+              const prize = p.prize || 0;
+              
+              return (
+                <div key={p.id} className={`results-row ${isOwned ? 'owned-dog' : ''}`}>
+                  <div className="results-position">
+                    <span className="results-pos-number">#{position}</span>
+                    {medal && <span className="results-medal">{medal}</span>}
+                  </div>
+                  
+                  <div className="results-info">
+                    <div className="results-dog-name">{p.dog.name}</div>
+                    <div className="results-owner">{owner}</div>
+                  </div>
+                  
+                  <div className="results-time">{p.finishTime.toFixed(2)}s</div>
+                  
+                  <div className="results-prize">{prize > 0 ? `${prize}€` : '-'}</div>
+                </div>
+              );
+            })}
+          </div>
+          
+          {playerEarnings > 0 && (
+            <div className="results-earnings">
+              <span className="earnings-label">💰 DEINE GEWINNE:</span>
+              <span className="earnings-amount">{playerEarnings}€</span>
+            </div>
+          )}
+          
+          <div className="results-continue">
+            <button className="btn-cta" onClick={continueAfterResults}>
+              WEITER
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
   // RUNNING RACE
   if (!raceState) {
     return <div className="race-view">Loading race...</div>;
   }
   
-  // Sort participants by position for visual ordering
   const sortedParticipants = [...raceState.participants].sort((a, b) => a.position - b.position);
   
   return (
@@ -437,14 +511,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           );
         })}
       </div>
-      
-      {raceState.isFinished && (
-        <div className="race-continue-cta">
-          <button className="btn-cta" onClick={continueAfterRace}>
-            WEITER
-          </button>
-        </div>
-      )}
     </div>
   );
 }

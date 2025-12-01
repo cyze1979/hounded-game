@@ -2415,3 +2415,177 @@
   padding: 20px 40px;
   font-size: 1.3em;
 }
+
+/* ============================================
+   RESULTS SCREEN
+   ============================================ */
+
+.results-screen {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.results-title {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 3em;
+  font-weight: 900;
+  color: var(--cyan-primary);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-style: italic;
+  text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+}
+
+.results-track {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+
+.results-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.results-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 150px 120px;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.results-row.owned-dog {
+  background: rgba(0, 217, 255, 0.08);
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.results-position {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.results-pos-number {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.8em;
+  font-weight: 900;
+  color: var(--cyan-primary);
+}
+
+.results-medal {
+  font-size: 2em;
+}
+
+.results-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.results-dog-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+
+.results-owner {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.results-time {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--yellow-primary);
+  text-align: right;
+}
+
+.results-prize {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #4ade80;
+  text-align: right;
+}
+
+.results-earnings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  background: rgba(74, 222, 128, 0.1);
+  border: 2px solid rgba(74, 222, 128, 0.3);
+  border-radius: 12px;
+  margin-bottom: 40px;
+}
+
+.earnings-label {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+
+.earnings-amount {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: #4ade80;
+  font-style: italic;
+}
+
+.results-continue {
+  text-align: center;
+}
+
+.results-continue .btn-cta {
+  min-width: 300px;
+  padding: 20px 40px;
+  font-size: 1.3em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .results-row {
+    grid-template-columns: 80px 1fr 100px 80px;
+    gap: 10px;
+    padding: 15px;
+  }
+  
+  .results-pos-number {
+    font-size: 1.4em;
+  }
+  
+  .results-medal {
+    font-size: 1.5em;
+  }
+  
+  .results-dog-name {
+    font-size: 1.1em;
+  }
+  
+  .results-time,
+  .results-prize {
+    font-size: 1.2em;
+  }
+}
