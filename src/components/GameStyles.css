@@ -2200,3 +2200,52 @@
   transition: left 0.1s linear;
   animation: none !important;
 }
+
+/* SIMPLE RACE RUNNING - FULL WIDTH */
+.race-header-simple {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.race-timer-simple {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 3em;
+  font-weight: 900;
+  color: var(--cyan-primary);
+  font-style: italic;
+}
+
+.race-full-width {
+  width: 100%;
+}
+
+.col-position-simple {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 900;
+  color: var(--cyan-primary);
+  min-width: 60px;
+  text-align: center;
+}
+
+.col-dog-simple {
+  min-width: 200px;
+}
+
+.col-track-simple {
+  flex: 1;
+  min-width: 400px;
+}
+
+.col-time-simple {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--yellow-primary);
+  min-width: 100px;
+  text-align: right;
+}
