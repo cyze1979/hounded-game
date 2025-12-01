@@ -288,12 +288,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                 <span className="race-record">
                   Bestzeit: {raceData.bestTime ? `${raceData.bestTime.toFixed(2)}s (${raceData.bestTimeHolder})` : 'N/A'}
                 </span>
-                {raceData.lastWinner && (
-                  <>
-                    <span className="race-separator">•</span>
-                    <span className="race-champion">Vorjahressieger: {raceData.lastWinner}</span>
-                  </>
-                )}
               </div>
             </div>
           </div>
@@ -405,9 +399,13 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       <div className="race-view">
         <div className="results-screen">
           <div className="results-header">
-            <h2 className="results-title">RACE RESULTS</h2>
+            <h2 className="results-title">{raceState.raceName}</h2>
             <div className="race-meta">
-              <span className="race-distance">{raceState.raceName}</span>
+              <span className="race-distance">{raceData.distance}m</span>
+              <span className="race-separator">•</span>
+              <span className="race-record">
+                Bestzeit: {raceData.bestTime ? `${raceData.bestTime.toFixed(2)}s (${raceData.bestTimeHolder})` : 'N/A'}
+              </span>
             </div>
           </div>
           
@@ -466,7 +464,16 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   return (
     <div className="race-view">
       <div className="race-header-simple">
-        <h2 className="race-title">{raceData.name}</h2>
+        <div>
+          <h2 className="race-title">{raceData.name}</h2>
+          <div className="race-meta">
+            <span className="race-distance">{raceData.distance}m</span>
+            <span className="race-separator">•</span>
+            <span className="race-record">
+              Bestzeit: {raceData.bestTime ? `${raceData.bestTime.toFixed(2)}s (${raceData.bestTimeHolder})` : 'N/A'}
+            </span>
+          </div>
+        </div>
         <div className="race-timer-simple">{displayTime.toFixed(2)}s</div>
       </div>
       
