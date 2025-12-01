@@ -398,15 +398,17 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   }
   
   // RESULTS SCREEN
-  if (showResults && raceState) {
+  if (showResults && raceState && raceState.isFinished) {
     const prizes = RACE_PRIZES[raceState.raceName] || {};
     
     return (
       <div className="race-view">
         <div className="results-screen">
           <div className="results-header">
-            <h2 className="results-title">🏆 RACE RESULTS</h2>
-            <h3 className="results-track">{raceState.raceName}</h3>
+            <h2 className="results-title">RACE RESULTS</h2>
+            <div className="race-meta">
+              <span className="race-distance">{raceState.raceName}</span>
+            </div>
           </div>
           
           <div className="results-table">
@@ -455,8 +457,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   }
   
   // RUNNING RACE
-  if (!raceState) {
-    return <div className="race-view">Loading race...</div>;
+  if (!raceState || !raceState.participants) {
+    return null; // Return nothing if no valid race state
   }
   
   const sortedParticipants = [...raceState.participants].sort((a, b) => a.position - b.position);

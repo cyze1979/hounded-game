@@ -2421,33 +2421,21 @@
    ============================================ */
 
 .results-screen {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  padding: 0;
 }
 
 .results-header {
-  text-align: center;
   margin-bottom: 40px;
 }
 
 .results-title {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
-  font-size: 3em;
+  font-size: 2em;
   font-weight: 900;
-  color: var(--cyan-primary);
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  font-style: italic;
-  text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
-}
-
-.results-track {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
-  font-size: 1.5em;
-  font-weight: 700;
   color: var(--text-white);
   text-transform: uppercase;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
 }
 
 .results-table {
