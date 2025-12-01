@@ -29,7 +29,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [displayTime, setDisplayTime] = useState(0);
   const [raceState, setRaceState] = useState(null);
   const [showResults, setShowResults] = useState(false);
-  const [playerEarnings, setPlayerEarnings] = useState(0);
   
   const raceRef = useRef(null);
   const timerRef = useRef(null);
@@ -39,7 +38,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   useEffect(() => {
     if (raceData.lastResults && !raceState && !showResults) {
       setRaceState(raceData.lastResults.race);
-      setPlayerEarnings(raceData.lastResults.earnings);
       setShowResults(true);
     }
   }, []);
@@ -62,7 +60,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     raceData.lastResults = null;
     setRaceState(null);
     setShowResults(false);
-    setPlayerEarnings(0);
     setGameState({
       ...gameState,
       currentRace: null,
@@ -215,7 +212,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         
         // Calculate prize money
         const prizes = RACE_PRIZES[race.raceName] || {};
-        let totalEarnings = 0;
         
         race.participants.forEach((p, idx) => {
           const position = idx + 1;
@@ -236,7 +232,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
               const owner = gameState.players.find(pl => pl.dogs.includes(p.dog));
               if (owner) {
                 owner.money += prize;
-                totalEarnings += prize;
                 if (position === 1) {
                   owner.totalWins = (owner.totalWins || 0) + 1;
                 }
@@ -245,13 +240,11 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
-        setPlayerEarnings(totalEarnings);
         setRaceState({...race});
         
         // Store results so they persist when switching tabs
         raceData.lastResults = {
-          race: race,
-          earnings: totalEarnings
+          race: race
         };
         
         // Show results screen after brief delay
@@ -453,13 +446,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
               );
             })}
           </div>
-          
-          {playerEarnings > 0 && (
-            <div className="results-earnings">
-              <span className="earnings-label">💰 DEINE GEWINNE:</span>
-              <span className="earnings-amount">{playerEarnings}€</span>
-            </div>
-          )}
           
           <div className="results-continue">
             <button className="btn-cta" onClick={continueAfterResults}>
