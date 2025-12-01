@@ -8,12 +8,13 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
       return;
     }
     
-    if (player.money < dog.price) {
+    const price = dog.getValue();
+    if (player.money < price) {
       alert('Nicht genug Geld!');
       return;
     }
     
-    player.money -= dog.price;
+    player.money -= price;
     player.dogs.push(dog);
     gameState.marketDogs = gameState.marketDogs.filter(d => d.id !== dog.id);
     setGameState({...gameState});
@@ -26,7 +27,8 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
       
       <div className="dog-grid">
         {marketDogs.map(dog => {
-          const canAfford = player.money >= dog.price;
+          const price = dog.getValue();
+          const canAfford = player.money >= price;
           const hasSpace = player.dogs.length < stableLimit;
           const canBuy = canAfford && hasSpace;
           
@@ -46,7 +48,7 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
               <div className="dog-card-header">
                 <div className="dog-card-title">
                   <h3>{dog.name}</h3>
-                  <p className="dog-breed">{dog.breed} • {dog.age} Jahre</p>
+                  <p className="dog-breed">{dog.breed} • {dog.getAgeInYears()} Jahre • {dog.getAgeCategoryName()}</p>
                 </div>
                 <div className="dog-card-rating">
                   <span className="rating-number">{dog.getOverallRating()}</span>
@@ -75,7 +77,7 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
               
               {/* Price & Buy Button */}
               <div className="market-card-footer">
-                <div className="dog-price">{dog.price.toLocaleString('de-DE')} €</div>
+                <div className="dog-price">{price.toLocaleString('de-DE')} €</div>
                 <button 
                   className="btn-tab btn-tab-market"
                   onClick={() => handleBuy(dog)}
