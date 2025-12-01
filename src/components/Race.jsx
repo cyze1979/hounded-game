@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Dog } from '../models/Dog';
 import { dogNames, dogBreeds, AI_OWNER_NAME } from '../data/dogData';
 import { getDogImage } from '../utils/assetLoader';
@@ -13,10 +13,12 @@ const raceData = {
 };
 
 export default function Race({ gameState, setGameState, getCurrentPlayer }) {
-  const [raceInterval, setRaceInterval] = useState(null);
   const [selectedDog, setSelectedDog] = useState(null);
   const [allParticipants, setAllParticipants] = useState([]);
   const [raceTime, setRaceTime] = useState(0);
+  const [isRaceFinished, setIsRaceFinished] = useState(false);
+  const raceIntervalRef = useRef(null);
+  const timerIntervalRef = useRef(null);
   
   const isPlayerDog = (dog) => {
     return gameState.players.some(player => 
@@ -32,7 +34,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   };
   
   const startRace = () => {
-    console.log('🎬 START RACE BUTTON CLICKED');
+    console.log('🎬 START RACE');
     
     const participants = [];
     gameState.players.forEach(player => {
@@ -52,8 +54,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const raceDogs = participants.slice(0, 8);
     raceDogs.sort(() => Math.random() - 0.5);
     
-    console.log('🐕 Race participants:', raceDogs.map(d => d.name));
-    
     const totalRating = raceDogs.reduce((sum, dog) => sum + dog.getOverallRating(), 0);
     
     const newRace = {
@@ -72,44 +72,39 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         };
       }),
       finished: false,
-      startTime: Date.now(),
-      isRunning: false
+      startTime: Date.now()
     };
     
-    console.log('✅ New race created:', newRace);
-    
-    // CRITICAL: Update gameState properly
-    const updatedGameState = {
+    setGameState({
       ...gameState,
       currentRace: newRace,
       raceCompleted: false
-    };
+    });
     
-    setGameState(updatedGameState);
     setRaceTime(0);
+    setIsRaceFinished(false);
     
-    // Start race after state update
     setTimeout(() => {
-      console.log('🏁 Starting race interval...');
-      runRace(newRace, updatedGameState);
+      runRace(newRace);
     }, 800);
   };
   
-  const runRace = (race, currentGameState) => {
-    console.log('🏃 runRace called');
+  const runRace = (race) => {
+    console.log('🏁 RACE START');
     
-    if (race.isRunning) {
-      console.log('⚠️ Race already running!');
-      return;
-    }
-    
-    race.isRunning = true;
     const startTime = Date.now();
     let finishedCount = 0;
     
-    const interval = setInterval(() => {
+    // Timer update (every 10ms for smooth hundredths)
+    timerIntervalRef.current = setInterval(() => {
+      if (!isRaceFinished) {
+        setRaceTime((Date.now() - startTime) / 1000);
+      }
+    }, 10);
+    
+    // Race logic update (every 100ms)
+    raceIntervalRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTime) / 1000;
-      setRaceTime(elapsed);
       
       let allFinished = true;
       
@@ -117,7 +112,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         if (p.progress < 100) {
           allFinished = false;
           
-          // Simple progress update
           const variance = 0.9 + (Math.random() * 0.2);
           const step = p.speed * variance;
           
@@ -132,7 +126,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         }
       });
       
-      // Sort by position
+      // Sort
       race.participants.sort((a, b) => {
         if (a.progress >= 100 && b.progress >= 100) {
           return a.finishTime - b.finishTime;
@@ -144,27 +138,26 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         p.position = i + 1;
       });
       
-      // Update state
-      setGameState({...currentGameState});
+      // Force update
+      setGameState({...gameState});
       
-      // Check if done
       if (allFinished) {
-        console.log('🏁 Race finished! All dogs done.');
-        clearInterval(interval);
-        setRaceInterval(null);
+        console.log('🏆 RACE FINISHED');
+        
+        clearInterval(raceIntervalRef.current);
+        clearInterval(timerIntervalRef.current);
         
         race.finished = true;
-        race.isRunning = false;
+        setIsRaceFinished(true);
         
         // Update records
         const winner = race.participants[0];
         if (!raceData.bestTime || winner.finishTime < raceData.bestTime) {
           raceData.bestTime = winner.finishTime;
           raceData.bestTimeHolder = winner.dog.name;
-          console.log(`🏆 New record: ${winner.finishTime.toFixed(2)}s by ${winner.dog.name}`);
         }
         
-        // Update dog stats
+        // Update stats
         race.participants.forEach((p, index) => {
           if (p.dog.races !== undefined) {
             p.dog.races++;
@@ -172,7 +165,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             if (index === 0) {
               p.dog.wins++;
               raceData.lastWinner = p.dog.name;
-              const owner = currentGameState.players.find(pl => pl.dogs.includes(p.dog));
+              const owner = gameState.players.find(pl => pl.dogs.includes(p.dog));
               if (owner) {
                 owner.totalWins = (owner.totalWins || 0) + 1;
               }
@@ -180,26 +173,24 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
-        setGameState({...currentGameState, raceCompleted: true});
+        setGameState({...gameState, raceCompleted: true});
       }
     }, 100);
-    
-    setRaceInterval(interval);
   };
   
   useEffect(() => {
     return () => {
-      if (raceInterval) {
-        console.log('🧹 Cleaning up race interval');
-        clearInterval(raceInterval);
+      if (raceIntervalRef.current) {
+        clearInterval(raceIntervalRef.current);
+      }
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
       }
     };
-  }, [raceInterval]);
+  }, []);
   
-  // PRE-RACE OVERVIEW
+  // PRE-RACE
   if (!gameState.currentRace) {
-    console.log('📋 Showing pre-race overview');
-    
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
@@ -350,7 +341,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   }
   
   // RUNNING RACE
-  console.log('🏁 Rendering running race view');
   const race = gameState.currentRace;
   
   return (
