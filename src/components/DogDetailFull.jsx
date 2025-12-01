@@ -41,7 +41,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
     }
   };
   
-  // Close on ESC key
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape') onClose();
@@ -50,11 +49,8 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
   
-  const genderIcon = currentDog.gender === 'männlich' ? '♂️' : '♀️';
   const overallRating = currentDog.getOverallRating();
   const winRate = currentDog.races > 0 ? ((currentDog.wins / currentDog.races) * 100).toFixed(0) : 0;
-  
-  // Background image path
   const backgroundUrl = '/assets/backgrounds/background_001.jpg';
   
   return (
@@ -70,7 +66,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
     >
       <div className="dog-detail-overlay">
         
-        {/* Navigation Arrows - NO CIRCLES */}
         {allDogs.length > 1 && (
           <>
             <button className="arrow-btn arrow-btn-simple arrow-left" onClick={goToPrevious}>
@@ -84,10 +79,8 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
         
         <div className="dog-detail-container">
           
-          {/* Left Side - Stats */}
           <div className="dog-stats-section">
             
-            {/* Header */}
             <div className="dog-header">
               <div className="dog-title">
                 <h1 className="dog-name-xl">{currentDog.name.toUpperCase()}</h1>
@@ -97,11 +90,11 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </div>
               <div className="dog-rating-badge">
                 <div className="rating-number-xl">{overallRating}</div>
+              </div>
             </div>
             
             <div className="divider"></div>
             
-            {/* Renn-Statistiken */}
             {currentDog.races > 0 && (
               <>
                 <div className="race-stats-section">
@@ -126,7 +119,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </>
             )}
             
-            {/* Stats */}
             <div className="dog-stats-bars">
               <div className="stat-bar-new">
                 <div className="stat-label-new">GESCHWINDIGKEIT</div>
@@ -188,7 +180,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </div>
             </div>
             
-            {/* Action Buttons - CENTERED */}
             <div className="dog-actions">
               {isRaceView ? (
                 isPlayerDog ? (
@@ -207,10 +198,8 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
             
           </div>
           
-          {/* Vertical Divider */}
           <div className="vertical-divider"></div>
           
-          {/* Right Side - Dog Image */}
           <div className="dog-image-section">
             <div className="dog-image-container">
               <img 
