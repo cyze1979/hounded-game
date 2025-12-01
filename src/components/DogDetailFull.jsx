@@ -97,8 +97,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </div>
               <div className="dog-rating-badge">
                 <div className="rating-number-xl">{overallRating}</div>
-                <div className="rating-trait">{currentDog.specialTrait.toUpperCase()}</div>
-              </div>
             </div>
             
             <div className="divider"></div>
