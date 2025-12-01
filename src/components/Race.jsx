@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Dog } from '../models/Dog';
 import { dogNames, dogBreeds, AI_OWNER_NAME } from '../data/dogData';
 import { getDogImage } from '../utils/assetLoader';
@@ -178,23 +179,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         return b.progress - a.progress;
       });
       
-      // Update positions (visualPosition will be used for smooth transitions)
+      // Update positions
       race.participants.forEach((p, i) => {
-        const oldPosition = p.position;
         p.position = i + 1;
-        
-        // Detect position change for visual feedback
-        if (oldPosition && oldPosition !== p.position) {
-          if (p.position < oldPosition) {
-            p.positionChange = 'up'; // Moving up
-          } else {
-            p.positionChange = 'down'; // Moving down
-          }
-          // Clear after brief moment
-          setTimeout(() => {
-            p.positionChange = null;
-          }, 600);
-        }
       });
       
       setRaceState({...race});
@@ -413,9 +400,13 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           const owner = getDogOwner(p.dog);
           
           return (
-            <div 
-              key={p.id} 
-              className={`race-row-minimal ${isOwned ? 'owned-dog' : ''} ${p.positionChange ? `position-change-${p.positionChange}` : ''}`}
+            <motion.div 
+              key={p.id}
+              layout
+              transition={{
+                layout: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+              }}
+              className={`race-row-minimal ${isOwned ? 'owned-dog' : ''}`}
             >
               <div className="race-position">#{p.position}</div>
               
@@ -440,9 +431,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
               </div>
               
               <div className="race-time">
-                {raceState.isFinished && p.finishTime ? `${p.finishTime.toFixed(2)}s` : ''}
+                {p.finishTime ? `${p.finishTime.toFixed(2)}s` : ''}
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
