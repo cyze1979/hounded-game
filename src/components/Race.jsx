@@ -117,7 +117,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     setRaceState(newRace);
     setDisplayTime(0);
     setShowResults(false);
-    setPlayerEarnings(0);
     
     setGameState({
       ...gameState,
