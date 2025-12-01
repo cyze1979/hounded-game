@@ -13,38 +13,12 @@ const raceData = {
 };
 
 const commentaryPhrases = {
-  start: [
-    "🏁 UND SIE SIND WEG!",
-    "🏁 DAS RENNEN BEGINNT!",
-    "🏁 DIE HUNDE STÜRMEN LOS!"
-  ],
-  middle: [
-    "⚡ Mittelteil erreicht!",
-    "⚡ Jetzt zeigt sich die Ausdauer!",
-    "⚡ Die Hälfte ist geschafft!"
-  ],
-  sprint: [
-    "🔥 ENDSPURT BEGINNT!",
-    "🔥 JETZT WIRD ES ERNST!",
-    "🔥 WER HAT NOCH KRAFT?!"
-  ],
-  overtake: [
-    "⚡ {dog} EXPLODIERT nach vorn!",
-    "⚡ {dog} überholt mit POWER!",
-    "⚡ WAHNSINN! {dog} zieht vorbei!",
-    "⚡ {dog} zeigt was er drauf hat!"
-  ],
-  win: [
-    "🏆 {dog} GEWINNT DAS RENNEN!",
-    "🏆 SIEG FÜR {dog}!",
-    "🏆 {dog} TRIUMPHIERT!",
-    "🏆 FANTASTISCH! {dog} ist der Sieger!"
-  ],
-  finish: [
-    "🏁 Rennen beendet!",
-    "🏁 Alle im Ziel!",
-    "🏁 Das war spannend!"
-  ]
+  start: ["🏁 UND SIE SIND WEG!", "🏁 DAS RENNEN BEGINNT!", "🏁 DIE HUNDE STÜRMEN LOS!"],
+  middle: ["⚡ Mittelteil erreicht!", "⚡ Jetzt zeigt sich die Ausdauer!", "⚡ Die Hälfte ist geschafft!"],
+  sprint: ["🔥 ENDSPURT BEGINNT!", "🔥 JETZT WIRD ES ERNST!", "🔥 WER HAT NOCH KRAFT?!"],
+  overtake: ["⚡ {dog} EXPLODIERT nach vorn!", "⚡ {dog} überholt mit POWER!", "⚡ WAHNSINN! {dog} zieht vorbei!"],
+  win: ["🏆 {dog} GEWINNT!", "🏆 SIEG FÜR {dog}!", "🏆 {dog} TRIUMPHIERT!"],
+  finish: ["🏁 Rennen beendet!", "🏁 Alle im Ziel!", "🏁 Das war spannend!"]
 };
 
 const getRandomPhrase = (category, dogName = null) => {
@@ -60,6 +34,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [allParticipants, setAllParticipants] = useState([]);
   const [raceStartTime, setRaceStartTime] = useState(null);
   const [currentRaceTime, setCurrentRaceTime] = useState(0);
+  const [winnerTime, setWinnerTime] = useState(null);
   
   const addCommentary = (text) => {
     setCommentary(prev => [...prev.slice(-5), text]);
@@ -107,12 +82,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           dog: dog,
           progress: 0,
           odds: Math.max(1.2, Math.min(10, odds)),
-          dailyForm: 0,
-          fitnessFactor: 1,
-          energy: 100,
           position: 0,
           lastPosition: 0,
-          finishTime: null
+          finishTime: null,
+          // NEW: Simplified stats
+          speedFactor: (dog.speed / 100) * 0.4,
+          staminaFactor: (dog.stamina / 100) * 0.25,
+          accelerationFactor: (dog.acceleration / 100) * 0.2,
+          focusFactor: (dog.focus / 100) * 0.15,
+          fitnessFactor: Math.max(0.7, dog.fitness / 100)
         };
       }),
       finished: false,
@@ -129,6 +107,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     setCommentary([]);
     setRaceStartTime(null);
     setCurrentRaceTime(0);
+    setWinnerTime(null);
   };
   
   const runRace = () => {
@@ -141,21 +120,12 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     
     let finished = [];
     let tick = 0;
-    const maxTicks = 100;
+    const TARGET_TICKS = 140; // ~7 seconds at 50ms
     
     addCommentary(getRandomPhrase('start'));
     
     race.participants.forEach(p => {
-      const dog = p.dog;
-      p.dailyForm = dog.getDailyForm ? dog.getDailyForm() : 0;
-      p.fitnessFactor = Math.max(0.5, dog.fitness / 100);
-      p.startStrength = (dog.acceleration + dog.focus) / 2;
-      p.middleStrength = (dog.speed + dog.stamina) / 2;
-      p.sprintStrength = (dog.speed + dog.focus + (100 - dog.stamina * 0.3)) / 2;
-      p.baseSpeed = (dog.speed + dog.stamina + dog.acceleration + dog.focus) / 4;
-      p.effectiveRating = p.baseSpeed + p.dailyForm;
-      p.effectiveRating *= p.fitnessFactor;
-      p.energy = 100;
+      p.progress = 0;
       p.position = 0;
       p.lastPosition = 0;
       p.finishTime = null;
@@ -165,55 +135,62 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       tick++;
       const currentTime = (Date.now() - startTime) / 1000;
       
-      let racePhase = tick < 25 ? 'start' : tick < 75 ? 'middle' : 'sprint';
+      const progressPercent = (tick / TARGET_TICKS) * 100;
+      let racePhase = progressPercent < 25 ? 'start' : progressPercent < 75 ? 'middle' : 'sprint';
       
-      if (tick === 25) addCommentary(getRandomPhrase('middle'));
-      if (tick === 75) addCommentary(getRandomPhrase('sprint'));
+      if (tick === Math.floor(TARGET_TICKS * 0.25)) addCommentary(getRandomPhrase('middle'));
+      if (tick === Math.floor(TARGET_TICKS * 0.75)) addCommentary(getRandomPhrase('sprint'));
       
       race.participants.forEach(p => {
         if (p.progress < 100) {
           const dog = p.dog;
           
-          let phaseStrength = racePhase === 'start' ? p.startStrength :
-                             racePhase === 'middle' ? p.middleStrength : p.sprintStrength;
+          // Base speed calculation - simplified
+          let baseSpeed = p.speedFactor + p.staminaFactor + p.accelerationFactor + p.focusFactor;
+          baseSpeed *= p.fitnessFactor;
           
-          const energyDrain = (100 - dog.stamina) / 500;
-          p.energy = Math.max(30, p.energy - energyDrain);
-          const energyFactor = p.energy / 100;
-          
-          let speedThisTick = (phaseStrength / 50) * p.fitnessFactor * energyFactor;
-          
-          const variance = (100 - dog.focus) / 500;
-          speedThisTick += (Math.random() - 0.5) * variance * 2;
-          
-          if (tick < 10) {
-            speedThisTick *= (dog.acceleration / 100) * 1.5;
+          // Phase multipliers
+          let phaseMultiplier = 1.0;
+          if (racePhase === 'start') {
+            phaseMultiplier = 0.8 + (p.accelerationFactor * 2); // Acceleration boost
+          } else if (racePhase === 'sprint') {
+            phaseMultiplier = 0.9 + (p.staminaFactor * 1.5); // Stamina crucial
           }
           
-          p.progress = Math.min(100, p.progress + speedThisTick);
+          // Variance based on focus (less focus = more variance)
+          const variance = (1 - p.focusFactor) * 0.4;
+          const randomFactor = 1 + ((Math.random() - 0.5) * variance);
+          
+          // Calculate progress step
+          const progressStep = (100 / TARGET_TICKS) * baseSpeed * phaseMultiplier * randomFactor;
+          
+          p.progress = Math.min(100, p.progress + progressStep);
           
           if (p.progress >= 100 && !p.finishTime) {
             p.finishTime = currentTime;
             finished.push(p);
             if (finished.length === 1) {
+              setWinnerTime(currentTime);
               addCommentary(getRandomPhrase('win', dog.name));
             }
           }
         }
       });
       
+      // Update positions
       race.participants.forEach(p => p.lastPosition = p.position);
       race.participants.sort((a, b) => {
-        if (a.progress === 100 && b.progress === 100) {
-          return a.finishTime - b.finishTime;
-        }
+        if (a.finishTime && b.finishTime) return a.finishTime - b.finishTime;
+        if (a.finishTime) return -1;
+        if (b.finishTime) return 1;
         return b.progress - a.progress;
       });
       race.participants.forEach((p, index) => {
         p.position = index + 1;
         
-        if (p.lastPosition > 0 && p.position < p.lastPosition && tick > 10 && tick < 90) {
-          if (p.lastPosition - p.position >= 2) {
+        // Detect overtakes
+        if (p.lastPosition > 0 && p.position < p.lastPosition && tick > 10) {
+          if (p.lastPosition - p.position >= 2 && Math.random() > 0.7) {
             addCommentary(getRandomPhrase('overtake', p.dog.name));
           }
         }
@@ -221,28 +198,28 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       
       setGameState({...gameState});
       
-      if (finished.length === race.participants.length || tick >= maxTicks) {
+      // Race ends when all dogs finish or timeout
+      if (finished.length === race.participants.length || tick >= TARGET_TICKS + 40) {
         clearInterval(interval);
         setRaceInterval(null);
         
-        // Ensure all dogs have finish times
+        // Ensure all dogs have times
         race.participants.forEach(p => {
           if (!p.finishTime) {
             p.finishTime = currentTime;
           }
         });
         
-        // Sort by finish time
         race.participants.sort((a, b) => a.finishTime - b.finishTime);
         race.participants.forEach((p, i) => p.position = i + 1);
         
         race.finished = true;
         race.results = race.participants;
         
-        // Update best time
-        const winnerTime = race.participants[0].finishTime;
-        if (!raceData.bestTime || winnerTime < raceData.bestTime) {
-          raceData.bestTime = winnerTime;
+        // Update records
+        const winTime = race.participants[0].finishTime;
+        if (!raceData.bestTime || winTime < raceData.bestTime) {
+          raceData.bestTime = winTime;
           raceData.bestTimeHolder = race.participants[0].dog.name;
         }
         
@@ -262,25 +239,25 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
-        const updatedGameState = {...gameState, raceCompleted: true};
-        setGameState(updatedGameState);
-        
+        setGameState({...gameState, raceCompleted: true});
         addCommentary(getRandomPhrase('finish'));
       }
-    }, 100);
+    }, 50); // 50ms = 20 FPS
     
     setRaceInterval(interval);
   };
   
+  // Update timer
   useEffect(() => {
-    if (raceStartTime && !gameState.currentRace?.finished) {
+    if (raceStartTime && !winnerTime) {
       const timer = setInterval(() => {
         setCurrentRaceTime((Date.now() - raceStartTime) / 1000);
       }, 10);
       return () => clearInterval(timer);
     }
-  }, [raceStartTime, gameState.currentRace?.finished]);
+  }, [raceStartTime, winnerTime]);
   
+  // Auto-start
   useEffect(() => {
     if (gameState.currentRace && !gameState.currentRace.autoStarted && !raceInterval) {
       gameState.currentRace.autoStarted = true;
@@ -290,12 +267,11 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   
   useEffect(() => {
     return () => {
-      if (raceInterval) {
-        clearInterval(raceInterval);
-      }
+      if (raceInterval) clearInterval(raceInterval);
     };
   }, [raceInterval]);
   
+  // Pre-race overview
   if (!gameState.currentRace) {
     const participants = [];
     gameState.players.forEach(player => {
@@ -318,10 +294,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const participantsWithOdds = raceDogs.map(dog => {
       const rating = dog.getOverallRating();
       const odds = (totalRating / rating / raceDogs.length) * 1.5;
-      return {
-        dog,
-        odds: Math.max(1.2, Math.min(10, odds))
-      };
+      return { dog, odds: Math.max(1.2, Math.min(10, odds)) };
     });
     
     return (
@@ -380,26 +353,18 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                     </div>
                     
                     <div className="col-stats">
-                      <div className="stat-item">
-                        <span className="stat-icon">⚡</span>
-                        <span className="stat-value">{p.dog.speed}</span>
-                      </div>
-                      <div className="stat-item">
-                        <span className="stat-icon">💪</span>
-                        <span className="stat-value">{p.dog.stamina}</span>
-                      </div>
-                      <div className="stat-item">
-                        <span className="stat-icon">🚀</span>
-                        <span className="stat-value">{p.dog.acceleration}</span>
-                      </div>
-                      <div className="stat-item">
-                        <span className="stat-icon">🎯</span>
-                        <span className="stat-value">{p.dog.focus}</span>
-                      </div>
-                      <div className="stat-item">
-                        <span className="stat-icon">❤️</span>
-                        <span className="stat-value">{p.dog.fitness}</span>
-                      </div>
+                      {[
+                        { icon: '⚡', val: p.dog.speed },
+                        { icon: '💪', val: p.dog.stamina },
+                        { icon: '🚀', val: p.dog.acceleration },
+                        { icon: '🎯', val: p.dog.focus },
+                        { icon: '❤️', val: p.dog.fitness }
+                      ].map((s, i) => (
+                        <div key={i} className="stat-item">
+                          <span className="stat-icon">{s.icon}</span>
+                          <span className="stat-value">{s.val}</span>
+                        </div>
+                      ))}
                     </div>
                     
                     <div className="col-rating">
@@ -424,12 +389,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                       >
                         👁️
                       </button>
-                      <button 
-                        className="btn-action btn-bet"
-                        disabled
-                      >
-                        💰
-                      </button>
+                      <button className="btn-action btn-bet" disabled>💰</button>
                     </div>
                     
                   </div>
@@ -463,6 +423,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   }
   
   const race = gameState.currentRace;
+  const displayTime = winnerTime || currentRaceTime;
   
   return (
     <div className="race-view">
@@ -484,7 +445,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             )}
           </div>
         </div>
-        <div className="race-timer">{currentRaceTime.toFixed(2)}s</div>
+        <div className="race-timer">{displayTime.toFixed(2)}s</div>
       </div>
       
       <div className="race-running-layout">
@@ -497,7 +458,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                 const owner = getDogOwner(p.dog);
                 
                 return (
-                  <div key={index} className={`participant-row-running ${isOwned ? 'owned-dog' : ''}`}>
+                  <div key={p.dog.id} className={`participant-row-running ${isOwned ? 'owned-dog' : ''}`}>
                     
                     <div className="col-position">#{p.position}</div>
                     
@@ -515,9 +476,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                           src={getDogImage(p.dog.imageNumber)}
                           alt={p.dog.name}
                           className="running-dog-sprite"
-                          style={{
-                            left: `${p.progress}%`
-                          }}
+                          style={{ left: `${p.progress}%` }}
                         />
                         <div className="track-finish-marker">ZIEL</div>
                       </div>
@@ -536,7 +495,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             <h3 className="standings-title">{race.finished ? 'ERGEBNISSE' : 'STANDINGS'}</h3>
             <div className="standings-list">
               {race.participants.map((p, i) => (
-                <div key={i} className="standing-item">
+                <div key={p.dog.id} className="standing-item">
                   <span className="standing-pos">{i + 1}.</span>
                   <span className="standing-name">{p.dog.name}</span>
                   {race.finished && p.finishTime && (
@@ -551,9 +510,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             <h3 className="commentary-title">📢 LIVE</h3>
             <div className="commentary-feed-compact">
               {commentary.map((msg, i) => (
-                <div key={i} className="commentary-message-compact">
-                  {msg}
-                </div>
+                <div key={i} className="commentary-message-compact">{msg}</div>
               ))}
             </div>
           </div>
