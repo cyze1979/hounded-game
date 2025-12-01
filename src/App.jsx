@@ -66,6 +66,15 @@ function App() {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [showMenu]);
   
+  // Listen for view change events from DogDetail
+  useEffect(() => {
+    const handleViewChange = (e) => {
+      setCurrentView(e.detail);
+    };
+    window.addEventListener('changeView', handleViewChange);
+    return () => window.removeEventListener('changeView', handleViewChange);
+  }, []);
+  
   const generateMarketDogs = () => {
     const dogs = [];
     for (let i = 0; i < 8; i++) {

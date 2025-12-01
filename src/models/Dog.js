@@ -23,6 +23,8 @@ export class Dog {
         this.cupWins = 0; // NEW: Championship wins
         this.trackRecords = []; // NEW: Track record holder
         this.lastTrainedMonth = null; // NEW: Track when last trained
+        this.purchasePrice = null; // NEW: Track purchase price for profit calculation
+        this.totalEarnings = 0; // NEW: Total prize money earned
         this.lastTrainedMonth = null; // NEW: Track when dog was last trained
         
         // Special traits
@@ -215,6 +217,8 @@ export class Dog {
             cupWins: this.cupWins,
             trackRecords: this.trackRecords,
             lastTrainedMonth: this.lastTrainedMonth,
+            purchasePrice: this.purchasePrice,
+            totalEarnings: this.totalEarnings,
             specialTrait: this.specialTrait,
             owner: this.owner,
             imageNumber: this.imageNumber
@@ -234,6 +238,8 @@ export class Dog {
         if (dog.cupWins === undefined) dog.cupWins = 0;
         if (dog.trackRecords === undefined) dog.trackRecords = [];
         if (dog.lastTrainedMonth === undefined) dog.lastTrainedMonth = null;
+        if (dog.purchasePrice === undefined) dog.purchasePrice = null;
+        if (dog.totalEarnings === undefined) dog.totalEarnings = 0;
         
         return dog;
     }

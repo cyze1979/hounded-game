@@ -240,6 +240,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
               const owner = gameState.players.find(pl => pl.dogs.includes(p.dog));
               if (owner) {
                 owner.money += prize;
+                p.dog.totalEarnings += prize; // Track dog's total earnings
                 if (position === 1) {
                   owner.totalWins = (owner.totalWins || 0) + 1;
                 }

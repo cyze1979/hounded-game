@@ -14,6 +14,9 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
       return;
     }
     
+    // Set purchase price for profit tracking
+    dog.purchasePrice = price;
+    
     player.money -= price;
     player.dogs.push(dog);
     gameState.marketDogs = gameState.marketDogs.filter(d => d.id !== dog.id);
