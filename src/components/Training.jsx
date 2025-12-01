@@ -63,6 +63,9 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
     if (!selectedDog || !selectedTrainer) return false;
     if (selectedDog.fitness < 30) return false;
     
+    // Check if dog was already trained this month
+    if (selectedDog.lastTrainedMonth === gameState.currentMonth) return false;
+    
     const cost = calculateTrainingCost(selectedDog, selectedTrainer);
     if (currentPlayer.money < cost) return false;
     
@@ -88,6 +91,9 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
     
     // Reduce fitness
     selectedDog.fitness = Math.max(0, selectedDog.fitness - trainer.fitnessLoss);
+    
+    // Mark as trained this month
+    selectedDog.lastTrainedMonth = gameState.currentMonth;
     
     // Deduct money
     currentPlayer.money -= cost;
@@ -219,13 +225,14 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
                 const canAfford = currentPlayer.money >= cost;
                 const isMaxed = selectedDog[selectedAttribute] >= 100;
                 const isTooTired = selectedDog.fitness < 30;
+                const alreadyTrainedThisMonth = selectedDog.lastTrainedMonth === gameState.currentMonth;
                 
                 return (
                   <div 
                     key={key}
-                    className={`trainer-card ${selectedTrainer === key ? 'selected' : ''} ${!canAfford || isMaxed || isTooTired ? 'disabled' : ''}`}
+                    className={`trainer-card ${selectedTrainer === key ? 'selected' : ''} ${!canAfford || isMaxed || isTooTired || alreadyTrainedThisMonth ? 'disabled' : ''}`}
                     onClick={() => {
-                      if (canAfford && !isMaxed && !isTooTired) {
+                      if (canAfford && !isMaxed && !isTooTired && !alreadyTrainedThisMonth) {
                         setSelectedTrainer(key);
                         setTrainingResult(null);
                       }
@@ -249,6 +256,7 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
                     {!canAfford && <div className="trainer-warning">Zu wenig Geld!</div>}
                     {isMaxed && <div className="trainer-warning">Attribut bereits maximal!</div>}
                     {isTooTired && <div className="trainer-warning">Hund zu müde! (Min. 30 Fitness)</div>}
+                    {alreadyTrainedThisMonth && <div className="trainer-warning">Bereits diesen Monat trainiert!</div>}
                   </div>
                 );
               })}

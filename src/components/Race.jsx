@@ -60,10 +60,19 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     raceData.lastResults = null;
     setRaceState(null);
     setShowResults(false);
+    
+    // Age all dogs by 1 month
+    gameState.players.forEach(player => {
+      player.dogs.forEach(dog => {
+        dog.ageInMonths += 1;
+      });
+    });
+    
     setGameState({
       ...gameState,
       currentRace: null,
-      raceCompleted: false
+      raceCompleted: false,
+      currentMonth: gameState.currentMonth + 1 // Next month!
     });
   };
   

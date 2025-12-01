@@ -22,6 +22,8 @@ export class Dog {
         this.experience = 0;
         this.cupWins = 0; // NEW: Championship wins
         this.trackRecords = []; // NEW: Track record holder
+        this.lastTrainedMonth = null; // NEW: Track when last trained
+        this.lastTrainedMonth = null; // NEW: Track when dog was last trained
         
         // Special traits
         const traits = [
@@ -212,6 +214,7 @@ export class Dog {
             experience: this.experience,
             cupWins: this.cupWins,
             trackRecords: this.trackRecords,
+            lastTrainedMonth: this.lastTrainedMonth,
             specialTrait: this.specialTrait,
             owner: this.owner,
             imageNumber: this.imageNumber
@@ -230,6 +233,7 @@ export class Dog {
         // Ensure new properties exist
         if (dog.cupWins === undefined) dog.cupWins = 0;
         if (dog.trackRecords === undefined) dog.trackRecords = [];
+        if (dog.lastTrainedMonth === undefined) dog.lastTrainedMonth = null;
         
         return dog;
     }

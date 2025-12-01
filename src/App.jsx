@@ -26,6 +26,7 @@ function App() {
     currentRace: null,
     raceHistory: [],
     gameDay: 1,
+    currentMonth: 1, // NEW: Track current month
     isSetup: true,
     stableLimit: 4,
     raceCompleted: false // Track if current week's race is done
