@@ -32,6 +32,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   };
   
   const startRace = () => {
+    console.log('🎬 START RACE BUTTON CLICKED');
+    
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
@@ -50,14 +52,14 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const raceDogs = participants.slice(0, 8);
     raceDogs.sort(() => Math.random() - 0.5);
     
+    console.log('🐕 Race participants:', raceDogs.map(d => d.name));
+    
     const totalRating = raceDogs.reduce((sum, dog) => sum + dog.getOverallRating(), 0);
     
     const newRace = {
       participants: raceDogs.map(dog => {
         const rating = dog.getOverallRating();
         const odds = (totalRating / rating / raceDogs.length) * 1.5;
-        
-        // SIMPLE: Base speed from rating
         const baseSpeed = rating / 100;
         
         return {
@@ -70,27 +72,40 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         };
       }),
       finished: false,
-      startTime: Date.now()
+      startTime: Date.now(),
+      isRunning: false
     };
     
-    setGameState({
-      ...gameState,
-      currentRace: newRace
-    });
+    console.log('✅ New race created:', newRace);
     
+    // CRITICAL: Update gameState properly
+    const updatedGameState = {
+      ...gameState,
+      currentRace: newRace,
+      raceCompleted: false
+    };
+    
+    setGameState(updatedGameState);
     setRaceTime(0);
     
-    // Auto-start after 500ms
+    // Start race after state update
     setTimeout(() => {
-      runRace(newRace);
-    }, 500);
+      console.log('🏁 Starting race interval...');
+      runRace(newRace, updatedGameState);
+    }, 800);
   };
   
-  const runRace = (race) => {
-    console.log('🏁 Race starting!');
+  const runRace = (race, currentGameState) => {
+    console.log('🏃 runRace called');
     
+    if (race.isRunning) {
+      console.log('⚠️ Race already running!');
+      return;
+    }
+    
+    race.isRunning = true;
     const startTime = Date.now();
-    let finished = 0;
+    let finishedCount = 0;
     
     const interval = setInterval(() => {
       const elapsed = (Date.now() - startTime) / 1000;
@@ -102,8 +117,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         if (p.progress < 100) {
           allFinished = false;
           
-          // SIMPLE: Add speed with some randomness
-          const variance = 0.9 + (Math.random() * 0.2); // 0.9 to 1.1
+          // Simple progress update
+          const variance = 0.9 + (Math.random() * 0.2);
           const step = p.speed * variance;
           
           p.progress += step;
@@ -111,13 +126,13 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           if (p.progress >= 100 && !p.finishTime) {
             p.progress = 100;
             p.finishTime = elapsed;
-            finished++;
-            console.log(`✅ ${p.dog.name} finished at ${elapsed.toFixed(2)}s`);
+            finishedCount++;
+            console.log(`✅ ${p.dog.name} finished at ${elapsed.toFixed(2)}s (${finishedCount}/8)`);
           }
         }
       });
       
-      // Sort by progress (or finish time if finished)
+      // Sort by position
       race.participants.sort((a, b) => {
         if (a.progress >= 100 && b.progress >= 100) {
           return a.finishTime - b.finishTime;
@@ -129,21 +144,24 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         p.position = i + 1;
       });
       
-      setGameState({...gameState});
+      // Update state
+      setGameState({...currentGameState});
       
-      // Check if race is done
+      // Check if done
       if (allFinished) {
-        console.log('🏁 Race finished!');
+        console.log('🏁 Race finished! All dogs done.');
         clearInterval(interval);
         setRaceInterval(null);
         
         race.finished = true;
+        race.isRunning = false;
         
-        // Update best time
+        // Update records
         const winner = race.participants[0];
         if (!raceData.bestTime || winner.finishTime < raceData.bestTime) {
           raceData.bestTime = winner.finishTime;
           raceData.bestTimeHolder = winner.dog.name;
+          console.log(`🏆 New record: ${winner.finishTime.toFixed(2)}s by ${winner.dog.name}`);
         }
         
         // Update dog stats
@@ -154,7 +172,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             if (index === 0) {
               p.dog.wins++;
               raceData.lastWinner = p.dog.name;
-              const owner = gameState.players.find(pl => pl.dogs.includes(p.dog));
+              const owner = currentGameState.players.find(pl => pl.dogs.includes(p.dog));
               if (owner) {
                 owner.totalWins = (owner.totalWins || 0) + 1;
               }
@@ -162,9 +180,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
-        setGameState({...gameState, raceCompleted: true});
+        setGameState({...currentGameState, raceCompleted: true});
       }
-    }, 100); // 100ms = 10 FPS
+    }, 100);
     
     setRaceInterval(interval);
   };
@@ -172,13 +190,16 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   useEffect(() => {
     return () => {
       if (raceInterval) {
+        console.log('🧹 Cleaning up race interval');
         clearInterval(raceInterval);
       }
     };
   }, [raceInterval]);
   
-  // Pre-race overview
+  // PRE-RACE OVERVIEW
   if (!gameState.currentRace) {
+    console.log('📋 Showing pre-race overview');
+    
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
@@ -244,7 +265,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                 const owner = getDogOwner(p.dog);
                 
                 return (
-                  <div key={p.dog.id} className={`participant-row ${isOwned ? 'owned-dog' : ''}`}>
+                  <div key={`preview-${index}`} className={`participant-row ${isOwned ? 'owned-dog' : ''}`}>
                     
                     <div className="col-dog">
                       <img 
@@ -328,7 +349,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   }
   
-  // RUNNING RACE - SIMPLE FULL WIDTH
+  // RUNNING RACE
+  console.log('🏁 Rendering running race view');
   const race = gameState.currentRace;
   
   return (
@@ -357,12 +379,12 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       <div className="race-full-width">
         <div className="participants-table-container">
           <div className="participants-table">
-            {race.participants.map((p) => {
+            {race.participants.map((p, idx) => {
               const isOwned = isPlayerDog(p.dog);
               const owner = getDogOwner(p.dog);
               
               return (
-                <div key={p.dog.id} className={`participant-row-running ${isOwned ? 'owned-dog' : ''}`}>
+                <div key={`race-${p.dog.id}-${idx}`} className={`participant-row-running ${isOwned ? 'owned-dog' : ''}`}>
                   
                   <div className="col-position-simple">#{p.position}</div>
                   
