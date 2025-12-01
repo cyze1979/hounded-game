@@ -11,6 +11,7 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
   
   const navItems = [
     { id: 'stable', label: 'MEIN RENNSTALL' },
+    { id: 'training', label: 'TRAINING' },
     { id: 'market', label: 'HUNDEMARKT', badge: marketNotifications },
     { id: 'race', label: 'RENNEN' },
     { id: 'leaderboard', label: 'STATISTIKEN' }

@@ -4,9 +4,9 @@ import { assignDogImageToDog } from '../utils/assetLoader';
 export class Dog {
     constructor(name = null, breed = 'Greyhound') {
         this.id = Date.now() + Math.random();
-        this.name = name || getUniqueDogName(); // Verwendet unique Namen!
+        this.name = name || getUniqueDogName();
         this.breed = breed;
-        this.age = Math.floor(Math.random() * 5) + 2;
+        this.ageInMonths = (Math.floor(Math.random() * 3) + 2) * 12; // 2-4 years in months
         this.gender = Math.random() > 0.5 ? 'männlich' : 'weiblich';
         
         // Attributes (30-90)
@@ -20,7 +20,8 @@ export class Dog {
         this.races = 0;
         this.wins = 0;
         this.experience = 0;
-        this.price = Math.floor((this.speed + this.stamina + this.acceleration + this.focus) * 10);
+        this.cupWins = 0; // NEW: Championship wins
+        this.trackRecords = []; // NEW: Track record holder
         
         // Special traits
         const traits = [
@@ -42,15 +43,101 @@ export class Dog {
         ];
         this.specialTrait = traits[Math.floor(Math.random() * traits.length)];
         
-        // Trainer
-        this.trainer = null;
-        this.trainingEndsDay = null;
-        
         // Owner - X Syndicate für nicht-Spieler-Hunde
         this.owner = AI_OWNER_NAME;
         
         // Image
         this.imageNumber = assignDogImageToDog(this);
+    }
+    
+    // Age helper methods
+    getAgeInYears() {
+        return Math.floor(this.ageInMonths / 12);
+    }
+    
+    getAgeCategory() {
+        const years = this.getAgeInYears();
+        if (years <= 2) return 'juvenile';
+        if (years === 3) return 'young';
+        if (years >= 4 && years <= 6) return 'prime';
+        if (years >= 7 && years <= 8) return 'veteran';
+        return 'elder';
+    }
+    
+    getAgeCategoryName() {
+        const categories = {
+            juvenile: 'Junghund',
+            young: 'Jung',
+            prime: 'Prime',
+            veteran: 'Veteran',
+            elder: 'Senior'
+        };
+        return categories[this.getAgeCategory()];
+    }
+    
+    getTrainingEfficiency() {
+        const category = this.getAgeCategory();
+        const efficiencies = {
+            juvenile: 1.5,  // +50%
+            young: 1.25,    // +25%
+            prime: 1.0,     // Normal
+            veteran: 0.75,  // -25%
+            elder: 0.5      // -50%
+        };
+        return efficiencies[category];
+    }
+    
+    getRacingPenalty() {
+        const category = this.getAgeCategory();
+        const penalties = {
+            juvenile: 0.95, // -5%
+            young: 0.98,    // -2%
+            prime: 1.0,     // No penalty
+            veteran: 0.97,  // -3%
+            elder: 0.92     // -8%
+        };
+        return penalties[category];
+    }
+    
+    getValue() {
+        const baseRating = this.getOverallRating();
+        const baseValue = baseRating * 20;
+        
+        // Age multiplier
+        const category = this.getAgeCategory();
+        const ageMultipliers = {
+            juvenile: 0.6,
+            young: 0.8,
+            prime: 1.2,
+            veteran: 0.7,
+            elder: 0.4
+        };
+        
+        let value = baseValue * ageMultipliers[category];
+        
+        // Cup wins bonus (later: +500 per win)
+        value += this.cupWins * 500;
+        
+        // Track records bonus (later: +300 per record)
+        value += this.trackRecords.length * 300;
+        
+        return Math.floor(value);
+    }
+    
+    ageOneMonth() {
+        this.ageInMonths += 1;
+        
+        // Check for category change
+        const oldCategory = this.getAgeCategory();
+        this.ageInMonths += 1;
+        const newCategory = this.getAgeCategory();
+        this.ageInMonths -= 1; // Revert for actual increment
+        
+        return {
+            categoryChanged: oldCategory !== newCategory,
+            oldCategory,
+            newCategory
+        };
     }
     
     getOverallRating() {
@@ -113,7 +200,7 @@ export class Dog {
             id: this.id,
             name: this.name,
             breed: this.breed,
-            age: this.age,
+            ageInMonths: this.ageInMonths,
             gender: this.gender,
             speed: this.speed,
             stamina: this.stamina,
@@ -123,10 +210,9 @@ export class Dog {
             races: this.races,
             wins: this.wins,
             experience: this.experience,
-            price: this.price,
+            cupWins: this.cupWins,
+            trackRecords: this.trackRecords,
             specialTrait: this.specialTrait,
-            trainer: this.trainer,
-            trainingEndsDay: this.trainingEndsDay,
             owner: this.owner,
             imageNumber: this.imageNumber
         };
@@ -135,6 +221,16 @@ export class Dog {
     static fromJSON(data) {
         const dog = new Dog();
         Object.assign(dog, data);
+        
+        // Migration: Convert old age to ageInMonths
+        if (data.age !== undefined && data.ageInMonths === undefined) {
+            dog.ageInMonths = data.age * 12;
+        }
+        
+        // Ensure new properties exist
+        if (dog.cupWins === undefined) dog.cupWins = 0;
+        if (dog.trackRecords === undefined) dog.trackRecords = [];
+        
         return dog;
     }
 }

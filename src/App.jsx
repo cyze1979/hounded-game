@@ -13,6 +13,7 @@ import GameMenu from './components/GameMenu';
 import Stable from './components/Stable';
 import Market from './components/Market';
 import Race from './components/Race';
+import Training from './components/Training';
 import Leaderboard from './components/Leaderboard';
 
 const playerColors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
@@ -211,6 +212,13 @@ function App() {
         )}
         {currentView === 'race' && (
           <Race 
+            gameState={gameState}
+            setGameState={setGameState}
+            getCurrentPlayer={getCurrentPlayer}
+          />
+        )}
+        {currentView === 'training' && (
+          <Training 
             gameState={gameState}
             setGameState={setGameState}
             getCurrentPlayer={getCurrentPlayer}

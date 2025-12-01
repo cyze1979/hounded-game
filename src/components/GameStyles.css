@@ -2582,3 +2582,397 @@
     font-size: 1.2em;
   }
 }
+
+/* ============================================
+   TRAINING VIEW
+   ============================================ */
+
+.training-view {
+  padding: 0;
+}
+
+.training-header {
+  margin-bottom: 40px;
+}
+
+.training-title {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--text-white);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+}
+
+.training-subtitle {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.training-section {
+  margin-bottom: 40px;
+}
+
+.section-label {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--cyan-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+/* Dog Selector */
+.dog-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.dog-selector-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.dog-selector-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.dog-selector-card.selected {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: var(--cyan-primary);
+}
+
+.dog-selector-image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.dog-selector-info {
+  flex: 1;
+}
+
+.dog-selector-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 5px;
+}
+
+.dog-selector-meta {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 5px;
+}
+
+.dog-selector-meta span {
+  margin: 0 3px;
+}
+
+.dog-selector-fitness {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.fitness-icon {
+  font-size: 1.2em;
+}
+
+.fitness-value {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--text-white);
+}
+
+/* Attribute Selector */
+.attribute-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.attribute-option {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.attribute-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.attribute-option.selected {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: var(--cyan-primary);
+}
+
+.attribute-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.attribute-icon {
+  font-size: 1.5em;
+}
+
+.attribute-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+
+.attribute-value-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.attribute-bar-bg {
+  flex: 1;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.attribute-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan-primary), var(--cyan-secondary));
+  transition: width 0.3s;
+}
+
+.attribute-number {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--text-white);
+  min-width: 60px;
+  text-align: right;
+}
+
+/* Trainer Cards */
+.trainer-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.trainer-card {
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.trainer-card:hover:not(.disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 217, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.trainer-card.selected {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: var(--cyan-primary);
+  transform: scale(1.02);
+}
+
+.trainer-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.trainer-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.2em;
+  font-weight: 900;
+  color: var(--text-white);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.trainer-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trainer-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stat-value {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.stat-value.gain {
+  color: #4ade80;
+}
+
+.stat-value.loss {
+  color: #fb923c;
+}
+
+.stat-value.cost {
+  color: var(--yellow-primary);
+}
+
+.trainer-warning {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.85em;
+  color: #ef4444;
+  text-align: center;
+}
+
+/* Training Action */
+.training-action {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.training-btn {
+  min-width: 300px;
+  padding: 20px 40px;
+  font-size: 1.3em;
+}
+
+.training-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Training Result */
+.training-result {
+  padding: 30px;
+  background: rgba(74, 222, 128, 0.1);
+  border: 2px solid rgba(74, 222, 128, 0.3);
+  border-radius: 12px;
+  margin-top: 30px;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-title {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 900;
+  color: #4ade80;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.result-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.result-dog {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.result-stat {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.2em;
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.old-value {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.arrow {
+  color: var(--cyan-primary);
+  font-weight: 900;
+}
+
+.new-value {
+  color: #4ade80;
+  font-weight: 900;
+}
+
+.gain {
+  color: #4ade80;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.result-costs {
+  display: flex;
+  gap: 30px;
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.95em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .trainer-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .attribute-selector {
+    grid-template-columns: 1fr;
+  }
+}
