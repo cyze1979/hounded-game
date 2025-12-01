@@ -2430,6 +2430,7 @@
 
 .results-header {
   margin-bottom: 40px;
+  text-align: left; /* Force left alignment */
 }
 
 .results-title {

@@ -10,7 +10,8 @@ const raceData = {
   distance: 800,
   bestTime: null,
   bestTimeHolder: null,
-  lastWinner: null
+  lastWinner: null,
+  lastResults: null // Store last race results
 };
 
 // Prize money structure
@@ -34,6 +35,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const timerRef = useRef(null);
   const startTimeRef = useRef(null);
   
+  // Load stored results if they exist
+  useEffect(() => {
+    if (raceData.lastResults && !raceState && !showResults) {
+      setRaceState(raceData.lastResults.race);
+      setPlayerEarnings(raceData.lastResults.earnings);
+      setShowResults(true);
+    }
+  }, []);
+  
   const isPlayerDog = (dog) => {
     return gameState.players.some(player => 
       player.dogs.some(d => d.id === dog.id)
@@ -48,7 +58,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   };
   
   const continueAfterResults = () => {
-    // Clear race state completely
+    // Clear everything including stored results
+    raceData.lastResults = null;
     setRaceState(null);
     setShowResults(false);
     setPlayerEarnings(0);
@@ -236,6 +247,12 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         
         setPlayerEarnings(totalEarnings);
         setRaceState({...race});
+        
+        // Store results so they persist when switching tabs
+        raceData.lastResults = {
+          race: race,
+          earnings: totalEarnings
+        };
         
         // Show results screen after brief delay
         setTimeout(() => {
@@ -446,7 +463,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           
           <div className="results-continue">
             <button className="btn-cta" onClick={continueAfterResults}>
-              WEITER
+              NÄCHSTES RENNEN
             </button>
           </div>
         </div>
