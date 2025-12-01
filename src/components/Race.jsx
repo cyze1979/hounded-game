@@ -4,7 +4,6 @@ import { dogNames, dogBreeds, AI_OWNER_NAME } from '../data/dogData';
 import { getDogImage } from '../utils/assetLoader';
 import DogDetailFull from './DogDetailFull';
 
-// Race Database
 const raceData = {
   name: "STADTPARK SPRINT",
   distance: 800,
@@ -46,7 +45,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
-    while (participants.length < 6) {
+    // Fill up to EXACTLY 8 dogs
+    while (participants.length < 8) {
       const name = dogNames[Math.floor(Math.random() * dogNames.length)];
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
       participants.push(new Dog(null, breed));
@@ -74,7 +74,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       }),
       finished: false,
       results: [],
-      elapsedTime: 0
+      elapsedTime: 0,
+      autoStarted: false
     };
     
     setGameState({
@@ -83,13 +84,12 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     });
     
     setCommentary([]);
-    
-    // AUTO-START RACE immediately
-    setTimeout(() => runRace(), 100);
   };
   
   const runRace = () => {
     const race = gameState.currentRace;
+    if (!race || raceInterval) return;
+    
     let finished = [];
     let tick = 0;
     const maxTicks = 80;
@@ -203,6 +203,14 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     setRaceInterval(interval);
   };
   
+  // Auto-start race when it's created
+  useEffect(() => {
+    if (gameState.currentRace && !gameState.currentRace.autoStarted && !raceInterval) {
+      gameState.currentRace.autoStarted = true;
+      setTimeout(() => runRace(), 500);
+    }
+  }, [gameState.currentRace]);
+  
   useEffect(() => {
     return () => {
       if (raceInterval) {
@@ -222,7 +230,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
-    while (participants.length < 6) {
+    // Fill up to EXACTLY 8 dogs
+    while (participants.length < 8) {
       const name = dogNames[Math.floor(Math.random() * dogNames.length)];
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
       participants.push(new Dog(null, breed));
@@ -378,7 +387,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   return (
     <div className="race-view">
       
-      {/* Race Header with Meta Info */}
       <div className="race-header-compact">
         <div>
           <h2 className="race-title">{raceData.name}</h2>
@@ -393,10 +401,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         <div className="race-timer">{race.elapsedTime.toFixed(1)}s</div>
       </div>
       
-      {/* Main Race Layout: 2/3 Table + 1/3 Live Info */}
       <div className="race-running-layout">
         
-        {/* Left: Compact Table (2/3) */}
         <div className="race-table-compact">
           <div className="participants-table-container">
             <div className="participants-table">
@@ -422,11 +428,18 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                     </div>
                     
                     <div className="col-progress">
-                      <div className="progress-bar-inline">
-                        <div 
-                          className="progress-fill-inline"
-                          style={{width: `${p.progress}%`}}
+                      <div className="progress-track-visual">
+                        <div className="track-start-marker">START</div>
+                        <img 
+                          src={getDogImage(p.dog.imageNumber)}
+                          alt={p.dog.name}
+                          className="running-dog-sprite"
+                          style={{
+                            left: `${p.progress}%`,
+                            transition: 'left 0.1s linear'
+                          }}
                         />
+                        <div className="track-finish-marker">ZIEL</div>
                       </div>
                       <span className="progress-text">{p.progress.toFixed(0)}%</span>
                     </div>
@@ -438,10 +451,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           </div>
         </div>
         
-        {/* Right: Live Info (1/3) */}
         <div className="race-sidebar">
           
-          {/* Standings - with finish times when race is over */}
           <div className="race-standings-box">
             <h3 className="standings-title">{race.finished ? 'ERGEBNISSE' : 'STANDINGS'}</h3>
             <div className="standings-list">
@@ -457,7 +468,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             </div>
           </div>
           
-          {/* Commentary */}
           <div className="race-commentary-box">
             <h3 className="commentary-title">📢 LIVE</h3>
             <div className="commentary-feed-compact">

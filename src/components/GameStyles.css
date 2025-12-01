@@ -2083,3 +2083,53 @@
 .race-header-compact .race-meta {
   margin-top: 8px;
 }
+
+/* Visual Track with Moving Dogs */
+.progress-track-visual {
+  position: relative;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  border-radius: 8px;
+  overflow: visible;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.track-start-marker,
+.track-finish-marker {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.65em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+  z-index: 1;
+}
+
+.track-start-marker {
+  left: 5px;
+}
+
+.track-finish-marker {
+  right: 5px;
+}
+
+.running-dog-sprite {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  z-index: 10;
+  filter: drop-shadow(0 3px 8px rgba(0, 217, 255, 0.3));
+}
+
+/* Update col-progress for new layout */
+.col-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
