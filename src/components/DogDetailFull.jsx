@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
-export default function DogDetailFull({ dog, player, allDogs, gameState, setGameState, onClose }) {
+export default function DogDetailFull({ dog, player, allDogs, gameState, setGameState, onClose, isRaceView = false, isPlayerDog = true }) {
   const [currentDogIndex, setCurrentDogIndex] = useState(0);
   const [currentDog, setCurrentDog] = useState(dog);
   
@@ -190,32 +190,3 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </div>
             </div>
             
-            {/* Action Buttons - CENTERED */}
-            <div className="dog-actions">
-              <button className="btn-tab btn-tab-large" onClick={handleSell}>
-                <span>VERKAUFEN</span>
-              </button>
-            </div>
-            
-          </div>
-          
-          {/* Vertical Divider */}
-          <div className="vertical-divider"></div>
-          
-          {/* Right Side - Dog Image */}
-          <div className="dog-image-section">
-            <div className="dog-image-container">
-              <img 
-                src={getDogImage(currentDog.imageNumber)} 
-                alt={currentDog.name}
-                className="dog-image-large"
-              />
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-    </div>
-  );
-}

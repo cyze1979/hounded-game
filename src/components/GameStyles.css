@@ -1939,3 +1939,277 @@
   color: var(--cyan-primary);
   margin-top: 5px;
 }
+
+/* ============================================
+   RACE OVERVIEW - INFO HEADER
+============================================ */
+
+.race-info-header {
+  background: rgba(10, 10, 20, 0.85);
+  border: 2px solid rgba(0, 217, 255, 0.3);
+  border-radius: 15px;
+  padding: 30px 40px;
+  margin-bottom: 30px;
+}
+
+.race-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 3em;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+}
+
+.race-meta {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.1em;
+  color: var(--text-gray);
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.race-distance,
+.race-record,
+.race-champion {
+  letter-spacing: 1px;
+}
+
+.race-separator {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   PARTICIPANTS TABLE
+============================================ */
+
+.participants-table-container {
+  background: rgba(10, 10, 20, 0.85);
+  border: 2px solid rgba(0, 217, 255, 0.3);
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.participants-title {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.5em;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.participants-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Table Header */
+.participants-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1.5fr;
+  gap: 15px;
+  padding: 15px 20px;
+  background: rgba(0, 217, 255, 0.1);
+  border-radius: 10px;
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Table Rows */
+.participant-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1.5fr;
+  gap: 15px;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.participant-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 217, 255, 0.5);
+  transform: translateX(5px);
+}
+
+.participant-row.owned-dog {
+  border-color: rgba(0, 217, 255, 0.5);
+  background: rgba(0, 217, 255, 0.05);
+}
+
+/* Dog Column */
+.col-dog {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.participant-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 5px;
+}
+
+.participant-dog-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.participant-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.participant-breed {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.8em;
+  color: var(--text-gray);
+  text-transform: uppercase;
+}
+
+/* Stats Column */
+.col-stats {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-icon {
+  font-size: 1.2em;
+}
+
+.stat-value {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+/* Rating Column */
+.col-rating {
+  text-align: center;
+}
+
+.rating-badge {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.8em;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--cyan-primary);
+}
+
+/* Best Time Column */
+.col-besttime {
+  text-align: center;
+}
+
+.besttime-value {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--text-gray);
+}
+
+/* Odds Column */
+.col-odds {
+  text-align: center;
+}
+
+.odds-value {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--yellow-primary);
+}
+
+/* Actions Column */
+.col-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-action {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  font-size: 1.3em;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action:hover:not(:disabled) {
+  background: rgba(0, 217, 255, 0.2);
+  border-color: var(--cyan-primary);
+  transform: scale(1.1);
+}
+
+.btn-action:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-details {
+  /* Eye icon button */
+}
+
+.btn-bet {
+  /* Money icon button */
+}
+
+/* Start Race CTA */
+.race-start-cta {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.race-start-cta .race-start-btn {
+  font-size: 1.8em;
+  padding: 20px 80px;
+  letter-spacing: 3px;
+}
+
+/* Race View Message in Detail */
+.race-view-message {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.2em;
+  color: var(--cyan-primary);
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 217, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid rgba(0, 217, 255, 0.3);
+}
