@@ -16,7 +16,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [selectedDog, setSelectedDog] = useState(null);
   const [allParticipants, setAllParticipants] = useState([]);
   const [displayTime, setDisplayTime] = useState(0);
-  const [raceState, setRaceState] = useState(null); // LOCAL race state!
+  const [raceState, setRaceState] = useState(null);
   
   const raceRef = useRef(null);
   const timerRef = useRef(null);
@@ -36,7 +36,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   };
   
   const startRace = () => {
-    // Gather participants
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
@@ -46,7 +45,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
-    // Fill with AI dogs
     while (participants.length < 8) {
       participants.push(new Dog(null, dogBreeds[Math.floor(Math.random() * dogBreeds.length)]));
     }
@@ -54,73 +52,116 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const raceDogs = participants.slice(0, 8);
     raceDogs.sort(() => Math.random() - 0.5);
     
-    // Create race state
+    // PHASE 2: Calculate attribute-based stats
     const newRace = {
-      participants: raceDogs.map((dog, index) => ({
-        id: `racer-${index}`,
-        dog: dog,
-        progress: 0,
-        position: index + 1,
-        speed: dog.getOverallRating() / 100,
-        finishTime: null
-      })),
+      participants: raceDogs.map((dog, index) => {
+        // Base speed from all attributes (weighted)
+        const baseSpeed = (
+          dog.speed * 0.4 +
+          dog.stamina * 0.25 +
+          dog.acceleration * 0.2 +
+          dog.focus * 0.15
+        ) / 100;
+        
+        // Fitness multiplier (70% to 100%)
+        const fitnessFactor = Math.max(0.7, dog.fitness / 100);
+        
+        // Focus affects variance (high focus = less random)
+        const focusFactor = dog.focus / 100;
+        
+        return {
+          id: `racer-${index}`,
+          dog: dog,
+          progress: 0,
+          position: index + 1,
+          // Attribute factors
+          baseSpeed: baseSpeed * fitnessFactor * 0.4, // Adjust for 20ms interval
+          accelerationBoost: (dog.acceleration / 100) * 0.2, // Also adjust boost
+          staminaFactor: dog.stamina / 100,
+          focusFactor: focusFactor,
+          energy: 100,
+          finishTime: null
+        };
+      }),
       isRunning: false,
       isFinished: false
     };
     
-    // Set LOCAL race state (not gameState yet!)
     setRaceState(newRace);
     setDisplayTime(0);
     
-    // Mark in gameState that race exists
     setGameState({
       ...gameState,
       currentRace: { exists: true },
       raceCompleted: false
     });
     
-    // Auto-start
     setTimeout(() => {
       runRace(newRace);
     }, 500);
   };
   
   const runRace = (race) => {
-    console.log('🏁 Starting race...');
+    console.log('🏁 Starting race with attribute system...');
     
     race.isRunning = true;
     startTimeRef.current = Date.now();
     let finishedCount = 0;
+    let tickCount = 0;
     
-    // Timer for display
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       setDisplayTime(elapsed);
     }, 10);
     
-    // Race logic
     raceRef.current = setInterval(() => {
+      tickCount++;
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       let allDone = true;
+      
+      // Determine race phase based on progress
+      const avgProgress = race.participants.reduce((sum, p) => sum + p.progress, 0) / 8;
+      let phase = 'start';
+      if (avgProgress > 25) phase = 'middle';
+      if (avgProgress > 75) phase = 'sprint';
       
       race.participants.forEach(p => {
         if (p.progress < 100) {
           allDone = false;
           
-          const randomness = 0.9 + (Math.random() * 0.2);
-          const step = p.speed * randomness;
+          // PHASE 2: Attribute-based speed calculation
+          let currentSpeed = p.baseSpeed;
           
+          // Start phase: Acceleration matters
+          if (phase === 'start') {
+            currentSpeed += p.accelerationBoost;
+          }
+          
+          // Sprint phase: Stamina crucial, energy drains
+          if (phase === 'sprint') {
+            const energyDrain = (1 - p.staminaFactor) * 2;
+            p.energy = Math.max(30, p.energy - energyDrain);
+            const energyMultiplier = p.energy / 100;
+            currentSpeed *= (0.7 + energyMultiplier * 0.3);
+          }
+          
+          // Focus affects variance (less focus = more chaos)
+          const maxVariance = 0.3 * (1 - p.focusFactor);
+          const variance = 1 + ((Math.random() - 0.5) * maxVariance * 2);
+          
+          const step = currentSpeed * variance;
           p.progress = Math.min(100, p.progress + step);
           
           if (p.progress >= 100 && !p.finishTime) {
             p.finishTime = elapsed;
             finishedCount++;
             console.log(`✅ ${p.dog.name} finished: ${elapsed.toFixed(2)}s (${finishedCount}/8)`);
+            console.log(`   Stats: Speed=${p.dog.speed} Stamina=${p.dog.stamina} Accel=${p.dog.acceleration} Focus=${p.dog.focus}`);
           }
         }
       });
       
-      // Sort
+      // Sort by position
       race.participants.sort((a, b) => {
         if (a.finishTime && b.finishTime) return a.finishTime - b.finishTime;
         if (a.finishTime) return -1;
@@ -132,11 +173,14 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         p.position = i + 1;
       });
       
-      // Update LOCAL state only!
       setRaceState({...race});
       
       if (allDone) {
         console.log('🏁 Race finished!');
+        console.log('📊 Results by attribute correlation:');
+        race.participants.forEach((p, i) => {
+          console.log(`  ${i+1}. ${p.dog.name} - ${p.finishTime.toFixed(2)}s (Rating: ${p.dog.getOverallRating()})`);
+        });
         
         clearInterval(raceRef.current);
         clearInterval(timerRef.current);
@@ -144,14 +188,12 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         race.isFinished = true;
         race.isRunning = false;
         
-        // Update best time
         const winner = race.participants[0];
         if (!raceData.bestTime || winner.finishTime < raceData.bestTime) {
           raceData.bestTime = winner.finishTime;
           raceData.bestTimeHolder = winner.dog.name;
         }
         
-        // Update dog stats
         race.participants.forEach((p, idx) => {
           if (p.dog.races !== undefined) {
             p.dog.races++;
@@ -167,11 +209,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
-        // NOW update gameState once at the end
         setGameState({...gameState, raceCompleted: true});
         setRaceState({...race});
       }
-    }, 50);
+    }, 20); // 20ms = 50 FPS for finer timing!
   };
   
   useEffect(() => {
@@ -326,7 +367,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   }
   
-  // RUNNING RACE - Use LOCAL raceState!
+  // RUNNING RACE
   if (!raceState) {
     return <div className="race-view">Loading race...</div>;
   }
