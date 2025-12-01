@@ -2249,3 +2249,133 @@
   min-width: 100px;
   text-align: right;
 }
+
+/* ============================================
+   PHASE 1: MINIMAL RACE VIEW
+   ============================================ */
+
+.race-header-simple {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.race-timer-simple {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 3.5em;
+  font-weight: 900;
+  color: var(--cyan-primary);
+  font-style: italic;
+  text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+}
+
+.race-minimal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.race-row-minimal {
+  display: grid;
+  grid-template-columns: 80px 200px 1fr 120px;
+  gap: 20px;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.race-row-minimal.owned-dog {
+  background: rgba(0, 217, 255, 0.05);
+  border-color: rgba(0, 217, 255, 0.2);
+}
+
+.race-position {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 2em;
+  font-weight: 900;
+  color: var(--cyan-primary);
+  text-align: center;
+}
+
+.race-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.race-dog-name {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+
+.race-dog-owner {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 0.85em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.race-track {
+  position: relative;
+  height: 60px;
+}
+
+.race-progress-bg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 12px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.race-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan-primary), var(--cyan-secondary));
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+  transition: width 0.05s linear;
+}
+
+.race-dog-sprite {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  transition: left 0.05s linear;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.race-time {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--yellow-primary);
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .race-row-minimal {
+    grid-template-columns: 60px 150px 1fr 100px;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .race-dog-sprite {
+    width: 50px;
+    height: 50px;
+  }
+}
