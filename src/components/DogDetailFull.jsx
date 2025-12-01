@@ -190,3 +190,42 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </div>
             </div>
             
+            {/* Action Buttons - CENTERED */}
+            <div className="dog-actions">
+              {isRaceView ? (
+                isPlayerDog ? (
+                  <div className="race-view-message">Dein Hund nimmt am Rennen teil!</div>
+                ) : (
+                  <button className="btn-tab btn-tab-large" disabled>
+                    <span>WETTE PLATZIEREN (BALD)</span>
+                  </button>
+                )
+              ) : (
+                <button className="btn-tab btn-tab-large" onClick={handleSell}>
+                  <span>VERKAUFEN</span>
+                </button>
+              )}
+            </div>
+            
+          </div>
+          
+          {/* Vertical Divider */}
+          <div className="vertical-divider"></div>
+          
+          {/* Right Side - Dog Image */}
+          <div className="dog-image-section">
+            <div className="dog-image-container">
+              <img 
+                src={getDogImage(currentDog.imageNumber)} 
+                alt={currentDog.name}
+                className="dog-image-large"
+              />
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+    </div>
+  );
+}
