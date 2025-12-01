@@ -2186,3 +2186,17 @@
 .progress-text {
   display: none;
 }
+
+/* Remove ALL animations from running dog sprites */
+.running-dog-sprite {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  z-index: 10;
+  filter: none;
+  transition: left 0.1s linear;
+  animation: none !important;
+}

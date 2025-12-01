@@ -12,7 +12,6 @@ const raceData = {
   lastWinner: null
 };
 
-// Dynamic commentary system
 const commentaryPhrases = {
   start: [
     "🏁 UND SIE SIND WEG!",
@@ -113,12 +112,12 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           energy: 100,
           position: 0,
           lastPosition: 0,
-          finishTick: null
+          finishTime: null
         };
       }),
       finished: false,
       results: [],
-      elapsedTime: 0,
+      startTime: null,
       autoStarted: false
     };
     
@@ -136,11 +135,14 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const race = gameState.currentRace;
     if (!race || raceInterval) return;
     
+    const startTime = Date.now();
+    race.startTime = startTime;
+    setRaceStartTime(startTime);
+    
     let finished = [];
     let tick = 0;
-    const maxTicks = 80;
+    const maxTicks = 100;
     
-    setRaceStartTime(Date.now());
     addCommentary(getRandomPhrase('start'));
     
     race.participants.forEach(p => {
@@ -156,17 +158,17 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       p.energy = 100;
       p.position = 0;
       p.lastPosition = 0;
-      p.finishTick = null;
+      p.finishTime = null;
     });
     
     const interval = setInterval(() => {
       tick++;
-      race.elapsedTime = tick / 10;
+      const currentTime = (Date.now() - startTime) / 1000;
       
-      let racePhase = tick < 20 ? 'start' : tick < 60 ? 'middle' : 'sprint';
+      let racePhase = tick < 25 ? 'start' : tick < 75 ? 'middle' : 'sprint';
       
-      if (tick === 20) addCommentary(getRandomPhrase('middle'));
-      if (tick === 60) addCommentary(getRandomPhrase('sprint'));
+      if (tick === 25) addCommentary(getRandomPhrase('middle'));
+      if (tick === 75) addCommentary(getRandomPhrase('sprint'));
       
       race.participants.forEach(p => {
         if (p.progress < 100) {
@@ -190,8 +192,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           
           p.progress = Math.min(100, p.progress + speedThisTick);
           
-          if (p.progress >= 100 && !p.finishTick) {
-            p.finishTick = tick;
+          if (p.progress >= 100 && !p.finishTime) {
+            p.finishTime = currentTime;
             finished.push(p);
             if (finished.length === 1) {
               addCommentary(getRandomPhrase('win', dog.name));
@@ -201,11 +203,16 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
       
       race.participants.forEach(p => p.lastPosition = p.position);
-      race.participants.sort((a, b) => b.progress - a.progress);
+      race.participants.sort((a, b) => {
+        if (a.progress === 100 && b.progress === 100) {
+          return a.finishTime - b.finishTime;
+        }
+        return b.progress - a.progress;
+      });
       race.participants.forEach((p, index) => {
         p.position = index + 1;
         
-        if (p.lastPosition > 0 && p.position < p.lastPosition && tick > 10 && tick < 75) {
+        if (p.lastPosition > 0 && p.position < p.lastPosition && tick > 10 && tick < 90) {
           if (p.lastPosition - p.position >= 2) {
             addCommentary(getRandomPhrase('overtake', p.dog.name));
           }
@@ -214,42 +221,40 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       
       setGameState({...gameState});
       
-      // Race ends when ALL dogs finish or max ticks reached
       if (finished.length === race.participants.length || tick >= maxTicks) {
         clearInterval(interval);
         setRaceInterval(null);
         
-        // Ensure all dogs have finish ticks
+        // Ensure all dogs have finish times
         race.participants.forEach(p => {
-          if (!p.finishTick) {
-            p.finishTick = tick;
+          if (!p.finishTime) {
+            p.finishTime = currentTime;
           }
         });
         
-        finished.sort((a, b) => {
-          if (a.finishTick && b.finishTick) return a.finishTick - b.finishTick;
-          return b.progress - a.progress;
-        });
+        // Sort by finish time
+        race.participants.sort((a, b) => a.finishTime - b.finishTime);
+        race.participants.forEach((p, i) => p.position = i + 1);
         
         race.finished = true;
-        race.results = finished;
+        race.results = race.participants;
         
-        // Update best time if this is faster
-        const winnerTime = finished[0].finishTick / 10;
+        // Update best time
+        const winnerTime = race.participants[0].finishTime;
         if (!raceData.bestTime || winnerTime < raceData.bestTime) {
           raceData.bestTime = winnerTime;
-          raceData.bestTimeHolder = finished[0].dog.name;
+          raceData.bestTimeHolder = race.participants[0].dog.name;
         }
         
-        finished.forEach((result, index) => {
-          const dog = result.dog;
+        race.participants.forEach((p, index) => {
+          const dog = p.dog;
           if (dog.races !== undefined) {
             dog.races++;
             dog.experience += 10;
             if (index === 0) {
               dog.wins++;
               raceData.lastWinner = dog.name;
-              const owner = gameState.players.find(p => p.dogs.includes(dog));
+              const owner = gameState.players.find(pl => pl.dogs.includes(dog));
               if (owner) {
                 owner.totalWins = (owner.totalWins || 0) + 1;
               }
@@ -267,17 +272,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     setRaceInterval(interval);
   };
   
-  // Update real-time clock
   useEffect(() => {
     if (raceStartTime && !gameState.currentRace?.finished) {
       const timer = setInterval(() => {
         setCurrentRaceTime((Date.now() - raceStartTime) / 1000);
-      }, 100);
+      }, 10);
       return () => clearInterval(timer);
     }
   }, [raceStartTime, gameState.currentRace?.finished]);
   
-  // Auto-start race
   useEffect(() => {
     if (gameState.currentRace && !gameState.currentRace.autoStarted && !raceInterval) {
       gameState.currentRace.autoStarted = true;
@@ -293,7 +296,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     };
   }, [raceInterval]);
   
-  // Pre-race overview
   if (!gameState.currentRace) {
     const participants = [];
     gameState.players.forEach(player => {
@@ -460,7 +462,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   }
   
-  // Running race view
   const race = gameState.currentRace;
   
   return (
@@ -483,7 +484,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             )}
           </div>
         </div>
-        <div className="race-timer">{currentRaceTime.toFixed(1)}s</div>
+        <div className="race-timer">{currentRaceTime.toFixed(2)}s</div>
       </div>
       
       <div className="race-running-layout">
@@ -538,8 +539,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                 <div key={i} className="standing-item">
                   <span className="standing-pos">{i + 1}.</span>
                   <span className="standing-name">{p.dog.name}</span>
-                  {race.finished && p.finishTick && (
-                    <span className="standing-time">{(p.finishTick / 10).toFixed(2)}s</span>
+                  {race.finished && p.finishTime && (
+                    <span className="standing-time">{p.finishTime.toFixed(2)}s</span>
                   )}
                 </div>
               ))}
