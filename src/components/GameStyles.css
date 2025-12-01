@@ -2379,3 +2379,38 @@
     height: 50px;
   }
 }
+
+/* ============================================
+   PHASE 3: SMOOTH REORDERING & FINISH VIEW
+   ============================================ */
+
+.race-minimal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.race-row-minimal {
+  /* Smooth vertical transitions when position changes */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.race-time {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--yellow-primary);
+  text-align: right;
+  min-width: 120px;
+}
+
+.race-continue-cta {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.race-continue-cta .btn-cta {
+  min-width: 300px;
+  padding: 20px 40px;
+  font-size: 1.3em;
+}

@@ -35,6 +35,16 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     return owner ? owner.name : dog.owner || AI_OWNER_NAME;
   };
   
+  const continueAfterRace = () => {
+    // Clear race state
+    setRaceState(null);
+    setGameState({
+      ...gameState,
+      currentRace: null,
+      raceCompleted: false
+    });
+  };
+  
   const startRace = () => {
     const participants = [];
     gameState.players.forEach(player => {
@@ -52,7 +62,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const raceDogs = participants.slice(0, 8);
     raceDogs.sort(() => Math.random() - 0.5);
     
-    // PHASE 2: Calculate attribute-based stats
+    // PHASE 3: Better balanced speed calculation
     const newRace = {
       participants: raceDogs.map((dog, index) => {
         // Base speed from all attributes (weighted)
@@ -63,8 +73,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           dog.focus * 0.15
         ) / 100;
         
-        // Fitness multiplier (70% to 100%)
-        const fitnessFactor = Math.max(0.7, dog.fitness / 100);
+        // Fitness multiplier (85% to 100% - tighter range!)
+        const fitnessFactor = Math.max(0.85, dog.fitness / 100);
         
         // Focus affects variance (high focus = less random)
         const focusFactor = dog.focus / 100;
@@ -74,9 +84,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           dog: dog,
           progress: 0,
           position: index + 1,
-          // Attribute factors
-          baseSpeed: baseSpeed * fitnessFactor * 0.4, // Adjust for 20ms interval
-          accelerationBoost: (dog.acceleration / 100) * 0.2, // Also adjust boost
+          visualPosition: index + 1, // For smooth transitions
+          // Attribute factors - PHASE 3: Better balanced
+          baseSpeed: baseSpeed * fitnessFactor * 0.5, // Increased from 0.4
+          accelerationBoost: (dog.acceleration / 100) * 0.15,
           staminaFactor: dog.stamina / 100,
           focusFactor: focusFactor,
           energy: 100,
@@ -102,7 +113,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   };
   
   const runRace = (race) => {
-    console.log('🏁 Starting race with attribute system...');
+    console.log('🏁 Starting race...');
     
     race.isRunning = true;
     startTimeRef.current = Date.now();
@@ -119,7 +130,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       let allDone = true;
       
-      // Determine race phase based on progress
+      // Determine race phase
       const avgProgress = race.participants.reduce((sum, p) => sum + p.progress, 0) / 8;
       let phase = 'start';
       if (avgProgress > 25) phase = 'middle';
@@ -129,24 +140,23 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         if (p.progress < 100) {
           allDone = false;
           
-          // PHASE 2: Attribute-based speed calculation
           let currentSpeed = p.baseSpeed;
           
-          // Start phase: Acceleration matters
+          // Start phase: Acceleration boost
           if (phase === 'start') {
             currentSpeed += p.accelerationBoost;
           }
           
-          // Sprint phase: Stamina crucial, energy drains
+          // Sprint phase: Stamina crucial
           if (phase === 'sprint') {
-            const energyDrain = (1 - p.staminaFactor) * 2;
-            p.energy = Math.max(30, p.energy - energyDrain);
+            const energyDrain = (1 - p.staminaFactor) * 1.5; // Reduced from 2
+            p.energy = Math.max(40, p.energy - energyDrain);
             const energyMultiplier = p.energy / 100;
-            currentSpeed *= (0.7 + energyMultiplier * 0.3);
+            currentSpeed *= (0.75 + energyMultiplier * 0.25); // Less punishing
           }
           
-          // Focus affects variance (less focus = more chaos)
-          const maxVariance = 0.3 * (1 - p.focusFactor);
+          // PHASE 3: Reduced variance for tighter races
+          const maxVariance = 0.2 * (1 - p.focusFactor); // Reduced from 0.3
           const variance = 1 + ((Math.random() - 0.5) * maxVariance * 2);
           
           const step = currentSpeed * variance;
@@ -156,7 +166,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             p.finishTime = elapsed;
             finishedCount++;
             console.log(`✅ ${p.dog.name} finished: ${elapsed.toFixed(2)}s (${finishedCount}/8)`);
-            console.log(`   Stats: Speed=${p.dog.speed} Stamina=${p.dog.stamina} Accel=${p.dog.acceleration} Focus=${p.dog.focus}`);
           }
         }
       });
@@ -169,15 +178,18 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         return b.progress - a.progress;
       });
       
+      // Update positions (visualPosition will be used for smooth transitions)
       race.participants.forEach((p, i) => {
         p.position = i + 1;
+        // Smooth transition to new position
+        p.visualPosition = i + 1;
       });
       
       setRaceState({...race});
       
       if (allDone) {
         console.log('🏁 Race finished!');
-        console.log('📊 Results by attribute correlation:');
+        console.log('📊 Final Results:');
         race.participants.forEach((p, i) => {
           console.log(`  ${i+1}. ${p.dog.name} - ${p.finishTime.toFixed(2)}s (Rating: ${p.dog.getOverallRating()})`);
         });
@@ -209,10 +221,11 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           }
         });
         
-        setGameState({...gameState, raceCompleted: true});
+        // DON'T update gameState to avoid jumping back to overview
+        // Just mark race as finished
         setRaceState({...race});
       }
-    }, 20); // 20ms = 50 FPS for finer timing!
+    }, 20);
   };
   
   useEffect(() => {
@@ -385,7 +398,14 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           const owner = getDogOwner(p.dog);
           
           return (
-            <div key={p.id} className={`race-row-minimal ${isOwned ? 'owned-dog' : ''}`}>
+            <div 
+              key={p.id} 
+              className={`race-row-minimal ${isOwned ? 'owned-dog' : ''}`}
+              style={{
+                order: p.visualPosition,
+                transition: 'order 0.5s ease-in-out'
+              }}
+            >
               <div className="race-position">#{p.position}</div>
               
               <div className="race-info">
@@ -408,13 +428,21 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                 />
               </div>
               
-              {raceState.isFinished && p.finishTime && (
-                <div className="race-time">{p.finishTime.toFixed(2)}s</div>
-              )}
+              <div className="race-time">
+                {raceState.isFinished && p.finishTime ? `${p.finishTime.toFixed(2)}s` : ''}
+              </div>
             </div>
           );
         })}
       </div>
+      
+      {raceState.isFinished && (
+        <div className="race-continue-cta">
+          <button className="btn-cta" onClick={continueAfterRace}>
+            WEITER
+          </button>
+        </div>
+      )}
     </div>
   );
 }
