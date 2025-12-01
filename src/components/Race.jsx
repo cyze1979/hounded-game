@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Dog } from '../models/Dog';
-import { dogNames, dogBreeds } from '../data/dogData';
+import { dogNames, dogBreeds, AI_OWNER_NAME } from '../data/dogData';
 import { getDogImage } from '../utils/assetLoader';
 import DogDetailFull from './DogDetailFull';
 
@@ -20,7 +20,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [allParticipants, setAllParticipants] = useState([]);
   
   const addCommentary = (text) => {
-    setCommentary(prev => [...prev.slice(-3), text]);
+    setCommentary(prev => [...prev.slice(-5), text]); // Keep last 6
   };
   
   // Check if dog is owned by a player
@@ -30,8 +30,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   };
   
+  // Get dog owner name
+  const getDogOwner = (dog) => {
+    const owner = gameState.players.find(player => 
+      player.dogs.some(d => d.id === dog.id)
+    );
+    return owner ? owner.name : dog.owner || AI_OWNER_NAME;
+  };
+  
   const startRace = () => {
-    // Get all player dogs
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
@@ -41,18 +48,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
-    // Add AI dogs to make at least 6 total
     while (participants.length < 6) {
       const name = dogNames[Math.floor(Math.random() * dogNames.length)];
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-      participants.push(new Dog(name, breed));
+      participants.push(new Dog(null, breed));
     }
     
-    // Limit to 8 dogs max
     const raceDogs = participants.slice(0, 8);
     raceDogs.sort(() => Math.random() - 0.5);
     
-    // Calculate odds
     const totalRating = raceDogs.reduce((sum, dog) => sum + dog.getOverallRating(), 0);
     
     const newRace = {
@@ -112,8 +116,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       
       let racePhase = tick < 20 ? 'start' : tick < 60 ? 'middle' : 'sprint';
       
-      if (tick === 20) addCommentary("⚡ Sie erreichen die Mitte der Strecke!");
-      if (tick === 60) addCommentary("🔥 ENDSPURT! Wer hat noch Kraft?");
+      if (tick === 20) addCommentary("⚡ Mittelteil erreicht!");
+      if (tick === 60) addCommentary("🔥 ENDSPURT BEGINNT!");
       
       race.participants.forEach(p => {
         if (p.progress < 100) {
@@ -141,7 +145,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             p.finishTick = tick;
             finished.push(p);
             if (finished.length === 1) {
-              addCommentary(`🏆 ${dog.name.toUpperCase()} GEWINNT DAS RENNEN!`);
+              addCommentary(`🏆 ${dog.name.toUpperCase()} GEWINNT!`);
             }
           }
         }
@@ -154,7 +158,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         
         if (p.lastPosition > 0 && p.position < p.lastPosition && tick > 10 && tick < 75) {
           if (p.lastPosition - p.position >= 2) {
-            addCommentary(`⚡ ${p.dog.name} überholt mehrere Hunde!`);
+            addCommentary(`⚡ ${p.dog.name} überholt!`);
           }
         }
       });
@@ -206,9 +210,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     };
   }, [raceInterval]);
   
-  // Pre-race overview - show all potential participants
+  // Pre-race overview
   if (!gameState.currentRace) {
-    // Gather all potential participants
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
@@ -218,17 +221,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
-    // Add AI dogs
     while (participants.length < 6) {
       const name = dogNames[Math.floor(Math.random() * dogNames.length)];
       const breed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-      participants.push(new Dog(name, breed));
+      participants.push(new Dog(null, breed));
     }
     
     const raceDogs = participants.slice(0, 8);
     const totalRating = raceDogs.reduce((sum, dog) => sum + dog.getOverallRating(), 0);
     
-    // Calculate odds for display
     const participantsWithOdds = raceDogs.map(dog => {
       const rating = dog.getOverallRating();
       const odds = (totalRating / rating / raceDogs.length) * 1.5;
@@ -274,11 +275,11 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
               {/* Table Rows */}
               {participantsWithOdds.map((p, index) => {
                 const isOwned = isPlayerDog(p.dog);
+                const owner = getDogOwner(p.dog);
                 
                 return (
                   <div key={index} className={`participant-row ${isOwned ? 'owned-dog' : ''}`}>
                     
-                    {/* Dog Info */}
                     <div className="col-dog">
                       <img 
                         src={getDogImage(p.dog.imageNumber)} 
@@ -287,11 +288,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                       />
                       <div className="participant-dog-info">
                         <span className="participant-name">{p.dog.name}</span>
-                        <span className="participant-breed">{p.dog.breed}</span>
+                        <span className="participant-breed">{p.dog.breed} • {owner}</span>
                       </div>
                     </div>
                     
-                    {/* Stats with Icons */}
                     <div className="col-stats">
                       <div className="stat-item">
                         <span className="stat-icon">⚡</span>
@@ -309,24 +309,24 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
                         <span className="stat-icon">🎯</span>
                         <span className="stat-value">{p.dog.focus}</span>
                       </div>
+                      <div className="stat-item">
+                        <span className="stat-icon">❤️</span>
+                        <span className="stat-value">{p.dog.fitness}</span>
+                      </div>
                     </div>
                     
-                    {/* Overall Rating */}
                     <div className="col-rating">
                       <span className="rating-badge">{p.dog.getOverallRating()}</span>
                     </div>
                     
-                    {/* Best Time */}
                     <div className="col-besttime">
                       <span className="besttime-value">n/a</span>
                     </div>
                     
-                    {/* Odds */}
                     <div className="col-odds">
                       <span className="odds-value">{p.odds.toFixed(1)}x</span>
                     </div>
                     
-                    {/* Actions */}
                     <div className="col-actions">
                       <button 
                         className="btn-action btn-details"
@@ -360,7 +360,6 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           
         </div>
         
-        {/* Detail View for selected dog */}
         {selectedDog && (
           <DogDetailFull 
             dog={selectedDog} 
@@ -377,15 +376,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     );
   }
   
-  // Running race view (existing code)
+  // Running race view - NEW COMPACT LAYOUT
   const race = gameState.currentRace;
   
   return (
     <div className="race-view">
       
       {/* Race Header */}
-      <div className="race-header">
-        <h2 className="race-title">RENNEN LÄUFT</h2>
+      <div className="race-header-compact">
+        <h2 className="race-title">{raceData.name}</h2>
         <div className="race-timer">{race.elapsedTime.toFixed(1)}s</div>
       </div>
       
@@ -398,70 +397,81 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
         </div>
       )}
       
-      {/* Race Track */}
-      <div className="race-track-container">
-        {race.participants.map((p, index) => {
-          const isOwned = isPlayerDog(p.dog);
-          
-          return (
-            <div key={index} className={`race-lane ${isOwned ? 'player-lane' : ''}`}>
-              
-              <div className="lane-header">
-                <span className="lane-position">#{p.position}</span>
-                <div className="lane-dog-info">
-                  <span className="lane-dog-name">{p.dog.name}</span>
-                  <span className="lane-dog-breed">{p.dog.breed}</span>
-                </div>
-                <span className="lane-rating">{p.dog.getOverallRating()}</span>
-              </div>
-              
-              <div className="race-track-lane">
-                <div className="track-marker track-start">START</div>
+      {/* Main Race Layout: 2/3 Table + 1/3 Live Info */}
+      <div className="race-running-layout">
+        
+        {/* Left: Compact Table (2/3) */}
+        <div className="race-table-compact">
+          <div className="participants-table-container">
+            <div className="participants-table">
+              {race.participants.map((p, index) => {
+                const isOwned = isPlayerDog(p.dog);
+                const owner = getDogOwner(p.dog);
                 
-                <div 
-                  className="track-dog" 
-                  style={{
-                    left: `${p.progress}%`,
-                    transition: 'left 0.1s linear'
-                  }}
-                >
-                  <img 
-                    src={getDogImage(p.dog.imageNumber)} 
-                    alt={p.dog.name}
-                    className="dog-sprite"
-                  />
-                </div>
-                
-                <div className="track-marker track-finish">ZIEL</div>
-                
-                <div className="track-energy-bar">
-                  <div 
-                    className="energy-fill" 
-                    style={{
-                      width: `${p.energy}%`,
-                      background: p.energy > 70 ? '#48bb78' : p.energy > 40 ? '#ed8936' : '#f56565'
-                    }}
-                  />
-                </div>
-              </div>
-              
-              <div className="lane-progress">{p.progress.toFixed(1)}%</div>
-              
+                return (
+                  <div key={index} className={`participant-row-running ${isOwned ? 'owned-dog' : ''}`}>
+                    
+                    <div className="col-position">#{p.position}</div>
+                    
+                    <div className="col-dog-compact">
+                      <img 
+                        src={getDogImage(p.dog.imageNumber)} 
+                        alt={p.dog.name}
+                        className="participant-icon-small"
+                      />
+                      <div className="participant-dog-info">
+                        <span className="participant-name-small">{p.dog.name}</span>
+                        <span className="participant-owner-small">{owner}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="col-progress">
+                      <div className="progress-bar-inline">
+                        <div 
+                          className="progress-fill-inline"
+                          style={{width: `${p.progress}%`}}
+                        />
+                      </div>
+                      <span className="progress-text">{p.progress.toFixed(0)}%</span>
+                    </div>
+                    
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
-      
-      {/* Live Commentary */}
-      <div className="race-commentary">
-        <h3 className="commentary-title">📢 LIVE-KOMMENTAR</h3>
-        <div className="commentary-feed">
-          {commentary.map((msg, i) => (
-            <div key={i} className="commentary-message">
-              {msg}
-            </div>
-          ))}
+          </div>
         </div>
+        
+        {/* Right: Live Info (1/3) */}
+        <div className="race-sidebar">
+          
+          {/* Standings */}
+          <div className="race-standings-box">
+            <h3 className="standings-title">STANDINGS</h3>
+            <div className="standings-list">
+              {race.participants.slice(0, 5).map((p, i) => (
+                <div key={i} className="standing-item">
+                  <span className="standing-pos">{i + 1}.</span>
+                  <span className="standing-name">{p.dog.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Commentary */}
+          <div className="race-commentary-box">
+            <h3 className="commentary-title">📢 LIVE</h3>
+            <div className="commentary-feed-compact">
+              {commentary.map((msg, i) => (
+                <div key={i} className="commentary-message-compact">
+                  {msg}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+        </div>
+        
       </div>
       
       {/* Results */}
