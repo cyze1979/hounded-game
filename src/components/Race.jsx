@@ -91,7 +91,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       ...gameState,
       currentRace: null,
       raceCompleted: false,
-      currentMonth: gameState.currentMonth + 1 // Next month!
+      currentMonth: (gameState.currentMonth || 1) + 1 // Next month!
     });
   };
   
@@ -249,6 +249,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             p.dog.races++;
             p.dog.experience += 10;
             
+            // Reduce fitness after race
+            p.dog.fitness = Math.max(0, p.dog.fitness - 15);
+            
             if (position === 1) {
               p.dog.wins++;
               raceData.lastWinner = p.dog.name;
@@ -267,6 +270,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
             }
           }
         });
+        
+        // Update gameState to refresh money display immediately
+        setGameState({...gameState});
         
         setRaceState({...race});
         

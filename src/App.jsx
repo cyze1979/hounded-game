@@ -194,6 +194,7 @@ function App() {
       <Header 
         currentPlayer={getCurrentPlayer()} 
         gameDay={gameState.gameDay}
+        currentMonth={gameState.currentMonth || 1}
         players={gameState.players}
         onPlayerSwitch={(index) => setGameState({...gameState, currentPlayerIndex: index})}
         currentView={currentView}

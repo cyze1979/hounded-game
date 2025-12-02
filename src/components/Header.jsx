@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
-export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
+export default function Header({ currentPlayer, gameDay, currentMonth, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
   const [showSwitcher, setShowSwitcher] = useState(false);
+  
+  // Calculate season based on month (6 months per season)
+  const season = Math.floor((currentMonth - 1) / 6) + 1;
+  const monthInSeason = ((currentMonth - 1) % 6) + 1;
   
   // Get player's first dog for avatar, or use placeholder
   const playerAvatar = currentPlayer.dogs.length > 0 
@@ -65,7 +69,7 @@ export default function Header({ currentPlayer, gameDay, players, onPlayerSwitch
       
       {/* Right: Week Info & Next Button */}
       <div className="header-right">
-        <div className="header-week">WOCHE {gameDay}</div>
+        <div className="header-week">SAISON {season} • MONAT {monthInSeason}</div>
         <button 
           className={`btn-cta btn-next-day ${!raceCompleted ? 'btn-race-required' : ''}`}
           onClick={onNextDay}
