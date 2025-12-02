@@ -3,25 +3,8 @@ import { motion } from 'framer-motion';
 import { Dog } from '../models/Dog';
 import { dogNames, dogBreeds, AI_OWNER_NAME } from '../data/dogData';
 import { getDogImage } from '../utils/assetLoader';
+import { getAllTracks, getTrackForMonth, RACE_PRIZES } from '../data/trackData';
 import DogDetailFull from './DogDetailFull';
-
-const raceData = {
-  name: "STADTPARK SPRINT",
-  distance: 800,
-  bestTime: null,
-  bestTimeHolder: null,
-  lastWinner: null,
-  lastResults: null // Store last race results
-};
-
-// Prize money structure
-const RACE_PRIZES = {
-  "STADTPARK SPRINT": {
-    1: 1000,
-    2: 750,
-    3: 500
-  }
-};
 
 export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [selectedDog, setSelectedDog] = useState(null);
@@ -30,13 +13,45 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const [raceState, setRaceState] = useState(null);
   const [showResults, setShowResults] = useState(false);
   
-  const raceRef = useRef(null);
   const timerRef = useRef(null);
   const startTimeRef = useRef(null);
   
+  // Get current track based on month (fixed calendar)
+  const currentTrack = getTrackForMonth(gameState.currentMonth);
+  
+  // Debug logging
+  console.log('Race Component:', {
+    currentMonth: gameState.currentMonth,
+    currentTrack: currentTrack?.name,
+    hasTracksInState: !!gameState.tracks
+  });
+  
+  // Initialize track data in gameState if not present
+  useEffect(() => {
+    if (!gameState.tracks) {
+      const tracks = {};
+      getAllTracks().forEach(track => {
+        tracks[track.name] = {
+          ...track,
+          bestTime: null,
+          bestTimeHolder: null,
+          lastWinner: null,
+          lastResults: null,
+          racesHeld: 0
+        };
+      });
+      setGameState({ ...gameState, tracks });
+    }
+  }, []);
+  
+  // Get current track data from gameState
+  const raceData = gameState.tracks && currentTrack ? gameState.tracks[currentTrack.name] : null;
+  
+  const raceRef = useRef(null);
+  
   // Load stored results if they exist
   useEffect(() => {
-    if (raceData.lastResults && !raceState && !showResults) {
+    if (raceData && raceData.lastResults && !raceState && !showResults) {
       setRaceState(raceData.lastResults.race);
       setShowResults(true);
     }
@@ -57,7 +72,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   
   const continueAfterResults = () => {
     // Clear everything including stored results
-    raceData.lastResults = null;
+    if (raceData) {
+      raceData.lastResults = null;
+    }
     setRaceState(null);
     setShowResults(false);
     
@@ -68,6 +85,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
       });
     });
     
+    // Save updated track data
     setGameState({
       ...gameState,
       currentRace: null,
@@ -272,7 +290,17 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   }, []);
   
   // PRE-RACE OVERVIEW
-  if (!gameState.currentRace) {
+  if (!gameState.currentRace && !raceState && !showResults) {
+    // Safety check - wait for tracks to initialize
+    if (!gameState.tracks) {
+      return <div className="race-view">Initializing tracks...</div>;
+    }
+    
+    // Get track data
+    if (!raceData || !currentTrack) {
+      return <div className="race-view">Loading track data...</div>;
+    }
+    
     const participants = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
