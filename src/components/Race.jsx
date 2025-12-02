@@ -112,25 +112,51 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     const raceDogs = participants.slice(0, 8);
     raceDogs.sort(() => Math.random() - 0.5);
     
+    // Get attribute weights based on distance
+    const getAttributeWeights = (distance) => {
+      if (distance <= 800) {
+        // SPRINT: Speed & Acceleration dominant
+        return { speed: 0.50, stamina: 0.10, acceleration: 0.30, focus: 0.10 };
+      } else if (distance <= 1000) {
+        // SHORT: Balanced with speed bias
+        return { speed: 0.45, stamina: 0.20, acceleration: 0.25, focus: 0.10 };
+      } else if (distance <= 1200) {
+        // MEDIUM: Balanced
+        return { speed: 0.35, stamina: 0.30, acceleration: 0.20, focus: 0.15 };
+      } else if (distance <= 1500) {
+        // LONG: Stamina starts to matter
+        return { speed: 0.30, stamina: 0.40, acceleration: 0.15, focus: 0.15 };
+      } else {
+        // MARATHON: Stamina dominant
+        return { speed: 0.25, stamina: 0.50, acceleration: 0.10, focus: 0.15 };
+      }
+    };
+    
+    const weights = getAttributeWeights(currentTrack.distance);
+    
     const newRace = {
       participants: raceDogs.map((dog, index) => {
+        // Calculate base speed with distance-specific weights
         const baseSpeed = (
-          dog.speed * 0.4 +
-          dog.stamina * 0.25 +
-          dog.acceleration * 0.2 +
-          dog.focus * 0.15
+          dog.speed * weights.speed +
+          dog.stamina * weights.stamina +
+          dog.acceleration * weights.acceleration +
+          dog.focus * weights.focus
         ) / 100;
         
         const fitnessFactor = Math.max(0.85, dog.fitness / 100);
         const focusFactor = dog.focus / 100;
+        
+        // Distance multiplier: longer races = slower progress
+        const distanceMultiplier = 800 / currentTrack.distance;
         
         return {
           id: `racer-${index}`,
           dog: dog,
           progress: 0,
           position: index + 1,
-          baseSpeed: baseSpeed * fitnessFactor * 0.5,
-          accelerationBoost: (dog.acceleration / 100) * 0.15,
+          baseSpeed: baseSpeed * fitnessFactor * distanceMultiplier,
+          accelerationBoost: (dog.acceleration / 100) * 0.15 * distanceMultiplier,
           staminaFactor: dog.stamina / 100,
           focusFactor: focusFactor,
           energy: 100,
@@ -185,11 +211,15 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           let currentSpeed = p.baseSpeed;
           
           if (phase === 'start') {
-            currentSpeed += p.accelerationBoost;
+            // Acceleration matters MORE in short races
+            const accelImportance = 1 + (1 - (currentTrack.distance / 2000)); // 1.6 for 800m, 1.0 for 2000m
+            currentSpeed += p.accelerationBoost * accelImportance;
           }
           
           if (phase === 'sprint') {
-            const energyDrain = (1 - p.staminaFactor) * 1.5;
+            // Energy drain increases with distance (longer races = harder sprint)
+            const distanceFactor = currentTrack.distance / 1000; // 0.8 to 2.0
+            const energyDrain = (1 - p.staminaFactor) * 1.5 * distanceFactor;
             p.energy = Math.max(40, p.energy - energyDrain);
             const energyMultiplier = p.energy / 100;
             currentSpeed *= (0.75 + energyMultiplier * 0.25);
