@@ -50,7 +50,8 @@ function App() {
         ...savedGame,
         marketDogs: generateMarketDogs(),
         currentRace: null,
-        isSetup: false
+        isSetup: false,
+        currentMonth: savedGame.currentMonth || 1 // Migration: add currentMonth if missing
       });
     }
   }, []);

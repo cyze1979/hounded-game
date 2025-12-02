@@ -17,11 +17,12 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
   const startTimeRef = useRef(null);
   
   // Get current track based on month (fixed calendar)
-  const currentTrack = getTrackForMonth(gameState.currentMonth);
+  const currentMonth = gameState.currentMonth || 1; // Fallback to month 1
+  const currentTrack = getTrackForMonth(currentMonth);
   
   // Debug logging
   console.log('Race Component:', {
-    currentMonth: gameState.currentMonth,
+    currentMonth: currentMonth,
     currentTrack: currentTrack?.name,
     hasTracksInState: !!gameState.tracks
   });
