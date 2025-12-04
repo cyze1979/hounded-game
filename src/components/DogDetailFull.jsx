@@ -9,7 +9,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
       const prevDog = allDogs[currentDogIndex - 1];
       onClose();
       setTimeout(() => {
-        // This is a hack - ideally we'd have a prop to change dog
         const event = new CustomEvent('showDogDetail', { detail: prevDog });
         window.dispatchEvent(event);
       }, 10);
@@ -37,178 +36,117 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
   };
   
   const handleTrain = () => {
-    // Close detail and switch to training view
     onClose();
-    // Dispatch event to change view to training
     const event = new CustomEvent('changeView', { detail: 'training' });
     window.dispatchEvent(event);
   };
   
-  // Calculate value change
+  // Calculate stats
   const currentValue = dog.getValue();
-  const purchasePrice = dog.purchasePrice || currentValue; // Fallback for old dogs
-  const valueDelta = currentValue - purchasePrice;
-  const valuePercent = purchasePrice > 0 ? Math.round((valueDelta / purchasePrice) * 100) : 0;
-  
-  // Calculate win rate
+  const purchasePrice = dog.purchasePrice || currentValue;
   const winRate = dog.races > 0 ? Math.round((dog.wins / dog.races) * 100) : 0;
-  
-  // Age category info
   const ageCategory = dog.getAgeCategoryName();
-  const trainingEfficiency = dog.getTrainingEfficiency();
-  const racingPenalty = dog.getRacingPenalty();
-  
-  const trainingEfficiencyText = trainingEfficiency === 1.0 ? '+0% (Normal)' :
-                                  trainingEfficiency > 1.0 ? `+${Math.round((trainingEfficiency - 1) * 100)}% (Bonus!)` :
-                                  `${Math.round((trainingEfficiency - 1) * 100)}% (Malus)`;
-  
-  const racingBonusText = racingPenalty === 1.0 ? '+0% (Peak Performance)' :
-                          racingPenalty > 1.0 ? `+${Math.round((racingPenalty - 1) * 100)}% (Bonus!)` :
-                          `${Math.round((racingPenalty - 1) * 100)}% (Malus)`;
   
   return (
-    <div className="overlay" onClick={onClose}>
-      <div className="dog-detail-full" onClick={(e) => e.stopPropagation()}>
+    <div className="detail-overlay-mockup" onClick={onClose}>
+      <div className="detail-container-mockup" onClick={(e) => e.stopPropagation()}>
         
-        {/* Header with navigation */}
-        <div className="detail-header">
-          <button className="btn-nav" onClick={onClose}>←</button>
-          <div className="detail-title-section">
-            <h2 className="detail-name">{dog.name}</h2>
-            <div className="detail-meta">
-              <span>{dog.breed}</span>
-              <span>•</span>
-              <span>{dog.getAgeInYears()} Jahre</span>
-              <span>•</span>
-              <span>{ageCategory}</span>
+        {/* Close button */}
+        <button className="detail-close-btn" onClick={onClose}>✕</button>
+        
+        {/* Top Section: Name + Age + Rating */}
+        <div className="detail-header-mockup">
+          <div className="detail-name-section">
+            <h1 className="detail-name-mockup">{dog.name}</h1>
+            <div className="detail-subtitle-mockup">
+              {dog.breed}, {dog.getAgeInYears()} Jahre
             </div>
           </div>
-          <div className="detail-rating">
-            <div className="rating-label">Rating</div>
-            <div className="rating-value">{dog.getOverallRating()}</div>
+          <div className="detail-rating-mockup">
+            <div className="rating-number-mockup">{dog.getOverallRating()}</div>
+            <div className="rating-label-mockup">{ageCategory}</div>
           </div>
         </div>
         
-        {/* Main content grid */}
-        <div className="detail-content">
+        {/* Main Content Grid */}
+        <div className="detail-grid-mockup">
           
-          {/* Left: Image & Attributes */}
-          <div className="detail-left">
-            <div className="detail-image-container">
-              <img src={getDogImage(dog.imageNumber)} alt={dog.name} className="detail-image" />
+          {/* Left Column: Dog Image */}
+          <div className="detail-left-mockup">
+            <div className="dog-image-large">
+              <img src={getDogImage(dog.imageNumber)} alt={dog.name} />
             </div>
-            
-            <div className="detail-section">
-              <h3 className="section-title">ATTRIBUTE</h3>
-              <div className="attribute-list">
-                {[
-                  { label: 'Speed', icon: '⚡', value: dog.speed },
-                  { label: 'Stamina', icon: '💪', value: dog.stamina },
-                  { label: 'Acceleration', icon: '🚀', value: dog.acceleration },
-                  { label: 'Focus', icon: '🎯', value: dog.focus },
-                  { label: 'Fitness', icon: '❤️', value: dog.fitness }
-                ].map(attr => (
-                  <div key={attr.label} className="attribute-row">
-                    <div className="attribute-label">
-                      <span className="attribute-icon">{attr.icon}</span>
-                      <span>{attr.label}</span>
+          </div>
+          
+          {/* Middle Column: Attributes */}
+          <div className="detail-middle-mockup">
+            <h3 className="detail-section-title">ATTRIBUTE</h3>
+            <div className="attributes-mockup">
+              {[
+                { key: 'speed', label: 'GESCHWINDIGKEIT', value: dog.speed },
+                { key: 'stamina', label: 'AUSDAUER', value: dog.stamina },
+                { key: 'acceleration', label: 'BESCHLEUNIGUNG', value: dog.acceleration },
+                { key: 'focus', label: 'FOKUS', value: dog.focus },
+                { key: 'fitness', label: 'FITNESS', value: dog.fitness, isFitness: true }
+              ].map(attr => (
+                <div key={attr.key} className="attribute-row-mockup">
+                  <div className="attribute-label-mockup">{attr.label}</div>
+                  <div className="attribute-bar-wrapper">
+                    <div className="attribute-bar-bg-mockup">
+                      <div 
+                        className={`attribute-bar-fill-mockup ${attr.isFitness && attr.value < 50 ? 'low-fitness' : ''}`}
+                        style={{ width: `${attr.value}%` }}
+                      />
                     </div>
-                    <div className="attribute-bar-container">
-                      <div className="attribute-bar-bg">
-                        <div 
-                          className="attribute-bar-fill"
-                          style={{ width: `${attr.value}%` }}
-                        />
-                      </div>
-                      <span className="attribute-value">{attr.value}</span>
-                    </div>
+                    <div className="attribute-value-mockup">{attr.value}</div>
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Right Column: Statistics */}
+          <div className="detail-right-mockup">
+            <h3 className="detail-section-title">STATISTIKEN</h3>
+            <div className="stats-list-mockup">
+              <div className="stat-row-mockup">
+                <div className="stat-label-mockup">RENNEN</div>
+                <div className="stat-value-mockup">{dog.races}</div>
+              </div>
+              <div className="stat-row-mockup">
+                <div className="stat-label-mockup">SIEGE</div>
+                <div className="stat-value-mockup">{dog.wins}</div>
+              </div>
+              <div className="stat-row-mockup">
+                <div className="stat-label-mockup">PREISGELDER</div>
+                <div className="stat-value-mockup highlight">{dog.totalEarnings.toLocaleString('de-DE')} €</div>
+              </div>
+              <div className="stat-row-mockup">
+                <div className="stat-label-mockup">EINKAUFSPREIS</div>
+                <div className="stat-value-mockup">{purchasePrice.toLocaleString('de-DE')} €</div>
+              </div>
+              <div className="stat-row-mockup">
+                <div className="stat-label-mockup">AKTUELLER WERT</div>
+                <div className="stat-value-mockup highlight">{currentValue.toLocaleString('de-DE')} €</div>
               </div>
             </div>
           </div>
           
-          {/* Right: Stats & Info */}
-          <div className="detail-right">
-            
-            {/* Value Section */}
-            <div className="detail-section">
-              <h3 className="section-title">WERT</h3>
-              <div className="value-info">
-                <div className="value-row">
-                  <span className="value-label">Gekauft für:</span>
-                  <span className="value-amount">{purchasePrice.toLocaleString('de-DE')}€</span>
-                </div>
-                <div className="value-row value-current">
-                  <span className="value-label">Aktuell:</span>
-                  <span className="value-amount-big">{currentValue.toLocaleString('de-DE')}€</span>
-                </div>
-                {valueDelta !== 0 && (
-                  <div className={`value-delta ${valueDelta > 0 ? 'positive' : 'negative'}`}>
-                    {valueDelta > 0 ? '↗️' : '↘️'} {valueDelta > 0 ? '+' : ''}{valueDelta.toLocaleString('de-DE')}€ ({valuePercent > 0 ? '+' : ''}{valuePercent}%)
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            {/* Career Stats */}
-            <div className="detail-section">
-              <h3 className="section-title">KARRIERE STATISTIKEN</h3>
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <div className="stat-label">Rennen</div>
-                  <div className="stat-value">{dog.races}</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-label">Win Rate</div>
-                  <div className="stat-value">{winRate}%</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-label">Siege</div>
-                  <div className="stat-value">{dog.wins}</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-label">Preisgelder</div>
-                  <div className="stat-value">{dog.totalEarnings.toLocaleString('de-DE')}€</div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Age & Training */}
-            <div className="detail-section">
-              <h3 className="section-title">ALTER & TRAINING</h3>
-              <div className="age-info">
-                <div className="age-row">
-                  <span className="age-icon">🎂</span>
-                  <span>{dog.getAgeInYears()} Jahre ({ageCategory})</span>
-                </div>
-                <div className="age-row">
-                  <span className="age-icon">📈</span>
-                  <span>Training Effizienz: {trainingEfficiencyText}</span>
-                </div>
-                <div className="age-row">
-                  <span className="age-icon">🏁</span>
-                  <span>Racing Bonus: {racingBonusText}</span>
-                </div>
-              </div>
-            </div>
-            
-          </div>
         </div>
         
-        {/* Footer Actions */}
+        {/* Bottom Actions */}
         {isPlayerDog && !isRaceView && (
-          <div className="detail-actions">
-            <button className="btn-action-detail btn-train" onClick={handleTrain}>
-              TRAINIEREN
+          <div className="detail-actions-mockup">
+            <button className="btn-tab btn-tab-large" onClick={handleTrain}>
+              <span>TRAINIEREN</span>
             </button>
-            <button className="btn-action-detail btn-sell" onClick={handleSell}>
-              VERKAUFEN FÜR {currentValue.toLocaleString('de-DE')}€
+            <button className="btn-tab btn-tab-large" onClick={handleSell}>
+              <span>VERKAUFEN</span>
             </button>
           </div>
         )}
         
-        {/* Navigation arrows */}
+        {/* Navigation arrows (optional - keeping from original) */}
         {allDogs.length > 1 && (
           <>
             {currentDogIndex > 0 && (
