@@ -3528,6 +3528,7 @@
   transform: scale(1.02);
 }
 
+
 /* Responsive */
 @media (max-width: 800px) {
   .track-grid {
@@ -3536,7 +3537,7 @@
 }
 
 /* ============================================
-   DOG DETAIL VIEW - EXACT MOCKUP MATCH
+   DOG DETAIL VIEW - EXACT MOCKUP PROPORTIONS
    Background with blur + overlay
 ============================================ */
 
@@ -3667,7 +3668,7 @@
 /* Main Content - 3 Column Grid with Dividers */
 .detail-content-grid {
   display: grid;
-  grid-template-columns: 380px 1fr 420px;
+  grid-template-columns: 280px 1fr 380px;
   gap: 0;
   flex: 1;
   position: relative;
@@ -3685,24 +3686,24 @@
 }
 
 .detail-content-grid::before {
-  left: 380px;
+  left: 280px;
 }
 
 .detail-content-grid::after {
-  right: 420px;
+  right: 380px;
 }
 
-/* Left Column - Dog Image */
+/* Left Column - Dog Image (SMALLER) */
 .detail-image-column {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 50px;
+  padding-right: 40px;
 }
 
 .dog-portrait {
   width: 100%;
-  max-width: 320px;
+  max-width: 240px;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -3729,21 +3730,21 @@
   z-index: 1;
 }
 
-/* Middle Column - Attributes */
+/* Middle Column - Attributes (MUCH WIDER) */
 .detail-attributes-column {
   display: flex;
   flex-direction: column;
-  gap: 35px;
-  padding: 0 60px;
+  gap: 40px;
+  padding: 0 70px;
 }
 
 .column-title {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 0.95em;
+  font-size: 1.1em;
   letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-white);
   text-transform: uppercase;
   margin: 0;
 }
@@ -3751,13 +3752,13 @@
 .attributes-list {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 35px;
 }
 
 .stat-bar-row {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 40px;
 }
 
 .stat-bar-label {
@@ -3776,12 +3777,12 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 
 .stat-bar-container-new {
   flex: 1;
-  height: 22px;
+  height: 24px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 0;
   overflow: visible;
@@ -3804,19 +3805,19 @@
 }
 
 .stat-bar-number {
-  min-width: 55px;
+  min-width: 60px;
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 700;
-  font-size: 1.4em;
+  font-size: 1.5em;
   color: var(--text-white);
   text-align: left;
 }
 
-/* Right Column - Statistics with Scrollbar */
+/* Right Column - Statistics (NO BORDER LINES) */
 .detail-stats-column {
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 40px;
   padding-left: 60px;
 }
 
@@ -3850,11 +3851,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.stat-item-row:last-child {
+  padding: 20px 0;
   border-bottom: none;
 }
 
@@ -3870,14 +3867,14 @@
 .stat-item-value {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 700;
-  font-size: 1.4em;
+  font-size: 1.5em;
   color: var(--text-white);
   text-align: right;
 }
 
 .stat-item-value.stat-yellow {
   color: var(--text-white);
-  font-size: 1.4em;
+  font-size: 1.5em;
 }
 
 /* Bottom Actions */
@@ -3892,23 +3889,23 @@
 /* Responsive */
 @media (max-width: 1400px) {
   .detail-content-grid {
-    grid-template-columns: 320px 1fr 380px;
+    grid-template-columns: 260px 1fr 350px;
   }
   
   .detail-content-grid::before {
-    left: 320px;
+    left: 260px;
   }
   
   .detail-content-grid::after {
-    right: 380px;
+    right: 350px;
   }
   
   .detail-attributes-column {
-    padding: 0 40px;
+    padding: 0 50px;
   }
   
   .detail-stats-column {
-    padding-left: 40px;
+    padding-left: 50px;
   }
   
   .detail-name-large {
@@ -3947,7 +3944,7 @@
   }
   
   .dog-portrait {
-    max-width: 300px;
+    max-width: 280px;
   }
   
   .stat-bar-label {
