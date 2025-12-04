@@ -3568,7 +3568,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(10, 14, 26, 0.85);
+  background: rgba(10, 14, 26, 0.70);
   z-index: -1;
 }
 
@@ -3604,7 +3604,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(10, 14, 26, 0.85);
+  background: rgba(10, 14, 26, 0.70);
   z-index: -1;
 }
 
@@ -3625,7 +3625,7 @@
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 900;
   font-style: italic;
-  font-size: 5em;
+  font-size: 5.5em;
   letter-spacing: 2px;
   color: var(--text-white);
   text-transform: uppercase;
@@ -3649,7 +3649,7 @@
 .rating-number-large {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 900;
-  font-size: 6.5em;
+  font-size: 5.5em;
   color: var(--text-white);
   line-height: 0.85;
   margin-bottom: 5px;
@@ -3781,7 +3781,7 @@
 
 .stat-bar-container-new {
   flex: 1;
-  height: 16px;
+  height: 22px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 0;
   overflow: visible;
@@ -3876,8 +3876,8 @@
 }
 
 .stat-item-value.stat-yellow {
-  color: var(--yellow-primary);
-  font-size: 1.5em;
+  color: var(--text-white);
+  font-size: 1.4em;
 }
 
 /* Bottom Actions */
@@ -3912,11 +3912,11 @@
   }
   
   .detail-name-large {
-    font-size: 4em;
+    font-size: 4.5em;
   }
   
   .rating-number-large {
-    font-size: 5em;
+    font-size: 4.5em;
   }
 }
 
@@ -3965,7 +3965,7 @@
   }
   
   .rating-number-large {
-    font-size: 3.5em;
+    font-size: 2.5em;
   }
   
   .stat-bar-label {
