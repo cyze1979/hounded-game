@@ -3536,160 +3536,92 @@
 }
 
 /* ============================================
-   DOG DETAIL - MOCKUP STYLE
-   Based on Starlight design
+   DOG DETAIL VIEW - MATCHES MOCKUP DESIGN
+   No overlay, sits below header
 ============================================ */
 
-.detail-overlay-mockup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 40px;
-}
-
-.detail-container-mockup {
-  width: 100%;
-  max-width: 1400px;
-  height: 90vh;
-  background: rgba(10, 14, 26, 0.95);
-  border: 1px solid rgba(0, 217, 255, 0.3);
-  border-radius: 20px;
-  padding: 50px 60px;
-  position: relative;
+.dog-detail-view {
+  min-height: calc(100vh - 80px);
+  padding: 40px 60px 60px 60px;
   display: flex;
   flex-direction: column;
   gap: 40px;
-  overflow: hidden;
 }
 
-/* Background glow effect */
-.detail-container-mockup::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 30% 40%, rgba(0, 217, 255, 0.15), transparent 40%),
-              radial-gradient(circle at 70% 60%, rgba(100, 200, 255, 0.1), transparent 40%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.detail-container-mockup > * {
-  position: relative;
-  z-index: 1;
-}
-
-.detail-close-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-white);
-  font-size: 1.5em;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.detail-close-btn:hover {
-  background: rgba(255, 68, 68, 0.2);
-  border-color: #ef4444;
-  color: #ef4444;
-  transform: scale(1.1);
-}
-
-/* Header Section */
-.detail-header-mockup {
+/* Hero Section - Name & Rating */
+.detail-hero {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: 30px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .detail-name-section {
   flex: 1;
 }
 
-.detail-name-mockup {
+.detail-name-large {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 900;
   font-style: italic;
-  font-size: 4em;
-  letter-spacing: 3px;
+  font-size: 4.5em;
+  letter-spacing: 2px;
   color: var(--text-white);
   text-transform: uppercase;
   margin: 0 0 10px 0;
-  line-height: 1;
+  line-height: 0.9;
 }
 
-.detail-subtitle-mockup {
+.detail-subtitle-large {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.detail-rating-mockup {
+.detail-rating-badge {
   text-align: right;
 }
 
-.rating-number-mockup {
+.rating-number-large {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 900;
-  font-size: 5em;
+  font-size: 6em;
   color: var(--text-white);
-  line-height: 1;
+  line-height: 0.9;
   margin-bottom: 5px;
 }
 
-.rating-label-mockup {
+.rating-label-large {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
-  font-size: 1em;
+  font-size: 1.1em;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-/* Main Grid */
-.detail-grid-mockup {
+/* Main Content - 3 Column Grid */
+.detail-content-grid {
   display: grid;
-  grid-template-columns: 350px 1fr 400px;
-  gap: 50px;
+  grid-template-columns: 400px 1fr 450px;
+  gap: 60px;
   flex: 1;
-  overflow-y: auto;
-  padding-right: 10px;
 }
 
 /* Left Column - Dog Image */
-.detail-left-mockup {
+.detail-image-column {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.dog-image-large {
+.dog-portrait {
   width: 100%;
+  max-width: 350px;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -3697,196 +3629,238 @@
   position: relative;
 }
 
-.dog-image-large::before {
+.dog-portrait::before {
   content: '';
   position: absolute;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(0, 217, 255, 0.2), transparent 60%);
-  filter: blur(40px);
+  width: 130%;
+  height: 130%;
+  background: radial-gradient(circle, rgba(0, 217, 255, 0.15), transparent 70%);
+  filter: blur(50px);
   z-index: 0;
 }
 
-.dog-image-large img {
+.dog-portrait img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 30px rgba(0, 217, 255, 0.4));
+  filter: drop-shadow(0 0 40px rgba(0, 217, 255, 0.3));
   position: relative;
   z-index: 1;
 }
 
 /* Middle Column - Attributes */
-.detail-middle-mockup {
+.detail-attributes-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.column-title {
+  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.attributes-list {
   display: flex;
   flex-direction: column;
   gap: 25px;
 }
 
-.detail-section-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
-  font-weight: 700;
-  font-size: 1em;
-  letter-spacing: 2px;
-  color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
-  margin: 0 0 10px 0;
-}
-
-.attributes-mockup {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.attribute-row-mockup {
+.stat-bar-row {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 
-.attribute-label-mockup {
+.stat-bar-label {
   min-width: 200px;
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 600;
   font-size: 1em;
   font-style: italic;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--text-white);
   text-align: right;
   text-transform: uppercase;
 }
 
-.attribute-bar-wrapper {
+.stat-bar-group {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
-.attribute-bar-bg-mockup {
+.stat-bar-container-new {
   flex: 1;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
   overflow: hidden;
 }
 
-.attribute-bar-fill-mockup {
+.stat-bar-fill-new {
   height: 100%;
-  background: var(--cyan-primary);
-  border-radius: 6px;
+  border-radius: 7px;
   transition: width 0.5s ease;
-  box-shadow: 0 0 15px rgba(0, 217, 255, 0.6);
 }
 
-.attribute-bar-fill-mockup.low-fitness {
+.stat-bar-fill-new.bar-cyan {
+  background: var(--cyan-primary);
+  box-shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+}
+
+.stat-bar-fill-new.bar-red {
   background: #ef4444;
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
 }
 
-.attribute-value-mockup {
+.stat-bar-number {
   min-width: 50px;
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 700;
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: var(--text-white);
   text-align: left;
 }
 
-/* Right Column - Statistics */
-.detail-right-mockup {
+/* Right Column - Statistics with Scrollbar */
+.detail-stats-column {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 15px;
+  gap: 30px;
 }
 
-.stats-list-mockup {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.stats-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 15px;
 }
 
-.stat-row-mockup {
+/* Custom Scrollbar */
+.stats-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.stats-scrollable::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.stats-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.stats-scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.stat-item-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.stat-row-mockup:last-child {
+.stat-item-row:last-child {
   border-bottom: none;
 }
 
-.stat-label-mockup {
+.stat-item-label {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
-  font-size: 0.9em;
+  font-size: 0.95em;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.stat-value-mockup {
+.stat-item-value {
   font-family: 'Roboto', 'Mona Sans', sans-serif;
   font-weight: 700;
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: var(--text-white);
+  text-align: right;
 }
 
-.stat-value-mockup.highlight {
+.stat-item-value.stat-yellow {
   color: var(--yellow-primary);
-  font-size: 1.4em;
 }
 
 /* Bottom Actions */
-.detail-actions-mockup {
+.detail-bottom-actions {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
-  padding-top: 20px;
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
-  .detail-grid-mockup {
+@media (max-width: 1400px) {
+  .detail-content-grid {
+    grid-template-columns: 300px 1fr 400px;
+    gap: 40px;
+  }
+  
+  .detail-name-large {
+    font-size: 3.5em;
+  }
+  
+  .rating-number-large {
+    font-size: 4.5em;
+  }
+}
+
+@media (max-width: 1100px) {
+  .detail-content-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 40px;
   }
   
-  .detail-name-mockup {
-    font-size: 3em;
+  .detail-image-column {
+    order: -1;
   }
   
-  .rating-number-mockup {
-    font-size: 3em;
+  .detail-attributes-column {
+    order: 1;
   }
   
-  .detail-right-mockup {
-    padding: 20px;
+  .detail-stats-column {
+    order: 2;
+  }
+  
+  .dog-portrait {
+    max-width: 300px;
+  }
+  
+  .stat-bar-label {
+    min-width: 150px;
   }
 }
 
 @media (max-width: 768px) {
-  .detail-overlay-mockup {
-    padding: 20px;
-  }
-  
-  .detail-container-mockup {
+  .dog-detail-view {
     padding: 30px 25px;
   }
   
-  .detail-name-mockup {
-    font-size: 2em;
+  .detail-name-large {
+    font-size: 2.5em;
   }
   
-  .attribute-label-mockup {
+  .rating-number-large {
+    font-size: 3em;
+  }
+  
+  .stat-bar-label {
     min-width: 120px;
     font-size: 0.85em;
   }
