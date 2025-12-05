@@ -3,10 +3,11 @@ import { getDogImage } from '../utils/assetLoader';
 
 export default function Header({ currentPlayer, gameDay, currentMonth, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
   const [showSwitcher, setShowSwitcher] = useState(false);
-  
-  // Calculate season based on month (6 months per season)
-  const season = Math.floor((currentMonth - 1) / 6) + 1;
-  const monthInSeason = ((currentMonth - 1) % 6) + 1;
+
+  // Month names
+  const monthNames = ['JANUAR', 'FEBRUAR', 'MÄRZ', 'APRIL', 'MAI', 'JUNI', 'JULI', 'AUGUST', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DEZEMBER'];
+  const currentMonthName = monthNames[(currentMonth - 1) % 12];
+  const currentYear = 2048 + Math.floor((currentMonth - 1) / 12);
   
   // Get player's first dog for avatar, or use placeholder
   const playerAvatar = currentPlayer.dogs.length > 0 
@@ -14,7 +15,7 @@ export default function Header({ currentPlayer, gameDay, currentMonth, players, 
     : null;
   
   const navItems = [
-    { id: 'stable', label: 'MEIN RENNSTALL' },
+    { id: 'stable', label: 'RENNSTALL' },
     { id: 'training', label: 'TRAINING' },
     { id: 'market', label: 'HUNDEMARKT', badge: marketNotifications },
     { id: 'race', label: 'RENNEN' },
@@ -25,9 +26,6 @@ export default function Header({ currentPlayer, gameDay, currentMonth, players, 
   const formatMoney = (amount) => {
     return amount.toLocaleString('de-DE');
   };
-  
-  // Button text changes based on race status
-  const nextButtonText = raceCompleted ? 'WEITER' : 'ZUM RENNEN';
   
   return (
     <header className="game-header-new">
@@ -67,14 +65,14 @@ export default function Header({ currentPlayer, gameDay, currentMonth, players, 
         ))}
       </nav>
       
-      {/* Right: Week Info & Next Button */}
+      {/* Right: Date & Next Button */}
       <div className="header-right">
-        <div className="header-week">SAISON {season} • MONAT {monthInSeason}</div>
-        <button 
-          className={`btn-cta btn-next-day ${!raceCompleted ? 'btn-race-required' : ''}`}
+        <div className="header-week">{currentMonthName} {currentYear}</div>
+        <button
+          className="btn-cta btn-next-day"
           onClick={onNextDay}
         >
-          {nextButtonText}
+          WEITER
         </button>
       </div>
       

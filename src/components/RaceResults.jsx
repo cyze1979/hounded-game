@@ -25,8 +25,8 @@ export default function RaceResults({ raceState, currentTrack, raceData, gameSta
     <div className="race-view">
       <div className="results-screen">
         <div className="results-header">
-          <h2 className="results-title">{raceState.raceName}</h2>
-          <div className="race-meta">
+          <h2 className="heading-xl">{raceState.raceName}</h2>
+          <div className="race-meta label-md" style={{color: 'var(--text-gray)'}}>
             <span className="race-distance">{currentTrack.distance}m</span>
             <span className="race-separator">•</span>
             <span className="race-record">

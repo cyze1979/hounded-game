@@ -24,17 +24,19 @@ export default function Stable({ player, gameState, setGameState }) {
       <div className="stable-view">
         <div className="empty-state">
           <div className="empty-state-icon">🐕</div>
-          <h2>Noch keine Hunde im Stall</h2>
-          <p>Gehe zum Hundemarkt und kaufe deinen ersten Rennhund!</p>
+          <h2 className="heading-lg">Noch keine Hunde im Stall</h2>
+          <p className="body-md">Gehe zum Hundemarkt und kaufe deinen ersten Rennhund!</p>
         </div>
       </div>
     );
   }
-  
+
   return (
     <div className="stable-view">
-      <h2>Mein Rennstall</h2>
-      <p>Deine Hunde ({player.dogs.length}/{gameState.stableLimit})</p>
+      <h2 className="heading-xl">RENNSTALL</h2>
+      <p className="label-md" style={{marginBottom: '30px', color: 'var(--text-gray)'}}>
+        Deine Hunde ({player.dogs.length}/{gameState.stableLimit})
+      </p>
       
       <div className="dog-grid">
         {player.dogs.map(dog => (

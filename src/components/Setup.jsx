@@ -43,8 +43,8 @@ export default function Setup({ onStartGame, hasSave, onLoadGame }) {
           
           {/* New Game Section */}
           <div className="setup-form">
-            <h3 className="setup-section-title">Neues Spiel starten</h3>
-            <p className="setup-description">Wie viele Spieler nehmen teil?</p>
+            <h3 className="heading-md">Neues Spiel starten</h3>
+            <p className="label-md" style={{color: 'var(--text-gray)'}}>Wie viele Spieler nehmen teil?</p>
             
             {/* Player Count Selector */}
             <div className="player-count-selector">

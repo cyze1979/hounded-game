@@ -25,8 +25,10 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
   
   return (
     <div className="market-view">
-      <h2>Hundemarkt</h2>
-      <p>Verfügbare Hunde zum Kauf</p>
+      <h2 className="heading-xl">HUNDEMARKT</h2>
+      <p className="label-md" style={{marginBottom: '30px', color: 'var(--text-gray)'}}>
+        Verfügbare Hunde zum Kauf
+      </p>
       
       <div className="dog-grid">
         {marketDogs.map(dog => {

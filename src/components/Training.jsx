@@ -145,13 +145,13 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
   return (
     <div className="training-view">
       <div className="training-header">
-        <h2 className="training-title">TRAINING</h2>
-        <div className="training-subtitle">Verbessere die Attribute deiner Hunde</div>
+        <h2 className="heading-xl">TRAINING</h2>
+        <div className="label-md" style={{color: 'var(--text-gray)'}}>Verbessere die Attribute deiner Hunde</div>
       </div>
-      
+
       {/* Dog Selection */}
       <div className="training-section">
-        <h3 className="section-label">WÄHLE HUND</h3>
+        <h3 className="heading-md">WÄHLE HUND</h3>
         <div className="dog-selector">
           {currentPlayer.dogs.map(dog => (
             <div 
@@ -186,7 +186,7 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
         <>
           {/* Attribute Selection */}
           <div className="training-section">
-            <h3 className="section-label">WÄHLE ATTRIBUT</h3>
+            <h3 className="heading-md">WÄHLE ATTRIBUT</h3>
             <div className="attribute-selector">
               {['speed', 'stamina', 'acceleration', 'focus'].map(attr => (
                 <div 
@@ -218,7 +218,7 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
           
           {/* Trainer Selection */}
           <div className="training-section">
-            <h3 className="section-label">WÄHLE TRAINER</h3>
+            <h3 className="heading-md">WÄHLE TRAINER</h3>
             <div className="trainer-cards">
               {Object.entries(TRAINER_TYPES).map(([key, trainer]) => {
                 const cost = calculateTrainingCost(selectedDog, key);
