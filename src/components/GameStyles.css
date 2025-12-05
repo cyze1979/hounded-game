@@ -3801,6 +3801,7 @@
   transition: all 0.3s;
   display: flex;
   flex-direction: column;
+  min-width: 250px;
 }
 
 .stable-dog-card::before {
@@ -3898,7 +3899,7 @@
   font-size: 0.75em;
   font-weight: 400;
   letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   text-transform: uppercase;
   padding: 0 20px 15px 20px;
   position: relative;
@@ -3928,7 +3929,7 @@
   font-weight: 500;
   font-style: italic;
   letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   text-transform: uppercase;
 }
 
