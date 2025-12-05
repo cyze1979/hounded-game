@@ -3843,11 +3843,11 @@
 /* Dog Image in Stable Card */
 .stable-dog-image {
   width: 100%;
-  height: 200px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   position: relative;
   z-index: 1;
 }
