@@ -31,66 +31,79 @@ export default function Stable({ player, gameState, setGameState }) {
     );
   }
 
+  const borderColors = [
+    'rgba(255, 180, 50, 1)',
+    'rgba(0, 217, 255, 1)',
+    'rgba(255, 220, 80, 1)',
+    'rgba(0, 217, 255, 1)',
+  ];
+
   return (
     <div className="stable-view">
       <h1 className="display-lg" style={{marginBottom: '8px'}}>RENNSTALL</h1>
       <div className="label-md" style={{color: '#9d9d9d'}}>
-        Deine Hunde ({player.dogs.length}/{gameState.stableLimit})
+        ORKOS HUNDE ({player.dogs.length}/{gameState.stableLimit})
       </div>
-      
-      <div className="dog-grid">
-        {player.dogs.map(dog => (
-          <div 
-            key={dog.id} 
-            className="dog-card dog-card-clickable"
+
+      <div className="dog-grid-stable">
+        {player.dogs.map((dog, index) => (
+          <div
+            key={dog.id}
+            className="stable-dog-card"
             onClick={() => setSelectedDog(dog)}
+            style={{
+              '--border-color': borderColors[index % borderColors.length]
+            }}
           >
-            <div className="dog-icon">
-              <img 
-                src={getDogImage(dog.imageNumber)} 
+            <div className="stable-dog-image">
+              <img
+                src={getDogImage(dog.imageNumber)}
                 alt={dog.name}
                 onError={(e) => {
                   e.target.style.display = 'none';
                 }}
               />
             </div>
-            
-            {/* Header with Name & Rating */}
-            <div className="dog-card-header">
-              <div className="dog-card-title">
-                <h3>{dog.name}</h3>
-                <p className="dog-breed">{dog.breed} • {dog.age} Jahre</p>
-              </div>
-              <div className="dog-card-rating">
-                <span className="rating-number">{dog.getOverallRating()}</span>
-              </div>
+
+            <div className="stable-dog-name-row">
+              <h3 className="stable-dog-name">{dog.name}</h3>
+              <span className="stable-dog-rating">{dog.getOverallRating()}</span>
             </div>
-            
-            {/* Stats - 5 Attributes (with Fitness) */}
-            <div className="dog-card-stats">
-              <div className="card-stat-row">
-                <span className="card-stat-label">Geschwindigkeit</span>
-                <span className="card-stat-value">{dog.speed}</span>
+
+            <div className="stable-dog-breed">
+              {dog.breed.toUpperCase()}, {dog.getAgeInYears()} JAHRE
+            </div>
+
+            <div className="stable-dog-stats">
+              <div className="stable-stat-row">
+                <span className="stable-stat-label">GESCHWINDIGKEIT</span>
+                <span className="stable-stat-value">{dog.speed}</span>
               </div>
-              <div className="card-stat-row">
-                <span className="card-stat-label">Ausdauer</span>
-                <span className="card-stat-value">{dog.stamina}</span>
+              <div className="stable-stat-row">
+                <span className="stable-stat-label">AUSDAUER</span>
+                <span className="stable-stat-value">{dog.stamina}</span>
               </div>
-              <div className="card-stat-row">
-                <span className="card-stat-label">Beschleunigung</span>
-                <span className="card-stat-value">{dog.acceleration}</span>
+              <div className="stable-stat-row">
+                <span className="stable-stat-label">BESCHLEUNIGUNG</span>
+                <span className="stable-stat-value">{dog.acceleration}</span>
               </div>
-              <div className="card-stat-row">
-                <span className="card-stat-label">Fokus</span>
-                <span className="card-stat-value">{dog.focus}</span>
+              <div className="stable-stat-row">
+                <span className="stable-stat-label">FOKUS</span>
+                <span className="stable-stat-value">{dog.focus}</span>
               </div>
-              <div className="card-stat-row">
-                <span className="card-stat-label">Fitness</span>
-                <span className="card-stat-value card-stat-fitness">{dog.fitness}</span>
+              <div className="stable-stat-row">
+                <span className="stable-stat-label">FITNESS</span>
+                <span className="stable-stat-value">{dog.fitness}</span>
               </div>
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="stable-expand-section">
+        <button className="btn-tab btn-tab-large">
+          <span>AUSBAUEN</span>
+        </button>
       </div>
     </div>
   );

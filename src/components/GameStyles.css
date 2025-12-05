@@ -86,7 +86,7 @@
 .heading-sm {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 600;
+  font-weight: 900;
   font-style: italic;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -3765,6 +3765,179 @@
   z-index: -1;
 }
 
+/* Stable Grid - 4 Cards */
+.dog-grid-stable {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  padding: 40px 60px;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Stable Dog Card with Colored Border */
+.stable-dog-card {
+  background: rgba(10, 10, 20, 0.90);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.stable-dog-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--border-color), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.stable-dog-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.stable-dog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.stable-dog-card:hover::before {
+  opacity: 1;
+  background: linear-gradient(135deg, var(--border-color), var(--border-color) 30%, transparent 70%);
+}
+
+/* Dog Image in Stable Card */
+.stable-dog-image {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.stable-dog-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s;
+}
+
+.stable-dog-card:hover .stable-dog-image img {
+  transform: scale(1.05);
+}
+
+/* Name Row - Name Left, Rating Right */
+.stable-dog-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 20px 20px 8px 20px;
+  gap: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.stable-dog-name {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.5em;
+  color: var(--text-white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  line-height: 1.2;
+  flex: 1;
+}
+
+.stable-dog-rating {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 2.5em;
+  color: var(--text-white);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Breed Info */
+.stable-dog-breed {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 0.75em;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  padding: 0 20px 15px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Stats List */
+.stable-dog-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 15px 20px 20px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.stable-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stable-stat-label {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 0.75em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.stable-stat-value {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+/* Expand Section */
+.stable-expand-section {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0 60px 0;
+}
+
 /* Dog Detail View - Background */
 .dog-detail-view {
   min-height: calc(100vh - 80px);
@@ -3775,6 +3948,45 @@
   position: relative;
   max-width: 1600px;
   margin: 0 auto;
+}
+
+/* Navigation Arrows */
+.detail-nav-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-white);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 100;
+}
+
+.detail-nav-arrow:hover:not(:disabled) {
+  background: rgba(0, 217, 255, 0.2);
+  border-color: var(--cyan-primary);
+  color: var(--cyan-primary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.detail-nav-arrow:disabled {
+  cursor: not-allowed;
+}
+
+.detail-nav-left {
+  left: 30px;
+}
+
+.detail-nav-right {
+  right: 30px;
 }
 
 .dog-detail-view::before {

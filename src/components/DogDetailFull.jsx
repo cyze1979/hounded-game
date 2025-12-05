@@ -46,9 +46,37 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
   const purchasePrice = dog.purchasePrice || currentValue;
   const ageCategory = dog.getAgeCategoryName();
   
+  const showNavigation = allDogs && allDogs.length > 1;
+
   return (
     <div className="dog-detail-view">
-      
+
+      {/* Navigation Arrows */}
+      {showNavigation && (
+        <>
+          <button
+            className="detail-nav-arrow detail-nav-left"
+            onClick={goToPrevious}
+            disabled={currentDogIndex === 0}
+            style={{ opacity: currentDogIndex === 0 ? 0.3 : 1 }}
+          >
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M25 10L15 20L25 30" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button
+            className="detail-nav-arrow detail-nav-right"
+            onClick={goToNext}
+            disabled={currentDogIndex === allDogs.length - 1}
+            style={{ opacity: currentDogIndex === allDogs.length - 1 ? 0.3 : 1 }}
+          >
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path d="M15 10L25 20L15 30" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </>
+      )}
+
       {/* Top Section: Name + Age + Rating */}
       <div className="detail-hero">
         <div className="detail-name-section">
