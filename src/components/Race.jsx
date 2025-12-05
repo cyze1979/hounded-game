@@ -99,7 +99,13 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
   };
 
   const handleRaceComplete = (completedRaceState) => {
-    const prizes = RACE_PRIZES[completedRaceState.raceName] || {};
+    const prizes = {
+      1: 2500,
+      2: 1500,
+      3: 1000,
+      4: 500,
+      5: 300
+    };
     const updatedGameState = { ...gameState };
 
     const winner = completedRaceState.participants[0];
@@ -108,6 +114,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
       raceData.bestTimeHolder = winner.dog.name;
     }
 
+    const participantsData = [];
+
     completedRaceState.participants.forEach((p, idx) => {
       const position = idx + 1;
       const prize = prizes[position] || 0;
@@ -115,8 +123,20 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
 
       if (p.dog.races !== undefined) {
         p.dog.races++;
+        p.dog.racesParticipated++;
         p.dog.experience += 10;
         p.dog.fitness = Math.max(0, p.dog.fitness - 15);
+        p.dog.totalPrizeMoney += prize;
+
+        if (p.dog.bestPosition === null || position < p.dog.bestPosition) {
+          p.dog.bestPosition = position;
+        }
+        if (p.dog.worstPosition === null || position > p.dog.worstPosition) {
+          p.dog.worstPosition = position;
+        }
+
+        const totalPositions = (p.dog.averagePosition || 0) * (p.dog.racesParticipated - 1) + position;
+        p.dog.averagePosition = totalPositions / p.dog.racesParticipated;
 
         if (position === 1) {
           p.dog.wins++;
@@ -128,16 +148,48 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
           if (owner) {
             owner.money += prize;
             p.dog.totalEarnings += prize;
+            owner.totalPrizeMoney += prize;
+            owner.totalRaces = (owner.totalRaces || 0) + 1;
+
             if (position === 1) {
               owner.totalWins = (owner.totalWins || 0) + 1;
             }
+            if (position <= 3) {
+              owner.podiums = (owner.podiums || 0) + 1;
+            }
+
+            participantsData.push({
+              dogId: p.dog.id,
+              dogName: p.dog.name,
+              ownerId: owner.index,
+              ownerName: owner.name,
+              position: position,
+              finishTime: p.finishTime,
+              prizeMoney: prize
+            });
           }
+        } else {
+          participantsData.push({
+            dogId: p.dog.id,
+            dogName: p.dog.name,
+            ownerId: null,
+            ownerName: p.dog.owner,
+            position: position,
+            finishTime: p.finishTime,
+            prizeMoney: prize
+          });
         }
       }
     });
 
     raceData.lastResults = { race: completedRaceState };
     raceData.racesHeld = (raceData.racesHeld || 0) + 1;
+
+    updatedGameState.lastRaceData = {
+      trackName: currentTrack.name,
+      participants: participantsData,
+      prizePool: prizes
+    };
 
     setGameState(updatedGameState);
     setRaceState(completedRaceState);
@@ -155,7 +207,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
         currentTrack.distance,
         winnerDog.id,
         totalPrizes,
-        participantIds
+        participantIds,
+        participantsData,
+        prizes
       ).catch(err => console.error('Failed to save race:', err));
 
       saveTrackRecords(gameState.sessionId, updatedGameState.tracks)

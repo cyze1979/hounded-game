@@ -14,20 +14,24 @@ export default function RaceOverview({ gameState, currentTrack, raceData, onRace
   }
 
   useEffect(() => {
-    const participants = [];
+    const fitDogs = [];
     gameState.players.forEach(player => {
       player.dogs.forEach(dog => {
         if (dog.fitness >= 40) {
-          participants.push(dog);
+          fitDogs.push(dog);
         }
       });
     });
 
-    while (participants.length < 8) {
-      participants.push(new Dog(null, dogBreeds[Math.floor(Math.random() * dogBreeds.length)]));
+    fitDogs.sort(() => Math.random() - 0.5);
+
+    const selectedDogs = fitDogs.slice(0, 8);
+
+    while (selectedDogs.length < 8) {
+      selectedDogs.push(new Dog(null, dogBreeds[Math.floor(Math.random() * dogBreeds.length)]));
     }
 
-    setRaceDogs(participants.slice(0, 8));
+    setRaceDogs(selectedDogs);
   }, [gameState.currentMonth]);
 
   const isPlayerDog = (dog) => {

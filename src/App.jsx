@@ -5,6 +5,7 @@ import { Player } from './models/Player';
 import { Dog } from './models/Dog';
 import { dogBreeds, resetUsedNames } from './data/dogData';
 import { createGameSession, loadGameSession, saveGameSession, hasSave, loadTrackRecords } from './utils/supabaseGame';
+import { aiTrainDogs, aiBuyDogs } from './utils/aiActions';
 
 // Import components
 import Setup from './components/Setup';
@@ -15,6 +16,7 @@ import Market from './components/Market';
 import Race from './components/Race';
 import Training from './components/Training';
 import Leaderboard from './components/Leaderboard';
+import Stats from './components/Stats';
 
 const playerColors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
 
@@ -109,68 +111,26 @@ function App() {
     return dogs;
   };
 
-  const aiMarketActions = (newGameState) => {
-    // AI players make market decisions
-    newGameState.players.forEach(player => {
-      // Skip if this is the main/human player (index 0)
-      if (player.name === newGameState.players[0].name) return;
-
-      // AI Strategy: Sell old/weak dogs, buy young/strong dogs
-
-      // 1. SELL: Remove elder dogs or dogs with low ratings
-      const dogsToSell = player.dogs.filter(dog => {
-        const category = dog.getAgeCategory();
-        const rating = dog.getOverallRating();
-        return category === 'elder' || (category === 'veteran' && rating < 60);
-      });
-
-      dogsToSell.forEach(dog => {
-        const sellPrice = Math.floor(dog.getValue() * 0.7); // Sell for 70% of value
-        player.money += sellPrice;
-        player.dogs = player.dogs.filter(d => d.id !== dog.id);
-      });
-
-      // 2. BUY: Purchase young/prime dogs with good ratings if space and money available
-      while (player.dogs.length < newGameState.stableLimit && newGameState.marketDogs.length > 0) {
-        // Find best affordable dog
-        const affordableDogs = newGameState.marketDogs
-          .filter(dog => {
-            const price = dog.getValue();
-            const category = dog.getAgeCategory();
-            const rating = dog.getOverallRating();
-            // AI only buys young/prime dogs with decent ratings
-            return player.money >= price &&
-                   (category === 'young' || category === 'prime') &&
-                   rating >= 55;
-          })
-          .sort((a, b) => b.getOverallRating() - a.getOverallRating()); // Best first
-
-        if (affordableDogs.length === 0) break;
-
-        const dogToBuy = affordableDogs[0];
-        const price = dogToBuy.getValue();
-
-        // AI is conservative with money (keeps at least 500€)
-        if (player.money - price < 500) break;
-
-        dogToBuy.purchasePrice = price;
-        player.money -= price;
-        player.dogs.push(dogToBuy);
-        newGameState.marketDogs = newGameState.marketDogs.filter(d => d.id !== dogToBuy.id);
-      }
-    });
-  };
-  
-  const startGame = async (playerNames) => {
+  const startGame = async (playerName) => {
     resetUsedNames();
 
     try {
       const sessionKey = `game_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const session = await createGameSession(sessionKey);
 
-      const players = playerNames.map((name, index) =>
-        new Player(name, playerColors[index], index)
-      );
+      const aiNames = ['Cyber Kennels', 'NeoTech Racing', 'Digital Dogs Inc', 'AI Elite Stable'];
+      const aiColors = ['#ef4444', '#10b981', '#f59e0b', '#8b5cf6'];
+
+      const humanPlayer = new Player(playerName, playerColors[0], 0);
+      humanPlayer.isAi = false;
+
+      const aiPlayers = aiNames.map((name, idx) => {
+        const player = new Player(name, aiColors[idx], idx + 1);
+        player.isAi = true;
+        return player;
+      });
+
+      const players = [humanPlayer, ...aiPlayers];
 
       setGameState({
         ...gameState,
@@ -242,8 +202,13 @@ function App() {
     // Refresh market
     newGameState.marketDogs = generateMarketDogs();
 
-    // AI market actions (after market refresh, before player sees it)
-    aiMarketActions(newGameState);
+    // AI actions: training and market
+    newGameState.players.forEach(player => {
+      if (player.isAi) {
+        aiTrainDogs(player, newGameState.currentMonth);
+        aiBuyDogs(player, newGameState.marketDogs, newGameState.stableLimit);
+      }
+    });
 
     // Reset race status
     newGameState.currentRace = null;
@@ -346,6 +311,9 @@ function App() {
         )}
         {currentView === 'leaderboard' && (
           <Leaderboard players={gameState.players} />
+        )}
+        {currentView === 'stats' && (
+          <Stats gameState={gameState} />
         )}
       </main>
       

@@ -20,11 +20,17 @@ export class Dog {
         this.races = 0;
         this.wins = 0;
         this.experience = 0;
-        this.cupWins = 0; // NEW: Championship wins
-        this.trackRecords = []; // NEW: Track record holder
-        this.lastTrainedMonth = null; // NEW: Track when last trained
-        this.purchasePrice = null; // NEW: Track purchase price for profit calculation
-        this.totalEarnings = 0; // NEW: Total prize money earned
+        this.cupWins = 0;
+        this.trackRecords = [];
+        this.lastTrainedMonth = null;
+        this.purchasePrice = null;
+        this.totalEarnings = 0;
+        this.racesParticipated = 0;
+        this.bestPosition = null;
+        this.worstPosition = null;
+        this.averagePosition = null;
+        this.totalPrizeMoney = 0;
+        this.trainingHistory = [];
         
         // Special traits
         const traits = [
@@ -218,28 +224,40 @@ export class Dog {
             lastTrainedMonth: this.lastTrainedMonth,
             purchasePrice: this.purchasePrice,
             totalEarnings: this.totalEarnings,
+            racesParticipated: this.racesParticipated,
+            bestPosition: this.bestPosition,
+            worstPosition: this.worstPosition,
+            averagePosition: this.averagePosition,
+            totalPrizeMoney: this.totalPrizeMoney,
+            trainingHistory: this.trainingHistory,
             specialTrait: this.specialTrait,
             owner: this.owner,
             imageNumber: this.imageNumber
         };
     }
-    
+
     static fromJSON(data) {
         const dog = new Dog();
         Object.assign(dog, data);
-        
+
         // Migration: Convert old age to ageInMonths
         if (data.age !== undefined && data.ageInMonths === undefined) {
             dog.ageInMonths = data.age * 12;
         }
-        
+
         // Ensure new properties exist
         if (dog.cupWins === undefined) dog.cupWins = 0;
         if (dog.trackRecords === undefined) dog.trackRecords = [];
         if (dog.lastTrainedMonth === undefined) dog.lastTrainedMonth = null;
         if (dog.purchasePrice === undefined) dog.purchasePrice = null;
         if (dog.totalEarnings === undefined) dog.totalEarnings = 0;
-        
+        if (dog.racesParticipated === undefined) dog.racesParticipated = 0;
+        if (dog.bestPosition === undefined) dog.bestPosition = null;
+        if (dog.worstPosition === undefined) dog.worstPosition = null;
+        if (dog.averagePosition === undefined) dog.averagePosition = null;
+        if (dog.totalPrizeMoney === undefined) dog.totalPrizeMoney = 0;
+        if (dog.trainingHistory === undefined) dog.trainingHistory = [];
+
         return dog;
     }
 }

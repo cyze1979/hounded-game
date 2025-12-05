@@ -3,7 +3,8 @@ export default function Navigation({ currentView, onViewChange }) {
     { id: 'stable', label: 'Mein Rennstall' },
     { id: 'market', label: 'Hundemarkt' },
     { id: 'race', label: 'Rennen' },
-    { id: 'leaderboard', label: 'Rangliste' }
+    { id: 'leaderboard', label: 'Rangliste' },
+    { id: 'stats', label: 'Statistiken' }
   ];
 
   const handleViewChange = (viewId) => {

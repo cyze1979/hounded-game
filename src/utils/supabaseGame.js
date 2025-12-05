@@ -41,7 +41,11 @@ export const loadGameSession = async (sessionKey) => {
       bets: playerData.bets,
       totalWinnings: playerData.total_winnings,
       totalRaces: playerData.total_races,
-      totalWins: playerData.total_wins
+      totalWins: playerData.total_wins,
+      isAi: playerData.is_ai,
+      podiums: playerData.podiums,
+      totalPrizeMoney: playerData.total_prize_money,
+      bestMonth: playerData.best_month
     });
 
     const { data: dogsData, error: dogsError } = await supabase
@@ -71,6 +75,12 @@ export const loadGameSession = async (sessionKey) => {
       lastTrainedMonth: dData.last_trained_month,
       purchasePrice: dData.purchase_price,
       totalEarnings: dData.total_earnings,
+      racesParticipated: dData.races_participated,
+      bestPosition: dData.best_position,
+      worstPosition: dData.worst_position,
+      averagePosition: dData.average_position,
+      totalPrizeMoney: dData.total_prize_money,
+      trainingHistory: dData.training_history,
       specialTrait: dData.special_trait,
       owner: dData.owner,
       imageNumber: dData.image_number
@@ -135,7 +145,11 @@ export const saveGameSession = async (sessionId, gameState) => {
       bets: player.bets || [],
       total_winnings: player.totalWinnings || 0,
       total_races: player.totalRaces || 0,
-      total_wins: player.totalWins || 0
+      total_wins: player.totalWins || 0,
+      is_ai: player.isAi || false,
+      podiums: player.podiums || 0,
+      total_prize_money: player.totalPrizeMoney || 0,
+      best_month: player.bestMonth || ''
     };
 
     const existingPlayer = existingPlayersData?.find(
@@ -183,6 +197,12 @@ export const saveGameSession = async (sessionId, gameState) => {
         last_trained_month: dog.lastTrainedMonth,
         purchase_price: dog.purchasePrice,
         total_earnings: dog.totalEarnings || 0,
+        races_participated: dog.racesParticipated || 0,
+        best_position: dog.bestPosition,
+        worst_position: dog.worstPosition,
+        average_position: dog.averagePosition,
+        total_prize_money: dog.totalPrizeMoney || 0,
+        training_history: dog.trainingHistory || [],
         special_trait: dog.specialTrait,
         owner: dog.owner,
         image_number: dog.imageNumber
@@ -230,7 +250,7 @@ export const saveGameSession = async (sessionId, gameState) => {
   }
 };
 
-export const saveRace = async (sessionId, gameDay, trackName, distance, winnerDogId, prizeMoney, participantIds) => {
+export const saveRace = async (sessionId, gameDay, trackName, distance, winnerDogId, prizeMoney, participantIds, participantsData, prizePool) => {
   const { error } = await supabase
     .from('races')
     .insert({
@@ -239,8 +259,9 @@ export const saveRace = async (sessionId, gameDay, trackName, distance, winnerDo
       track_name: trackName,
       distance,
       winner_dog_id: winnerDogId,
-      prize_pool: prizeMoney,
-      participant_ids: participantIds
+      prize_pool: prizePool || prizeMoney,
+      participant_ids: participantIds,
+      participants: participantsData || []
     });
 
   if (error) throw error;

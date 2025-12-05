@@ -94,10 +94,25 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
     
     // Mark as trained this month
     selectedDog.lastTrainedMonth = gameState.currentMonth;
-    
+
+    // Add to training history
+    if (!selectedDog.trainingHistory) {
+      selectedDog.trainingHistory = [];
+    }
+    selectedDog.trainingHistory.push({
+      month: gameState.currentMonth,
+      year: gameState.currentYear,
+      attribute: selectedAttribute,
+      oldValue,
+      newValue,
+      gain,
+      cost,
+      trainer: selectedTrainer
+    });
+
     // Deduct money
     currentPlayer.money -= cost;
-    
+
     // Update game state
     setGameState({...gameState});
     
