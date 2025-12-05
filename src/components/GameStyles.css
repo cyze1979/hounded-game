@@ -3777,7 +3777,7 @@
 
 /* Stable Dog Card with Colored Border */
 .stable-dog-card {
-  background: rgba(10, 10, 20, 0.90);
+  background: rgba(10, 10, 20, 0.70);
   backdrop-filter: blur(15px);
   border-radius: 15px;
   padding: 0;
@@ -3795,12 +3795,12 @@
   inset: 0;
   border-radius: 15px;
   padding: 3px;
-  background: linear-gradient(135deg, var(--border-color), transparent 60%);
+  background: linear-gradient(135deg, #ffdc5f, #c27277);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 1;
-  transition: opacity 0.3s;
+  transition: all 0.3s;
 }
 
 .stable-dog-card::after {
@@ -3816,14 +3816,10 @@
   opacity: 0.5;
 }
 
-.stable-dog-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-}
-
 .stable-dog-card:hover::before {
   opacity: 1;
-  background: linear-gradient(135deg, var(--border-color), var(--border-color) 30%, transparent 70%);
+  background: linear-gradient(135deg, #27ade5, #670cff);
+  transform: scale(1.05);
 }
 
 /* Dog Image in Stable Card */
@@ -3844,11 +3840,6 @@
   max-height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
-  transition: transform 0.3s;
-}
-
-.stable-dog-card:hover .stable-dog-image img {
-  transform: scale(1.05);
 }
 
 /* Name Row - Name Left, Rating Right */
@@ -3919,6 +3910,7 @@
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.75em;
   font-weight: 500;
+  font-style: italic;
   letter-spacing: 0.5px;
   color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
@@ -3928,6 +3920,7 @@
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   font-weight: 700;
+  font-style: italic;
   color: var(--text-white);
 }
 

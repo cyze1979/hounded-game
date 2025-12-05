@@ -31,13 +31,6 @@ export default function Stable({ player, gameState, setGameState }) {
     );
   }
 
-  const borderColors = [
-    'rgba(255, 180, 50, 1)',
-    'rgba(0, 217, 255, 1)',
-    'rgba(255, 220, 80, 1)',
-    'rgba(0, 217, 255, 1)',
-  ];
-
   return (
     <div className="stable-view">
       <h1 className="display-lg" style={{marginBottom: '8px'}}>RENNSTALL</h1>
@@ -51,9 +44,6 @@ export default function Stable({ player, gameState, setGameState }) {
             key={dog.id}
             className="stable-dog-card"
             onClick={() => setSelectedDog(dog)}
-            style={{
-              '--border-color': borderColors[index % borderColors.length]
-            }}
           >
             <div className="stable-dog-image">
               <img
