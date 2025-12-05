@@ -108,6 +108,58 @@ function App() {
     }
     return dogs;
   };
+
+  const aiMarketActions = (newGameState) => {
+    // AI players make market decisions
+    newGameState.players.forEach(player => {
+      // Skip if this is the main/human player (index 0)
+      if (player.name === newGameState.players[0].name) return;
+
+      // AI Strategy: Sell old/weak dogs, buy young/strong dogs
+
+      // 1. SELL: Remove elder dogs or dogs with low ratings
+      const dogsToSell = player.dogs.filter(dog => {
+        const category = dog.getAgeCategory();
+        const rating = dog.getOverallRating();
+        return category === 'elder' || (category === 'veteran' && rating < 60);
+      });
+
+      dogsToSell.forEach(dog => {
+        const sellPrice = Math.floor(dog.getValue() * 0.7); // Sell for 70% of value
+        player.money += sellPrice;
+        player.dogs = player.dogs.filter(d => d.id !== dog.id);
+      });
+
+      // 2. BUY: Purchase young/prime dogs with good ratings if space and money available
+      while (player.dogs.length < newGameState.stableLimit && newGameState.marketDogs.length > 0) {
+        // Find best affordable dog
+        const affordableDogs = newGameState.marketDogs
+          .filter(dog => {
+            const price = dog.getValue();
+            const category = dog.getAgeCategory();
+            const rating = dog.getOverallRating();
+            // AI only buys young/prime dogs with decent ratings
+            return player.money >= price &&
+                   (category === 'young' || category === 'prime') &&
+                   rating >= 55;
+          })
+          .sort((a, b) => b.getOverallRating() - a.getOverallRating()); // Best first
+
+        if (affordableDogs.length === 0) break;
+
+        const dogToBuy = affordableDogs[0];
+        const price = dogToBuy.getValue();
+
+        // AI is conservative with money (keeps at least 500€)
+        if (player.money - price < 500) break;
+
+        dogToBuy.purchasePrice = price;
+        player.money -= price;
+        player.dogs.push(dogToBuy);
+        newGameState.marketDogs = newGameState.marketDogs.filter(d => d.id !== dogToBuy.id);
+      }
+    });
+  };
   
   const startGame = async (playerNames) => {
     resetUsedNames();
@@ -180,32 +232,18 @@ function App() {
       });
     });
 
-    // Dogs that raced lose fitness (-20)
-    // Dogs that didn't race lose less (-5)
-    if (gameState.currentRace && gameState.currentRace.results) {
-      const racedDogIds = new Set(
-        gameState.currentRace.results.map(result => result.dog.id)
-      );
-
-      newGameState.players.forEach(player => {
-        player.dogs.forEach(dog => {
-          if (racedDogIds.has(dog.id)) {
-            dog.fitness = Math.max(0, dog.fitness - 20);
-          } else {
-            dog.fitness = Math.max(0, dog.fitness - 5);
-          }
-        });
+    // Fitness regeneration: +20 for all dogs (max 100)
+    newGameState.players.forEach(player => {
+      player.dogs.forEach(dog => {
+        dog.fitness = Math.min(100, dog.fitness + 20);
       });
-    } else {
-      newGameState.players.forEach(player => {
-        player.dogs.forEach(dog => {
-          dog.fitness = Math.max(0, dog.fitness - 5);
-        });
-      });
-    }
+    });
 
     // Refresh market
     newGameState.marketDogs = generateMarketDogs();
+
+    // AI market actions (after market refresh, before player sees it)
+    aiMarketActions(newGameState);
 
     // Reset race status
     newGameState.currentRace = null;
@@ -218,7 +256,7 @@ function App() {
                         'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
     const monthName = monthNames[newGameState.currentMonth - 1];
 
-    alert(`⏭️ ${monthName} ${newGameState.currentYear}\n\n🐕 Alle Hunde sind 1 Monat älter\n🏥 Gerannte Hunde: -20 Fitness\n🏥 Andere Hunde: -5 Fitness\n🛒 Neuer Hundemarkt verfügbar!`);
+    alert(`⏭️ ${monthName} ${newGameState.currentYear}\n\n🐕 Alle Hunde sind 1 Monat älter\n💚 Alle Hunde: +20 Fitness (Regeneration)\n🤖 AI-Spieler haben gehandelt\n🛒 Neuer Hundemarkt verfügbar!`);
   };
   
   const getCurrentPlayer = () => {
