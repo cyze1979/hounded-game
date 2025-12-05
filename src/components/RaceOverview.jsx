@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dog } from '../models/Dog';
 import { dogBreeds, AI_OWNER_NAME } from '../data/dogData';
 import { getDogImage } from '../utils/assetLoader';
@@ -7,10 +7,28 @@ import DogDetailFull from './DogDetailFull';
 export default function RaceOverview({ gameState, currentTrack, raceData, onRaceStart, getCurrentPlayer }) {
   const [selectedDog, setSelectedDog] = useState(null);
   const [allParticipants, setAllParticipants] = useState([]);
+  const [raceDogs, setRaceDogs] = useState([]);
 
   if (!raceData || !currentTrack) {
     return <div className="race-view">Loading track data...</div>;
   }
+
+  useEffect(() => {
+    const participants = [];
+    gameState.players.forEach(player => {
+      player.dogs.forEach(dog => {
+        if (dog.fitness >= 40) {
+          participants.push(dog);
+        }
+      });
+    });
+
+    while (participants.length < 8) {
+      participants.push(new Dog(null, dogBreeds[Math.floor(Math.random() * dogBreeds.length)]));
+    }
+
+    setRaceDogs(participants.slice(0, 8));
+  }, [gameState.currentMonth]);
 
   const isPlayerDog = (dog) => {
     return gameState.players.some(player =>
@@ -25,27 +43,21 @@ export default function RaceOverview({ gameState, currentTrack, raceData, onRace
     return owner ? owner.name : dog.owner || AI_OWNER_NAME;
   };
 
-  const participants = [];
-  gameState.players.forEach(player => {
-    player.dogs.forEach(dog => {
-      if (dog.fitness >= 40) {
-        participants.push(dog);
-      }
+  const participantsWithOdds = useMemo(() => {
+    if (raceDogs.length === 0) return [];
+
+    const totalRating = raceDogs.reduce((sum, dog) => sum + dog.getOverallRating(), 0);
+
+    return raceDogs.map(dog => {
+      const rating = dog.getOverallRating();
+      const odds = (totalRating / rating / raceDogs.length) * 1.5;
+      return { dog, odds: Math.max(1.2, Math.min(10, odds)) };
     });
-  });
+  }, [raceDogs]);
 
-  while (participants.length < 8) {
-    participants.push(new Dog(null, dogBreeds[Math.floor(Math.random() * dogBreeds.length)]));
+  if (raceDogs.length === 0) {
+    return <div className="race-view">Generiere Rennteilnehmer...</div>;
   }
-
-  const raceDogs = participants.slice(0, 8);
-  const totalRating = raceDogs.reduce((sum, dog) => sum + dog.getOverallRating(), 0);
-
-  const participantsWithOdds = raceDogs.map(dog => {
-    const rating = dog.getOverallRating();
-    const odds = (totalRating / rating / raceDogs.length) * 1.5;
-    return { dog, odds: Math.max(1.2, Math.min(10, odds)) };
-  });
 
   return (
     <>

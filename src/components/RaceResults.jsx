@@ -65,7 +65,7 @@ export default function RaceResults({ raceState, currentTrack, raceData, gameSta
 
         <div className="results-continue">
           <button className="btn-cta" onClick={onContinue}>
-            NÄCHSTES RENNEN
+            WEITER
           </button>
         </div>
       </div>

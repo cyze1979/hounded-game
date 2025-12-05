@@ -291,10 +291,12 @@ function App() {
           />
         )}
         {currentView === 'race' && (
-          <Race 
+          <Race
             gameState={gameState}
             setGameState={setGameState}
             getCurrentPlayer={getCurrentPlayer}
+            onRaceComplete={handleNextDay}
+            setCurrentView={setCurrentView}
           />
         )}
         {currentView === 'training' && (

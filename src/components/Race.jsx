@@ -6,7 +6,7 @@ import RaceOverview from './RaceOverview';
 import RaceAnimation from './RaceAnimation';
 import RaceResults from './RaceResults';
 
-export default function Race({ gameState, setGameState, getCurrentPlayer }) {
+export default function Race({ gameState, setGameState, getCurrentPlayer, onRaceComplete, setCurrentView }) {
   const [raceState, setRaceState] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
@@ -170,11 +170,17 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     setRaceState(null);
     setShowResults(false);
 
-    setGameState({
-      ...gameState,
+    setGameState(prev => ({
+      ...prev,
       currentRace: null,
       raceCompleted: true
-    });
+    }));
+
+    setCurrentView('stable');
+
+    if (onRaceComplete) {
+      setTimeout(() => onRaceComplete(), 100);
+    }
   };
 
   if (!gameState.tracks) {
