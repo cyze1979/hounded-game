@@ -24,7 +24,6 @@ function App() {
   const [gameState, setGameState] = useState({
     sessionId: null,
     players: [],
-    currentPlayerIndex: 0,
     marketDogs: [],
     currentRace: null,
     raceHistory: [],
@@ -136,7 +135,6 @@ function App() {
         ...gameState,
         sessionId: session.id,
         players,
-        currentPlayerIndex: 0,
         marketDogs: generateMarketDogs(),
         isSetup: false,
         raceCompleted: false
@@ -154,7 +152,6 @@ function App() {
 
     setGameState({
       players: [],
-      currentPlayerIndex: 0,
       marketDogs: [],
       currentRace: null,
       raceHistory: [],
@@ -225,7 +222,7 @@ function App() {
   };
   
   const getCurrentPlayer = () => {
-    return gameState.players[gameState.currentPlayerIndex];
+    return gameState.players[0];
   };
   
   const handleLoadGame = async () => {
@@ -266,8 +263,6 @@ function App() {
         currentPlayer={getCurrentPlayer()}
         currentMonth={gameState.currentMonth || 1}
         currentYear={gameState.currentYear || 2048}
-        players={gameState.players}
-        onPlayerSwitch={(index) => setGameState({...gameState, currentPlayerIndex: index})}
         currentView={currentView}
         onViewChange={setCurrentView}
         marketNotifications={0}

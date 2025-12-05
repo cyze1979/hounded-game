@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
-export default function Header({ currentPlayer, currentMonth, currentYear, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
-  const [showSwitcher, setShowSwitcher] = useState(false);
+export default function Header({ currentPlayer, currentMonth, currentYear, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
 
   // Month names
   const monthNames = ['JANUAR', 'FEBRUAR', 'MÄRZ', 'APRIL', 'MAI', 'JUNI', 'JULI', 'AUGUST', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DEZEMBER'];
@@ -34,7 +32,7 @@ export default function Header({ currentPlayer, currentMonth, currentYear, playe
           ☰
         </button>
         
-        <div className="header-player" onClick={() => players.length > 1 && setShowSwitcher(!showSwitcher)}>
+        <div className="header-player">
           <div className="player-avatar">
             {playerAvatar ? (
               <img src={playerAvatar} alt={currentPlayer.name} />
@@ -46,7 +44,6 @@ export default function Header({ currentPlayer, currentMonth, currentYear, playe
             <div className="player-name">{currentPlayer.name.toUpperCase()}</div>
             <div className="player-money">{formatMoney(currentPlayer.money)} €</div>
           </div>
-          {players.length > 1 && <div className="switch-icon">▼</div>}
         </div>
       </div>
       
@@ -74,33 +71,6 @@ export default function Header({ currentPlayer, currentMonth, currentYear, playe
           WEITER
         </button>
       </div>
-      
-      {/* Player Switcher Modal */}
-      {showSwitcher && (
-        <div className="player-switcher-overlay" onClick={() => setShowSwitcher(false)}>
-          <div className="player-switcher-menu" onClick={(e) => e.stopPropagation()}>
-            <h3>Spieler wechseln</h3>
-            <div className="player-list">
-              {players.map((player, index) => (
-                <div 
-                  key={index}
-                  className="player-option"
-                  style={{borderLeft: `4px solid ${player.color}`}}
-                  onClick={() => {
-                    onPlayerSwitch(index);
-                    setShowSwitcher(false);
-                  }}
-                >
-                  <strong>{player.name}</strong>
-                  <div className="player-stats-small">
-                    💰 {formatMoney(player.money)}€ | 🏆 {player.totalWins} Siege
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
