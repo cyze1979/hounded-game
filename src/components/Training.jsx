@@ -167,29 +167,55 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
       {/* Dog Selection */}
       <div className="training-section">
         <h3 className="heading-md">WÄHLE HUND</h3>
-        <div className="dog-selector">
+        <div className="dog-grid-stable">
           {currentPlayer.dogs.map(dog => (
-            <div 
+            <div
               key={dog.id}
-              className={`dog-selector-card ${selectedDog?.id === dog.id ? 'selected' : ''}`}
+              className={`stable-dog-card ${selectedDog?.id === dog.id ? 'training-selected' : ''}`}
               onClick={() => {
                 setSelectedDog(dog);
                 setTrainingResult(null);
               }}
             >
-              <img src={getDogImage(dog.imageNumber)} alt={dog.name} className="dog-selector-image" />
-              <div className="dog-selector-info">
-                <div className="dog-selector-name">{dog.name}</div>
-                <div className="dog-selector-meta">
-                  <span>{dog.getAgeInYears()}J</span>
-                  <span>•</span>
-                  <span>{dog.getAgeCategoryName()}</span>
-                  <span>•</span>
-                  <span>Rating {dog.getOverallRating()}</span>
+              <div className="stable-dog-image">
+                <img
+                  src={getDogImage(dog.imageNumber)}
+                  alt={dog.name}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+
+              <div className="stable-dog-name-row">
+                <h3 className="stable-dog-name">{dog.name}</h3>
+                <span className="stable-dog-rating">{dog.getOverallRating()}</span>
+              </div>
+
+              <div className="stable-dog-breed">
+                {dog.breed.toUpperCase()}, {dog.getAgeInYears()} JAHRE
+              </div>
+
+              <div className="stable-dog-stats">
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">GESCHWINDIGKEIT</span>
+                  <span className="stable-stat-value">{dog.speed}</span>
                 </div>
-                <div className="dog-selector-fitness">
-                  <span className="fitness-icon">❤️</span>
-                  <span className="fitness-value">{dog.fitness}/100</span>
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">AUSDAUER</span>
+                  <span className="stable-stat-value">{dog.stamina}</span>
+                </div>
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">BESCHLEUNIGUNG</span>
+                  <span className="stable-stat-value">{dog.acceleration}</span>
+                </div>
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">FOKUS</span>
+                  <span className="stable-stat-value">{dog.focus}</span>
+                </div>
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">FITNESS</span>
+                  <span className="stable-stat-value">{dog.fitness}</span>
                 </div>
               </div>
             </div>

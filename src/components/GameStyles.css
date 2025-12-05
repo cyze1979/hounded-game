@@ -2819,8 +2819,34 @@
    ============================================ */
 
 .training-view {
-  padding: 40px 100px 0 100px;
   min-height: calc(100vh - 80px);
+  position: relative;
+  padding: 40px 100px 0 100px;
+}
+
+.training-view::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/assets/backgrounds/background_general_01.jpg') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  filter: blur(8px);
+  z-index: -2;
+}
+
+.training-view::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 14, 26, 0.40);
+  z-index: -1;
 }
 
 .training-header {
@@ -2844,7 +2870,11 @@
 }
 
 .training-section {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
+}
+
+.training-section h3 {
+  margin-bottom: 20px;
 }
 
 .section-label {
@@ -2941,21 +2971,25 @@
 
 .attribute-option {
   padding: 20px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 2px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  background: rgba(10, 10, 20, 0.70);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .attribute-option:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(0, 217, 255, 0.3);
+  background: rgba(10, 10, 20, 0.85);
+  border-color: rgba(0, 217, 255, 0.4);
+  transform: translateY(-2px);
 }
 
 .attribute-option.selected {
-  background: rgba(0, 217, 255, 0.1);
+  background: rgba(0, 217, 255, 0.15);
   border-color: var(--cyan-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 217, 255, 0.2);
 }
 
 .attribute-header {
@@ -2972,9 +3006,11 @@
 .attribute-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
-  font-weight: 600;
+  font-weight: 900;
+  font-style: italic;
   color: var(--text-white);
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .attribute-value-bar {
@@ -3015,24 +3051,26 @@
 
 .trainer-card {
   padding: 25px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 2px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  background: rgba(10, 10, 20, 0.70);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s;
   position: relative;
 }
 
 .trainer-card:hover:not(.disabled) {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(0, 217, 255, 0.3);
-  transform: translateY(-2px);
+  background: rgba(10, 10, 20, 0.85);
+  border-color: rgba(0, 217, 255, 0.4);
+  transform: translateY(-3px) scale(1.02);
 }
 
 .trainer-card.selected {
-  background: rgba(0, 217, 255, 0.1);
+  background: rgba(0, 217, 255, 0.15);
   border-color: var(--cyan-primary);
-  transform: scale(1.02);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
 }
 
 .trainer-card.disabled {
@@ -3044,10 +3082,12 @@
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 900;
+  font-style: italic;
   color: var(--text-white);
   text-transform: uppercase;
   margin-bottom: 20px;
   text-align: center;
+  letter-spacing: 1px;
 }
 
 .trainer-stats {
@@ -3064,14 +3104,19 @@
 
 .stat-label {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-size: 0.9em;
+  font-size: 0.85em;
+  font-weight: 500;
+  font-style: italic;
   color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .stat-value {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 600;
+  font-weight: 700;
+  font-style: italic;
 }
 
 .stat-value.gain {
@@ -3119,11 +3164,13 @@
 /* Training Result */
 .training-result {
   padding: 30px;
-  background: rgba(74, 222, 128, 0.1);
-  border: 2px solid rgba(74, 222, 128, 0.3);
-  border-radius: 12px;
+  background: rgba(10, 10, 20, 0.85);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(74, 222, 128, 0.4);
+  border-radius: 15px;
   margin-top: 30px;
   animation: slideIn 0.3s ease-out;
+  box-shadow: 0 10px 30px rgba(74, 222, 128, 0.2);
 }
 
 @keyframes slideIn {
@@ -3141,10 +3188,12 @@
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 900;
+  font-style: italic;
   color: #4ade80;
   text-align: center;
   margin-bottom: 20px;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .result-details {
@@ -3860,6 +3909,15 @@
 
 .stable-dog-card:hover {
   transform: scale(1.05);
+}
+
+.stable-dog-card.training-selected {
+  transform: scale(1.05);
+}
+
+.stable-dog-card.training-selected::before {
+  background: linear-gradient(135deg, #00d9ff, #00ff88);
+  opacity: 1;
 }
 
 .stable-dog-card:hover::before {
