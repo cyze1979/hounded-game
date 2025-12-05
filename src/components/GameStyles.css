@@ -825,6 +825,18 @@
   text-align: center;
 }
 
+.market-view {
+  padding: 40px 100px 0 100px;
+  min-height: calc(100vh - 80px);
+  position: relative;
+}
+
+.leaderboard-view {
+  padding: 40px 100px 0 100px;
+  min-height: calc(100vh - 80px);
+  position: relative;
+}
+
 /* View Headers */
 .stable-view h2,
 .market-view h2 {
@@ -1436,7 +1448,7 @@
    RACE VIEW - CLEAN & PROFESSIONAL
 ============================================ */
 .race-view {
-  padding: 40px 60px;
+  padding: 40px 100px;
   min-height: calc(100vh - 80px);
 }
 
@@ -2780,7 +2792,8 @@
    ============================================ */
 
 .training-view {
-  padding: 0;
+  padding: 40px 100px 0 100px;
+  min-height: calc(100vh - 80px);
 }
 
 .training-header {
