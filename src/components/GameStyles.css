@@ -3816,10 +3816,13 @@
   opacity: 0.5;
 }
 
+.stable-dog-card:hover {
+  transform: scale(1.05);
+}
+
 .stable-dog-card:hover::before {
   opacity: 1;
   background: linear-gradient(135deg, #27ade5, #670cff);
-  transform: scale(1.05);
 }
 
 /* Dog Image in Stable Card */
@@ -3830,7 +3833,6 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
 }
