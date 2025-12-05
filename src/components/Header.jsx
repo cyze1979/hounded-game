@@ -23,7 +23,14 @@ export default function Header({ currentPlayer, currentMonth, currentYear, curre
   const formatMoney = (amount) => {
     return amount.toLocaleString('de-DE');
   };
-  
+
+  const handleNavClick = (viewId) => {
+    if (viewId === 'stable') {
+      window.dispatchEvent(new CustomEvent('stableViewClick'));
+    }
+    onViewChange(viewId);
+  };
+
   return (
     <header className="game-header-new">
       {/* Left: Burger Menu & Player Info */}
@@ -31,7 +38,7 @@ export default function Header({ currentPlayer, currentMonth, currentYear, curre
         <button className="burger-menu-btn burger-menu-simple" onClick={onMenuClick}>
           ☰
         </button>
-        
+
         <div className="header-player">
           <div className="player-avatar">
             {playerAvatar ? (
@@ -46,14 +53,14 @@ export default function Header({ currentPlayer, currentMonth, currentYear, curre
           </div>
         </div>
       </div>
-      
+
       {/* Center: Navigation */}
       <nav className="header-nav">
         {navItems.map(item => (
           <button
             key={item.id}
             className={`nav-item ${currentView === item.id ? 'active' : ''}`}
-            onClick={() => onViewChange(item.id)}
+            onClick={() => handleNavClick(item.id)}
           >
             {item.label}
             {item.badge > 0 && <span className="nav-badge">{item.badge}</span>}

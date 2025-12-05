@@ -3809,7 +3809,7 @@
   inset: 0;
   border-radius: 15px;
   padding: 3px;
-  background: linear-gradient(135deg, #ffdc5f, #c27277);
+  background: linear-gradient(135deg, #27ade5, #670cff);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -3836,7 +3836,7 @@
 
 .stable-dog-card:hover::before {
   opacity: 1;
-  background: linear-gradient(135deg, #27ade5, #670cff);
+  background: linear-gradient(135deg, #ffdc5f, #c27277);
 }
 
 /* Dog Image in Stable Card */
