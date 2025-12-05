@@ -52,14 +52,14 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
       {/* Top Section: Name + Age + Rating */}
       <div className="detail-hero">
         <div className="detail-name-section">
-          <h1 className="detail-name-large">{dog.name}</h1>
-          <div className="detail-subtitle-large">
+          <h1 className="display-lg">{dog.name}</h1>
+          <div className="label-md">
             {dog.breed}, {dog.getAgeInYears()} Jahre
           </div>
         </div>
         <div className="detail-rating-badge">
-          <div className="rating-number-large">{dog.getOverallRating()}</div>
-          <div className="rating-label-large">{ageCategory}</div>
+          <div className="display-lg">{dog.getOverallRating()}</div>
+          <div className="label-md">{ageCategory}</div>
         </div>
       </div>
       
@@ -75,7 +75,7 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
         
         {/* Middle Column: Attributes */}
         <div className="detail-attributes-column">
-          <h3 className="column-title">ATTRIBUTE</h3>
+          <h3 className="heading-sm">ATTRIBUTE</h3>
           <div className="attributes-list">
             {[
               { key: 'speed', label: 'GESCHWINDIGKEIT', value: dog.speed },
@@ -85,7 +85,7 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               { key: 'fitness', label: 'FITNESS', value: dog.fitness, isFitness: true }
             ].map(attr => (
               <div key={attr.key} className="stat-bar-row">
-                <div className="stat-bar-label">{attr.label}</div>
+                <div className="label-md">{attr.label}</div>
                 <div className="stat-bar-group">
                   <div className="stat-bar-container-new">
                     <div 
@@ -93,7 +93,7 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
                       style={{ width: `${attr.value}%` }}
                     />
                   </div>
-                  <div className="stat-bar-number">{attr.value}</div>
+                  <div className="text-lg">{attr.value}</div>
                 </div>
               </div>
             ))}
@@ -102,27 +102,27 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
         
         {/* Right Column: Statistics with Scrollbar */}
         <div className="detail-stats-column">
-          <h3 className="column-title">STATISTIKEN</h3>
+          <h3 className="heading-sm">STATISTIKEN</h3>
           <div className="stats-scrollable">
             <div className="stat-item-row">
-              <div className="stat-item-label">RENNEN</div>
-              <div className="stat-item-value">{dog.races}</div>
+              <div className="label-sm">RENNEN</div>
+              <div className="text-lg">{dog.races}</div>
             </div>
             <div className="stat-item-row">
-              <div className="stat-item-label">SIEGE</div>
-              <div className="stat-item-value">{dog.wins}</div>
+              <div className="label-sm">SIEGE</div>
+              <div className="text-lg">{dog.wins}</div>
             </div>
             <div className="stat-item-row">
-              <div className="stat-item-label">PREISGELDER</div>
-              <div className="stat-item-value stat-yellow">{dog.totalEarnings.toLocaleString('de-DE')} €</div>
+              <div className="label-sm">PREISGELDER</div>
+              <div className="text-lg">{dog.totalEarnings.toLocaleString('de-DE')} €</div>
             </div>
             <div className="stat-item-row">
-              <div className="stat-item-label">EINKAUFSPREIS</div>
-              <div className="stat-item-value">{purchasePrice.toLocaleString('de-DE')} €</div>
+              <div className="label-sm">EINKAUFSPREIS</div>
+              <div className="text-lg">{purchasePrice.toLocaleString('de-DE')} €</div>
             </div>
             <div className="stat-item-row">
-              <div className="stat-item-label">AKTUELLER WERT</div>
-              <div className="stat-item-value stat-yellow">{currentValue.toLocaleString('de-DE')} €</div>
+              <div className="label-sm">AKTUELLER WERT</div>
+              <div className="text-lg">{currentValue.toLocaleString('de-DE')} €</div>
             </div>
           </div>
         </div>

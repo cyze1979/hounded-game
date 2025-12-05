@@ -17,6 +17,197 @@
 }
 
 /* ============================================
+   DESIGN SYSTEM - TYPOGRAPHY SCALE
+   Consistent font hierarchy for all components
+============================================ */
+
+/* Display - Hero Text */
+.display-xl {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 5em;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--text-white);
+}
+
+.display-lg {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 3.5em;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--text-white);
+}
+
+.display-md {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 2.5em;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  color: var(--text-white);
+}
+
+/* Headings - Section Titles */
+.heading-xl {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 2em;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.heading-lg {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.heading-md {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.heading-sm {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1em;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+/* Labels - Descriptive Text */
+.label-lg {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1.1em;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.label-md {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1em;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.label-sm {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 0.95em;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.label-xs {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 0.85em;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Body Text - Values & Numbers */
+.text-xl {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.text-lg {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.text-md {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  color: var(--text-white);
+}
+
+.text-sm {
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 0.9em;
+  font-weight: 400;
+  color: var(--text-gray);
+}
+
+/* Text Utilities */
+.text-uppercase {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.text-uppercase-lg {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.text-italic {
+  font-style: italic;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.text-semibold {
+  font-weight: 600;
+}
+
+.text-gray {
+  color: var(--text-gray);
+}
+
+.text-white {
+  color: var(--text-white);
+}
+
+.text-cyan {
+  color: var(--cyan-primary);
+}
+
+.text-yellow {
+  color: var(--yellow-primary);
+}
+
+/* ============================================
+   LEGACY CLASSES - TO BE REPLACED
+   These map to new utility classes above
+============================================ */
+
+/* ============================================
    HEADER - New Design
 ============================================ */
 .game-header-new {
@@ -3611,7 +3802,7 @@
   z-index: -1;
 }
 
-/* Hero Section - Name & Rating (SMALLER) */
+/* Hero Section - Name & Rating */
 .detail-hero {
   display: flex;
   justify-content: space-between;
@@ -3624,48 +3815,25 @@
   flex: 1;
 }
 
-.detail-name-large {
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 3.5em;
-  letter-spacing: 2px;
-  color: var(--text-white);
+.detail-name-section .display-lg {
   text-transform: uppercase;
   margin: 0 0 8px 0;
-  line-height: 1;
 }
 
-.detail-subtitle-large {
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-size: 1em;
-  font-style: italic;
+.detail-name-section .label-md {
   color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .detail-rating-badge {
   text-align: right;
 }
 
-.rating-number-large {
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 3.5em;
-  color: var(--text-white);
-  line-height: 1;
+.detail-rating-badge .display-lg {
   margin-bottom: 5px;
 }
 
-.rating-label-large {
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-size: 1em;
-  font-style: italic;
+.detail-rating-badge .label-md {
   color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 /* Main Content - 3 Column Grid with Dividers (SMALLER COLUMNS) */
@@ -3741,14 +3909,7 @@
   padding: 0 55px;
 }
 
-.column-title {
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
-  font-style: italic;
-  font-size: 1em;
-  letter-spacing: 2px;
-  color: var(--text-white);
-  text-transform: uppercase;
+.detail-attributes-column .heading-sm {
   margin: 0;
 }
 
@@ -3764,16 +3925,9 @@
   gap: 35px;
 }
 
-.stat-bar-label {
+.stat-bar-row .label-md {
   min-width: 200px;
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 600;
-  font-size: 1em;
-  font-style: italic;
-  letter-spacing: 0.5px;
-  color: var(--text-white);
   text-align: left;
-  text-transform: uppercase;
 }
 
 .stat-bar-group {
@@ -3807,12 +3961,8 @@
   box-shadow: none;
 }
 
-.stat-bar-number {
+.stat-bar-group .text-lg {
   min-width: 50px;
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
-  font-size: 1.3em;
-  color: var(--text-white);
   text-align: left;
 }
 
@@ -3822,6 +3972,10 @@
   flex-direction: column;
   gap: 30px;
   padding-left: 55px;
+}
+
+.detail-stats-column .heading-sm {
+  margin: 0;
 }
 
 .stats-scrollable {
@@ -3858,26 +4012,8 @@
   border-bottom: none;
 }
 
-.stat-item-label {
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-size: 0.95em;
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.stat-item-value {
-  font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
-  font-size: 1.3em;
-  color: var(--text-white);
+.stat-item-row .text-lg {
   text-align: right;
-}
-
-.stat-item-value.stat-yellow {
-  color: var(--text-white);
-  font-size: 1.3em;
 }
 
 /* Bottom Actions */
