@@ -106,7 +106,7 @@
 }
 
 .player-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 0.95em;
   letter-spacing: 1px;
@@ -114,7 +114,7 @@
 }
 
 .player-money {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 0.85em;
   letter-spacing: 0.5px;
@@ -139,7 +139,7 @@
   background: none;
   border: none;
   color: var(--text-gray);
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 0.9em;
   letter-spacing: 1px;
@@ -191,7 +191,7 @@
 }
 
 .header-week {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 0.9em;
   letter-spacing: 2px;
@@ -271,7 +271,7 @@
   color: #1a1a1a;
   border: none;
   padding: 12px 30px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 0.9em;
   letter-spacing: 1px;
@@ -327,7 +327,7 @@
   color: #1a1a1a;
   border: none;
   padding: 15px 40px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1em;
   letter-spacing: 1px;
@@ -374,7 +374,7 @@
 
 .stat-label-new {
   min-width: 200px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 1em;
   letter-spacing: 1.5px;
@@ -404,7 +404,7 @@
 
 .stat-value-new {
   min-width: 50px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1.2em;
   color: var(--text-white);
@@ -415,7 +415,7 @@
    TYPOGRAPHY
 ============================================ */
 .heading-xl {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 4em;
@@ -425,7 +425,7 @@
 }
 
 .heading-lg {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 2em;
   letter-spacing: 2px;
@@ -433,7 +433,7 @@
 }
 
 .label-sm {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 0.85em;
   letter-spacing: 1px;
@@ -533,7 +533,7 @@
 }
 
 .dog-card-title h3 {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 1.8em;
@@ -551,7 +551,7 @@
 }
 
 .dog-breed {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.75em;
   color: var(--text-gray);
   text-transform: uppercase;
@@ -573,7 +573,7 @@
 }
 
 .dog-card-rating .rating-number {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 3em;
@@ -598,7 +598,7 @@
 }
 
 .card-stat-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: var(--text-gray);
   text-transform: uppercase;
@@ -607,7 +607,7 @@
 }
 
 .card-stat-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   color: var(--text-white);
   font-weight: 700;
@@ -625,7 +625,7 @@
 }
 
 .market-card-footer .dog-price {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.8em;
   font-weight: 900;
   color: var(--yellow-primary);
@@ -636,7 +636,7 @@
 /* View Headers */
 .stable-view h2,
 .market-view h2 {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 2.5em;
@@ -648,7 +648,7 @@
 
 .stable-view p,
 .market-view p {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   color: var(--text-gray);
   margin-bottom: 20px;
@@ -755,7 +755,7 @@
 }
 
 .dog-name-xl {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 4.5em;
@@ -767,7 +767,7 @@
 }
 
 .dog-breed-info {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 1em;
   letter-spacing: 2px;
@@ -784,7 +784,7 @@
 }
 
 .rating-number-xl {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 5em;
@@ -820,7 +820,7 @@
 }
 
 .race-stat-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.75em;
   font-weight: 600;
   letter-spacing: 1px;
@@ -830,7 +830,7 @@
 }
 
 .race-stat-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -888,7 +888,7 @@
 
 /* Race View Message */
 .race-view-message {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   color: var(--cyan-primary);
   text-align: center;
@@ -946,7 +946,7 @@
 }
 
 .game-menu-panel h2 {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 2.5em;
@@ -974,7 +974,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 600;
   letter-spacing: 1px;
@@ -1031,7 +1031,7 @@
 }
 
 .confirm-box h3 {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.8em;
   font-weight: 700;
   color: #f56565;
@@ -1039,7 +1039,7 @@
 }
 
 .confirm-box p {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   color: var(--text-white);
   margin-bottom: 10px;
@@ -1095,7 +1095,7 @@
 }
 
 .setup-logo {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 5em;
@@ -1108,7 +1108,7 @@
 }
 
 .setup-subtitle {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 0.95em;
   letter-spacing: 3px;
@@ -1128,7 +1128,7 @@
 }
 
 .setup-section-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1.5em;
   letter-spacing: 2px;
@@ -1139,7 +1139,7 @@
 }
 
 .setup-description {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   color: var(--text-gray);
   text-align: center;
@@ -1200,7 +1200,7 @@
 }
 
 .player-label-text {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 0.9em;
   letter-spacing: 1px;
@@ -1215,7 +1215,7 @@
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   color: var(--text-white);
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 600;
   transition: all 0.3s;
@@ -1257,7 +1257,7 @@
 }
 
 .race-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 2.5em;
@@ -1268,7 +1268,7 @@
 }
 
 .race-meta {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   color: var(--text-gray);
   display: flex;
@@ -1297,7 +1297,7 @@
 }
 
 .participants-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1.5em;
   color: var(--text-white);
@@ -1319,7 +1319,7 @@
   gap: 20px;
   padding: 15px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   font-weight: 700;
   color: var(--text-gray);
@@ -1377,7 +1377,7 @@
 }
 
 .participant-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 700;
   color: var(--text-white);
@@ -1386,7 +1386,7 @@
 }
 
 .participant-breed {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: var(--text-gray);
   text-transform: uppercase;
@@ -1413,7 +1413,7 @@
 }
 
 .stat-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 700;
   color: var(--text-white);
@@ -1425,7 +1425,7 @@
 }
 
 .rating-badge {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   font-style: italic;
@@ -1438,7 +1438,7 @@
 }
 
 .besttime-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 600;
   color: var(--text-gray);
@@ -1450,7 +1450,7 @@
 }
 
 .odds-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.4em;
   font-weight: 700;
   color: var(--yellow-primary);
@@ -1515,7 +1515,7 @@
 }
 
 .race-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 2.5em;
@@ -1525,7 +1525,7 @@
 }
 
 .race-timer {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 3em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -1579,7 +1579,7 @@
 }
 
 .lane-position {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -1594,7 +1594,7 @@
 }
 
 .lane-dog-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 700;
   color: var(--text-white);
@@ -1603,14 +1603,14 @@
 }
 
 .lane-dog-breed {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.8em;
   color: var(--text-gray);
   text-transform: uppercase;
 }
 
 .lane-rating {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
   font-weight: 900;
   color: var(--text-white);
@@ -1631,7 +1631,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.7em;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.3);
@@ -1680,7 +1680,7 @@
 }
 
 .lane-progress {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   font-weight: 700;
   color: var(--text-gray);
@@ -1697,7 +1697,7 @@
 }
 
 .commentary-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 700;
   color: var(--yellow-primary);
@@ -1713,7 +1713,7 @@
 }
 
 .commentary-message {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   color: var(--text-white);
   padding: 10px 15px;
@@ -1741,7 +1741,7 @@
 }
 
 .results-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   font-style: italic;
@@ -1798,7 +1798,7 @@
 }
 
 .result-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
   font-weight: 900;
   font-style: italic;
@@ -1807,14 +1807,14 @@
 }
 
 .result-breed {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: var(--text-gray);
   text-transform: uppercase;
 }
 
 .result-time {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 700;
   color: var(--cyan-primary);
@@ -1875,7 +1875,7 @@
 }
 
 .col-position {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -1898,7 +1898,7 @@
 }
 
 .participant-name-small {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 700;
   color: var(--text-white);
@@ -1908,7 +1908,7 @@
 }
 
 .participant-owner-small {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.75em;
   color: var(--text-gray);
   opacity: 0.7;
@@ -1937,7 +1937,7 @@
 }
 
 .progress-text {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   font-weight: 700;
   color: var(--text-white);
@@ -1961,7 +1961,7 @@
 }
 
 .standings-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 700;
   color: var(--cyan-primary);
@@ -1986,7 +1986,7 @@
 }
 
 .standing-pos {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -1994,7 +1994,7 @@
 }
 
 .standing-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 700;
   color: var(--text-white);
@@ -2018,7 +2018,7 @@
 }
 
 .commentary-message-compact {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   color: var(--text-white);
   padding: 8px 12px;
@@ -2054,7 +2054,7 @@
 }
 
 .standing-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 700;
   color: var(--text-white);
@@ -2063,7 +2063,7 @@
 }
 
 .standing-time {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   font-weight: 700;
   color: var(--yellow-primary);
@@ -2100,7 +2100,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.65em;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.3);
@@ -2212,7 +2212,7 @@
 }
 
 .race-timer-simple {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 3em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -2224,7 +2224,7 @@
 }
 
 .col-position-simple {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -2242,7 +2242,7 @@
 }
 
 .col-time-simple {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
   font-weight: 700;
   color: var(--yellow-primary);
@@ -2268,7 +2268,7 @@
 }
 
 .race-timer-simple {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 3.5em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -2300,7 +2300,7 @@
 }
 
 .race-position {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -2314,7 +2314,7 @@
 }
 
 .race-dog-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 700;
   color: var(--text-white);
@@ -2322,7 +2322,7 @@
 }
 
 .race-dog-owner {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: rgba(255, 255, 255, 0.5);
 }
@@ -2363,7 +2363,7 @@
 }
 
 .race-time {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 700;
   color: var(--yellow-primary);
@@ -2401,7 +2401,7 @@
 }
 
 .race-time {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 700;
   color: var(--yellow-primary);
@@ -2434,7 +2434,7 @@
 }
 
 .results-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   color: var(--text-white);
@@ -2474,7 +2474,7 @@
 }
 
 .results-pos-number {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.8em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -2491,7 +2491,7 @@
 }
 
 .results-dog-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
   font-weight: 700;
   color: var(--text-white);
@@ -2499,13 +2499,13 @@
 }
 
 .results-owner {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   color: rgba(255, 255, 255, 0.5);
 }
 
 .results-time {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 700;
   color: var(--yellow-primary);
@@ -2513,7 +2513,7 @@
 }
 
 .results-prize {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 700;
   color: #4ade80;
@@ -2532,7 +2532,7 @@
 }
 
 .earnings-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
   font-weight: 700;
   color: var(--text-white);
@@ -2540,7 +2540,7 @@
 }
 
 .earnings-amount {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   color: #4ade80;
@@ -2596,7 +2596,7 @@
 }
 
 .training-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   color: var(--text-white);
@@ -2606,7 +2606,7 @@
 }
 
 .training-subtitle {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -2616,7 +2616,7 @@
 }
 
 .section-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   font-weight: 700;
   color: var(--cyan-primary);
@@ -2665,7 +2665,7 @@
 }
 
 .dog-selector-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 700;
   color: var(--text-white);
@@ -2673,7 +2673,7 @@
 }
 
 .dog-selector-meta {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: rgba(255, 255, 255, 0.6);
   margin-bottom: 5px;
@@ -2694,7 +2694,7 @@
 }
 
 .fitness-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   font-weight: 600;
   color: var(--text-white);
@@ -2738,7 +2738,7 @@
 }
 
 .attribute-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 700;
   color: var(--text-white);
@@ -2766,7 +2766,7 @@
 }
 
 .attribute-number {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   font-weight: 700;
   color: var(--text-white);
@@ -2809,7 +2809,7 @@
 }
 
 .trainer-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   font-weight: 900;
   color: var(--text-white);
@@ -2831,13 +2831,13 @@
 }
 
 .stat-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   color: rgba(255, 255, 255, 0.6);
 }
 
 .stat-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 700;
 }
@@ -2860,7 +2860,7 @@
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 8px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: #ef4444;
   text-align: center;
@@ -2906,7 +2906,7 @@
 }
 
 .result-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
   font-weight: 900;
   color: #4ade80;
@@ -2923,14 +2923,14 @@
 }
 
 .result-dog {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
   font-weight: 700;
   color: var(--text-white);
 }
 
 .result-stat {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
   color: var(--text-white);
   display: flex;
@@ -2961,7 +2961,7 @@
 .result-costs {
   display: flex;
   gap: 30px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -3025,7 +3025,7 @@
 }
 
 .detail-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2.5em;
   font-weight: 900;
   color: var(--text-white);
@@ -3034,7 +3034,7 @@
 }
 
 .detail-meta {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -3048,7 +3048,7 @@
 }
 
 .rating-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
@@ -3056,7 +3056,7 @@
 }
 
 .rating-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 3em;
   font-weight: 900;
   color: var(--cyan-primary);
@@ -3102,7 +3102,7 @@
 }
 
 .section-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   font-weight: 700;
   color: var(--cyan-primary);
@@ -3127,7 +3127,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   font-weight: 600;
   color: var(--text-white);
@@ -3158,7 +3158,7 @@
 }
 
 .attribute-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-weight: 700;
   color: var(--text-white);
@@ -3182,7 +3182,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
 }
 
 .value-label {
@@ -3238,7 +3238,7 @@
 }
 
 .stat-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
@@ -3246,7 +3246,7 @@
 }
 
 .stat-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   color: var(--text-white);
@@ -3262,7 +3262,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   color: var(--text-white);
 }
@@ -3281,7 +3281,7 @@
 .btn-action-detail {
   flex: 1;
   padding: 18px 30px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 700;
   text-transform: uppercase;
@@ -3372,7 +3372,7 @@
 }
 
 .track-selection-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
   font-weight: 900;
   color: var(--text-white);
@@ -3382,7 +3382,7 @@
 }
 
 .track-selection-subtitle {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   color: rgba(255, 255, 255, 0.6);
   margin-bottom: 40px;
@@ -3421,7 +3421,7 @@
 }
 
 .track-name {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.4em;
   font-weight: 900;
   color: var(--text-white);
@@ -3430,7 +3430,7 @@
 }
 
 .track-difficulty {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.75em;
   font-weight: 700;
   padding: 5px 12px;
@@ -3457,7 +3457,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
 }
 
 .track-stat-label {
@@ -3477,7 +3477,7 @@
 }
 
 .track-record {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
   color: var(--cyan-primary);
   padding: 10px;
@@ -3487,7 +3487,7 @@
 }
 
 .track-description {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
@@ -3495,7 +3495,7 @@
 }
 
 .track-special {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
   font-weight: 700;
   color: #fbbf24;
@@ -3509,7 +3509,7 @@
 .btn-select-track {
   width: 100%;
   padding: 15px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   font-weight: 700;
   text-transform: uppercase;
@@ -3625,7 +3625,7 @@
 }
 
 .detail-name-large {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 3.5em;
@@ -3637,7 +3637,7 @@
 }
 
 .detail-subtitle-large {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-style: italic;
   color: rgba(255, 255, 255, 0.5);
@@ -3650,7 +3650,7 @@
 }
 
 .rating-number-large {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 900;
   font-style: italic;
   font-size: 3.5em;
@@ -3660,7 +3660,7 @@
 }
 
 .rating-label-large {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
   font-style: italic;
   color: rgba(255, 255, 255, 0.5);
@@ -3742,7 +3742,7 @@
 }
 
 .column-title {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-style: italic;
   font-size: 1em;
@@ -3766,7 +3766,7 @@
 
 .stat-bar-label {
   min-width: 200px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 1em;
   font-style: italic;
@@ -3809,7 +3809,7 @@
 
 .stat-bar-number {
   min-width: 50px;
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1.3em;
   color: var(--text-white);
@@ -3859,7 +3859,7 @@
 }
 
 .stat-item-label {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
   font-style: italic;
   color: rgba(255, 255, 255, 0.5);
@@ -3868,7 +3868,7 @@
 }
 
 .stat-item-value {
-  font-family: 'Roboto', 'Mona Sans', sans-serif;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1.3em;
   color: var(--text-white);
