@@ -56,7 +56,7 @@
 .heading-xl {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 2em;
-  font-weight: 700;
+  font-weight: 600;
   font-style: italic;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -66,7 +66,7 @@
 .heading-lg {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 600;
   font-style: italic;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -76,7 +76,7 @@
 .heading-md {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
-  font-weight: 700;
+  font-weight: 600;
   font-style: italic;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -86,7 +86,7 @@
 .heading-sm {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
   font-style: italic;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -138,14 +138,14 @@
 .text-xl {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
 }
 
 .text-lg {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
-  font-weight: 700;
+  font-weight: 600;
   font-style: italic;
   color: var(--text-white);
 }
@@ -180,7 +180,7 @@
 }
 
 .text-bold {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .text-semibold {
@@ -299,7 +299,7 @@
 
 .player-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95em;
   letter-spacing: 1px;
   color: var(--text-white);
@@ -366,7 +366,7 @@
   background: #ff4757;
   color: white;
   font-size: 0.7em;
-  font-weight: 700;
+  font-weight: 600;
   padding: 2px 6px;
   border-radius: 10px;
   min-width: 18px;
@@ -384,7 +384,7 @@
 
 .header-week {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.9em;
   letter-spacing: 2px;
   color: var(--text-white);
@@ -464,7 +464,7 @@
   border: none;
   padding: 12px 30px;
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.9em;
   letter-spacing: 1px;
   cursor: pointer;
@@ -520,7 +520,7 @@
   border: none;
   padding: 15px 40px;
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1em;
   letter-spacing: 1px;
   cursor: pointer;
@@ -597,7 +597,7 @@
 .stat-value-new {
   min-width: 50px;
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.2em;
   color: var(--text-white);
   text-align: left;
@@ -618,7 +618,7 @@
 
 .heading-lg {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 2em;
   letter-spacing: 2px;
   color: var(--text-white);
@@ -802,7 +802,7 @@
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
   color: var(--text-white);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .card-stat-fitness {
@@ -1225,7 +1225,7 @@
 .confirm-box h3 {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.8em;
-  font-weight: 700;
+  font-weight: 600;
   color: #f56565;
   margin-bottom: 20px;
 }
@@ -1321,7 +1321,7 @@
 
 .setup-section-title {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.5em;
   letter-spacing: 2px;
   color: var(--text-white);
@@ -1490,7 +1490,7 @@
 
 .participants-title {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.5em;
   color: var(--text-white);
   text-transform: uppercase;
@@ -1513,7 +1513,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-gray);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1571,7 +1571,7 @@
 .participant-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1607,7 +1607,7 @@
 .stat-value {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
 }
 
@@ -1644,7 +1644,7 @@
 .odds-value {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.4em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--yellow-primary);
 }
 
@@ -1788,7 +1788,7 @@
 .lane-dog-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1825,7 +1825,7 @@
   transform: translateY(-50%);
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.7em;
-  font-weight: 700;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.3);
   letter-spacing: 1px;
 }
@@ -1874,7 +1874,7 @@
 .lane-progress {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-gray);
   text-align: right;
 }
@@ -1891,7 +1891,7 @@
 .commentary-title {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--yellow-primary);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -2008,7 +2008,7 @@
 .result-time {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--cyan-primary);
   margin-top: 5px;
 }
@@ -2092,7 +2092,7 @@
 .participant-name-small {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
   display: block;
@@ -2131,7 +2131,7 @@
 .progress-text {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   min-width: 50px;
   text-align: right;
@@ -2155,7 +2155,7 @@
 .standings-title {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--cyan-primary);
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -2188,7 +2188,7 @@
 .standing-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
 }
@@ -2248,7 +2248,7 @@
 .standing-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
   flex: 1;
@@ -2257,7 +2257,7 @@
 .standing-time {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--yellow-primary);
   margin-left: auto;
 }
@@ -2294,7 +2294,7 @@
   transform: translateY(-50%);
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.65em;
-  font-weight: 700;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.3);
   letter-spacing: 1px;
   z-index: 1;
@@ -2436,7 +2436,7 @@
 .col-time-simple {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--yellow-primary);
   min-width: 100px;
   text-align: right;
@@ -2508,7 +2508,7 @@
 .race-dog-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.2em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
 }
@@ -2557,7 +2557,7 @@
 .race-time {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--yellow-primary);
   text-align: right;
 }
@@ -2595,7 +2595,7 @@
 .race-time {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--yellow-primary);
   text-align: right;
   min-width: 120px;
@@ -2685,7 +2685,7 @@
 .results-dog-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
 }
@@ -2699,7 +2699,7 @@
 .results-time {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--yellow-primary);
   text-align: right;
 }
@@ -2707,7 +2707,7 @@
 .results-prize {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 600;
   color: #4ade80;
   text-align: right;
 }
@@ -2726,7 +2726,7 @@
 .earnings-label {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
 }
@@ -2810,7 +2810,7 @@
 .section-label {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--cyan-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -2859,7 +2859,7 @@
 .dog-selector-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   margin-bottom: 5px;
 }
@@ -2932,7 +2932,7 @@
 .attribute-name {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   text-transform: uppercase;
 }
@@ -2960,7 +2960,7 @@
 .attribute-number {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   min-width: 60px;
   text-align: right;
@@ -3031,7 +3031,7 @@
 .stat-value {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .stat-value.gain {
@@ -3117,7 +3117,7 @@
 .result-dog {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
 }
 
@@ -3146,7 +3146,7 @@
 
 .gain {
   color: #4ade80;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.9em;
 }
 
@@ -3296,7 +3296,7 @@
 .section-title {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.9em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--cyan-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -3352,7 +3352,7 @@
 .attribute-value {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
   min-width: 40px;
   text-align: right;
@@ -3401,7 +3401,7 @@
 
 .value-delta {
   font-size: 0.95em;
-  font-weight: 700;
+  font-weight: 600;
   padding: 8px 12px;
   border-radius: 8px;
   text-align: center;
@@ -3475,7 +3475,7 @@
   padding: 18px 30px;
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   border-radius: 12px;
   cursor: pointer;
@@ -3624,7 +3624,7 @@
 .track-difficulty {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.75em;
-  font-weight: 700;
+  font-weight: 600;
   padding: 5px 12px;
   border-radius: 6px;
   text-transform: uppercase;
@@ -3659,7 +3659,7 @@
 
 .track-stat-value {
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-white);
 }
 
@@ -3689,7 +3689,7 @@
 .track-special {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.85em;
-  font-weight: 700;
+  font-weight: 600;
   color: #fbbf24;
   padding: 8px 12px;
   background: rgba(251, 191, 36, 0.1);
@@ -3703,7 +3703,7 @@
   padding: 15px;
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.1em;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   background: rgba(0, 217, 255, 0.1);
   border: 2px solid var(--cyan-primary);
@@ -3761,7 +3761,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(10, 14, 26, 0.70);
+  background: rgba(10, 14, 26, 0.40);
   z-index: -1;
 }
 
@@ -3799,7 +3799,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(10, 14, 26, 0.70);
+  background: rgba(10, 14, 26, 0.40);
   z-index: -1;
 }
 
