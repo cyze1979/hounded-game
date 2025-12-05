@@ -29,61 +29,57 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
       <div className="label-md" style={{color: '#9d9d9d'}}>
         Verfügbare Hunde zum Kauf
       </div>
-      
-      <div className="dog-grid">
+
+      <div className="dog-grid-stable">
         {marketDogs.map(dog => {
           const price = dog.getValue();
           const canAfford = player.money >= price;
           const hasSpace = player.dogs.length < stableLimit;
           const canBuy = canAfford && hasSpace;
-          
+
           return (
-            <div key={dog.id} className="dog-card">
-              <div className="dog-icon">
-                <img 
-                  src={getDogImage(dog.imageNumber)} 
+            <div key={dog.id} className="stable-dog-card">
+              <div className="stable-dog-image">
+                <img
+                  src={getDogImage(dog.imageNumber)}
                   alt={dog.name}
                   onError={(e) => {
                     e.target.style.display = 'none';
                   }}
                 />
               </div>
-              
-              {/* Header with Name & Rating */}
-              <div className="dog-card-header">
-                <div className="dog-card-title">
-                  <h3>{dog.name}</h3>
-                  <p className="dog-breed">{dog.breed} • {dog.getAgeInYears()} Jahre • {dog.getAgeCategoryName()}</p>
+
+              <div className="stable-dog-name-row">
+                <h3 className="stable-dog-name">{dog.name}</h3>
+                <span className="stable-dog-rating">{dog.getOverallRating()}</span>
+              </div>
+
+              <div className="stable-dog-breed">
+                {dog.breed.toUpperCase()}, {dog.getAgeInYears()} JAHRE
+              </div>
+
+              <div className="stable-dog-stats">
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">GESCHWINDIGKEIT</span>
+                  <span className="stable-stat-value">{dog.speed}</span>
                 </div>
-                <div className="dog-card-rating">
-                  <span className="rating-number">{dog.getOverallRating()}</span>
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">AUSDAUER</span>
+                  <span className="stable-stat-value">{dog.stamina}</span>
+                </div>
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">BESCHLEUNIGUNG</span>
+                  <span className="stable-stat-value">{dog.acceleration}</span>
+                </div>
+                <div className="stable-stat-row">
+                  <span className="stable-stat-label">FOKUS</span>
+                  <span className="stable-stat-value">{dog.focus}</span>
                 </div>
               </div>
-              
-              {/* Stats - 4 Attributes (no Fitness) */}
-              <div className="dog-card-stats">
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Geschwindigkeit</span>
-                  <span className="card-stat-value">{dog.speed}</span>
-                </div>
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Ausdauer</span>
-                  <span className="card-stat-value">{dog.stamina}</span>
-                </div>
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Beschleunigung</span>
-                  <span className="card-stat-value">{dog.acceleration}</span>
-                </div>
-                <div className="card-stat-row">
-                  <span className="card-stat-label">Fokus</span>
-                  <span className="card-stat-value">{dog.focus}</span>
-                </div>
-              </div>
-              
-              {/* Price & Buy Button */}
+
               <div className="market-card-footer">
                 <div className="dog-price">{price.toLocaleString('de-DE')} €</div>
-                <button 
+                <button
                   className="btn-tab btn-tab-market"
                   onClick={() => handleBuy(dog)}
                   disabled={!canBuy}
