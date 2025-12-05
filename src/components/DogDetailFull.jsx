@@ -85,7 +85,7 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               { key: 'fitness', label: 'FITNESS', value: dog.fitness, isFitness: true }
             ].map(attr => (
               <div key={attr.key} className="stat-bar-row">
-                <div className="label-md">{attr.label}</div>
+                <div className="label-sm">{attr.label}</div>
                 <div className="stat-bar-group">
                   <div className="stat-bar-container-new">
                     <div 

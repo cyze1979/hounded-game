@@ -3916,7 +3916,7 @@
 .attributes-list {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
 }
 
 .stat-bar-row {
@@ -3925,9 +3925,10 @@
   gap: 35px;
 }
 
-.stat-bar-row .label-md {
+.stat-bar-row .label-sm {
   min-width: 200px;
   text-align: left;
+  color: var(--text-white);
 }
 
 .stat-bar-group {
@@ -4008,8 +4009,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0;
+  padding: 12px 0;
   border-bottom: none;
+}
+
+.stat-item-row .label-sm {
+  color: var(--text-white);
 }
 
 .stat-item-row .text-lg {
