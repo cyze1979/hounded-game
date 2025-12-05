@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { dogBreeds } from '../data/dogData';
 import { getAllTracks, getTrackForMonth, RACE_PRIZES } from '../data/trackData';
+import { saveRace } from '../utils/supabaseGame';
 import RaceOverview from './RaceOverview';
 import RaceAnimation from './RaceAnimation';
 import RaceResults from './RaceResults';
@@ -139,6 +140,22 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     setGameState(updatedGameState);
     setRaceState(completedRaceState);
     setShowResults(true);
+
+    if (gameState.sessionId) {
+      const winnerDog = completedRaceState.participants[0].dog;
+      const participantIds = completedRaceState.participants.map(p => p.dog.id);
+      const totalPrizes = Object.values(prizes).reduce((sum, p) => sum + p, 0);
+
+      saveRace(
+        gameState.sessionId,
+        gameState.gameDay,
+        currentTrack.name,
+        currentTrack.distance,
+        winnerDog.id,
+        totalPrizes,
+        participantIds
+      ).catch(err => console.error('Failed to save race:', err));
+    }
   };
 
   const continueAfterResults = () => {

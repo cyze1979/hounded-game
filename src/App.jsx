@@ -37,7 +37,13 @@ function App() {
   const [currentView, setCurrentView] = useState('stable');
   const [showMenu, setShowMenu] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  
+  const [hasExistingSave, setHasExistingSave] = useState(false);
+
+  // Check for existing save on mount
+  useEffect(() => {
+    hasSave().then(result => setHasExistingSave(result));
+  }, []);
+
   // Auto-save on state change
   useEffect(() => {
     if (!gameState.isSetup && gameState.players.length > 0 && gameState.sessionId && !isSaving) {
@@ -224,7 +230,7 @@ function App() {
   };
 
   if (gameState.isSetup) {
-    return <Setup onStartGame={startGame} hasSave={hasSave()} onLoadGame={handleLoadGame} />;
+    return <Setup onStartGame={startGame} hasSave={hasExistingSave} onLoadGame={handleLoadGame} />;
   }
   
   return (

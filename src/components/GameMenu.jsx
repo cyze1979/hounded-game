@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import { deleteSave } from '../utils/saveGame';
 
 export default function GameMenu({ onNewGame, onClose }) {
   const [showConfirm, setShowConfirm] = useState(false);
-  
+
   const handleNewGame = () => {
     setShowConfirm(true);
   };
-  
+
   const confirmNewGame = () => {
-    deleteSave();
+    localStorage.removeItem('hounded_last_session');
     onNewGame();
     onClose();
   };
