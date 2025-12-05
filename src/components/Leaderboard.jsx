@@ -3,10 +3,10 @@ export default function Leaderboard({ players }) {
   
   return (
     <div className="leaderboard-view">
-      <h2 className="heading-xl">STATISTIKEN</h2>
-      <p className="label-md" style={{color: 'var(--text-gray)', marginBottom: '20px'}}>
+      <h1 className="display-lg">STATISTIKEN</h1>
+      <div className="label-md">
         Die erfolgreichsten Trainer
-      </p>
+      </div>
       
       <div className="leaderboard-list">
         {sortedPlayers.map((player, index) => (

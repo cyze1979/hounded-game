@@ -25,10 +25,10 @@ export default function RaceResults({ raceState, currentTrack, raceData, gameSta
     <div className="race-view">
       <div className="results-screen">
         <div className="results-header">
-          <h2 className="heading-xl">{raceState.raceName}</h2>
-          <div className="race-meta label-md" style={{color: 'var(--text-gray)'}}>
+          <h1 className="display-lg">{raceState.raceName}</h1>
+          <div className="label-md">
             <span className="race-distance">{currentTrack.distance}m</span>
-            <span className="race-separator">•</span>
+            <span className="race-separator"> • </span>
             <span className="race-record">
               Bestzeit: {raceData.bestTime ? `${raceData.bestTime.toFixed(2)}s (${raceData.bestTimeHolder})` : 'N/A'}
             </span>

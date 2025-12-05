@@ -52,10 +52,10 @@ export default function RaceOverview({ gameState, currentTrack, raceData, onRace
       <div className="race-view">
         <div className="race-info-header">
           <div className="race-info-main">
-            <h2 className="heading-xl">{raceData.name}</h2>
-            <div className="race-meta label-md" style={{color: 'var(--text-gray)'}}>
+            <h1 className="display-lg">{raceData.name}</h1>
+            <div className="label-md">
               <span className="race-distance">{raceData.distance}m</span>
-              <span className="race-separator">•</span>
+              <span className="race-separator"> • </span>
               <span className="race-record">
                 Bestzeit: {raceData.bestTime ? `${raceData.bestTime.toFixed(2)}s (${raceData.bestTimeHolder})` : 'N/A'}
               </span>
