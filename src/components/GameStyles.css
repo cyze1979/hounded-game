@@ -117,7 +117,7 @@
 .label-sm {
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 0.95em;
-  font-weight: 600;
+  font-weight: 300;
   font-style: italic;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -146,6 +146,7 @@
   font-family: 'Mona Sans', 'Roboto', sans-serif;
   font-size: 1.3em;
   font-weight: 700;
+  font-style: italic;
   color: var(--text-white);
 }
 
@@ -3922,7 +3923,7 @@
 .stat-bar-row {
   display: flex;
   align-items: center;
-  gap: 35px;
+  gap: 20px;
 }
 
 .stat-bar-row .label-sm {
@@ -3935,7 +3936,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 .stat-bar-container-new {
