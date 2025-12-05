@@ -4,7 +4,8 @@ import './components/GameStyles.css';
 import { Player } from './models/Player';
 import { Dog } from './models/Dog';
 import { dogBreeds, resetUsedNames } from './data/dogData';
-import { saveGame, loadGame, hasSave } from './utils/saveGame';
+import { createGameSession, loadGameSession, saveGameSession } from './utils/supabaseGame';
+import { hasSave } from './utils/saveGame';
 
 // Import components
 import Setup from './components/Setup';
@@ -20,39 +21,52 @@ const playerColors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
 
 function App() {
   const [gameState, setGameState] = useState({
+    sessionId: null,
     players: [],
     currentPlayerIndex: 0,
     marketDogs: [],
     currentRace: null,
     raceHistory: [],
     gameDay: 1,
-    currentMonth: 1, // NEW: Track current month
+    currentMonth: 1,
     isSetup: true,
     stableLimit: 4,
-    raceCompleted: false // Track if current week's race is done
+    raceCompleted: false
   });
-  
+
   const [currentView, setCurrentView] = useState('stable');
   const [showMenu, setShowMenu] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   
   // Auto-save on state change
   useEffect(() => {
-    if (!gameState.isSetup && gameState.players.length > 0) {
-      saveGame(gameState);
+    if (!gameState.isSetup && gameState.players.length > 0 && gameState.sessionId && !isSaving) {
+      setIsSaving(true);
+      saveGameSession(gameState.sessionId, gameState)
+        .catch(err => console.error('Save error:', err))
+        .finally(() => setIsSaving(false));
     }
-  }, [gameState]);
+  }, [gameState, isSaving]);
   
   // Try to load save on mount
   useEffect(() => {
-    const savedGame = loadGame();
-    if (savedGame) {
-      setGameState({
-        ...savedGame,
-        marketDogs: generateMarketDogs(),
-        currentRace: null,
-        isSetup: false,
-        currentMonth: savedGame.currentMonth || 1 // Migration: add currentMonth if missing
-      });
+    const lastSessionKey = localStorage.getItem('hounded_last_session');
+    if (lastSessionKey) {
+      loadGameSession(lastSessionKey)
+        .then(session => {
+          if (session) {
+            setGameState(prev => ({
+              ...prev,
+              sessionId: session.sessionId,
+              players: session.players,
+              raceHistory: session.raceHistory,
+              marketDogs: generateMarketDogs(),
+              currentRace: null,
+              isSetup: false
+            }));
+          }
+        })
+        .catch(err => console.error('Load error:', err));
     }
   }, []);
   
@@ -85,21 +99,32 @@ function App() {
     return dogs;
   };
   
-  const startGame = (playerNames) => {
+  const startGame = async (playerNames) => {
     resetUsedNames();
-    
-    const players = playerNames.map((name, index) => 
-      new Player(name, playerColors[index], index)
-    );
-    
-    setGameState({
-      ...gameState,
-      players,
-      currentPlayerIndex: 0,
-      marketDogs: generateMarketDogs(),
-      isSetup: false,
-      raceCompleted: false
-    });
+
+    try {
+      const sessionKey = `game_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const session = await createGameSession(sessionKey);
+
+      const players = playerNames.map((name, index) =>
+        new Player(name, playerColors[index], index)
+      );
+
+      setGameState({
+        ...gameState,
+        sessionId: session.id,
+        players,
+        currentPlayerIndex: 0,
+        marketDogs: generateMarketDogs(),
+        isSetup: false,
+        raceCompleted: false
+      });
+
+      localStorage.setItem('hounded_last_session', sessionKey);
+    } catch (err) {
+      console.error('Failed to create game session:', err);
+      alert('Fehler beim Erstellen der Spielsitzung.');
+    }
   };
   
   const handleNewGame = () => {
@@ -175,18 +200,31 @@ function App() {
     return gameState.players[gameState.currentPlayerIndex];
   };
   
-  if (gameState.isSetup) {
-    return <Setup onStartGame={startGame} hasSave={hasSave()} onLoadGame={() => {
-      const savedGame = loadGame();
-      if (savedGame) {
-        setGameState({
-          ...savedGame,
-          marketDogs: generateMarketDogs(),
-          currentRace: null,
-          isSetup: false
-        });
+  const handleLoadGame = async () => {
+    const lastSessionKey = localStorage.getItem('hounded_last_session');
+    if (lastSessionKey) {
+      try {
+        const session = await loadGameSession(lastSessionKey);
+        if (session) {
+          setGameState(prev => ({
+            ...prev,
+            sessionId: session.sessionId,
+            players: session.players,
+            raceHistory: session.raceHistory,
+            marketDogs: generateMarketDogs(),
+            currentRace: null,
+            isSetup: false
+          }));
+        }
+      } catch (err) {
+        console.error('Load error:', err);
+        alert('Fehler beim Laden des Spiels.');
       }
-    }} />;
+    }
+  };
+
+  if (gameState.isSetup) {
+    return <Setup onStartGame={startGame} hasSave={hasSave()} onLoadGame={handleLoadGame} />;
   }
   
   return (
