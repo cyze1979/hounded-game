@@ -270,6 +270,8 @@ export const saveTrackRecords = async (sessionId, tracks) => {
 };
 
 export const loadTrackRecords = async (sessionId) => {
+  const { getAllTracks } = await import('../data/trackData');
+
   const { data, error } = await supabase
     .from('track_records')
     .select()
@@ -281,12 +283,15 @@ export const loadTrackRecords = async (sessionId) => {
   }
 
   const tracks = {};
-  data.forEach(record => {
-    tracks[record.track_name] = {
-      bestTime: record.best_time,
-      bestTimeHolder: record.best_time_holder,
-      racesHeld: record.races_held,
-      lastWinner: record.last_winner
+  getAllTracks().forEach(track => {
+    const savedRecord = data?.find(r => r.track_name === track.name);
+    tracks[track.name] = {
+      ...track,
+      bestTime: savedRecord?.best_time || null,
+      bestTimeHolder: savedRecord?.best_time_holder || null,
+      racesHeld: savedRecord?.races_held || 0,
+      lastWinner: savedRecord?.last_winner || null,
+      lastResults: null
     };
   });
 

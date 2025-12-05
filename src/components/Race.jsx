@@ -26,9 +26,9 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
           racesHeld: 0
         };
       });
-      setGameState({ ...gameState, tracks });
+      setGameState(prev => ({ ...prev, tracks }));
     }
-  }, []);
+  }, [gameState.tracks]);
 
   const raceData = gameState.tracks && currentTrack ? gameState.tracks[currentTrack.name] : null;
 
