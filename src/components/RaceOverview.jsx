@@ -52,8 +52,8 @@ export default function RaceOverview({ gameState, currentTrack, raceData, onRace
       <div className="race-view">
         <div className="race-info-header">
           <div className="race-info-main">
-            <h1 className="display-lg">{raceData.name}</h1>
-            <div className="label-md">
+            <h1 className="display-lg" style={{marginBottom: '8px'}}>{raceData.name}</h1>
+            <div className="label-md" style={{color: '#9d9d9d'}}>
               <span className="race-distance">{raceData.distance}m</span>
               <span className="race-separator"> • </span>
               <span className="race-record">

@@ -145,8 +145,8 @@ export default function Training({ gameState, setGameState, getCurrentPlayer }) 
   return (
     <div className="training-view">
       <div className="training-header">
-        <h1 className="display-lg">TRAINING</h1>
-        <div className="label-md">Verbessere die Attribute deiner Hunde</div>
+        <h1 className="display-lg" style={{marginBottom: '8px'}}>TRAINING</h1>
+        <div className="label-md" style={{color: '#9d9d9d'}}>Verbessere die Attribute deiner Hunde</div>
       </div>
 
       {/* Dog Selection */}

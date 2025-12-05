@@ -3,8 +3,8 @@ export default function Leaderboard({ players }) {
   
   return (
     <div className="leaderboard-view">
-      <h1 className="display-lg">STATISTIKEN</h1>
-      <div className="label-md">
+      <h1 className="display-lg" style={{marginBottom: '8px'}}>STATISTIKEN</h1>
+      <div className="label-md" style={{color: '#9d9d9d'}}>
         Die erfolgreichsten Trainer
       </div>
       

@@ -33,8 +33,8 @@ export default function Stable({ player, gameState, setGameState }) {
 
   return (
     <div className="stable-view">
-      <h1 className="display-lg">RENNSTALL</h1>
-      <div className="label-md">
+      <h1 className="display-lg" style={{marginBottom: '8px'}}>RENNSTALL</h1>
+      <div className="label-md" style={{color: '#9d9d9d'}}>
         Deine Hunde ({player.dogs.length}/{gameState.stableLimit})
       </div>
       
