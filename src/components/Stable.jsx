@@ -1,9 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DogDetailFull from './DogDetailFull';
 import { getDogImage } from '../utils/assetLoader';
 
 export default function Stable({ player, gameState, setGameState }) {
   const [selectedDog, setSelectedDog] = useState(null);
+
+  useEffect(() => {
+    const handleShowDetail = (e) => {
+      setSelectedDog(e.detail);
+    };
+
+    const handleStableClick = () => {
+      if (selectedDog) {
+        setSelectedDog(null);
+      }
+    };
+
+    window.addEventListener('showDogDetail', handleShowDetail);
+    window.addEventListener('stableViewClick', handleStableClick);
+
+    return () => {
+      window.removeEventListener('showDogDetail', handleShowDetail);
+      window.removeEventListener('stableViewClick', handleStableClick);
+    };
+  }, [selectedDog]);
   
   // If a dog is selected, show detail view instead of grid
   if (selectedDog) {

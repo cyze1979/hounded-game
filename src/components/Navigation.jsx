@@ -5,14 +5,21 @@ export default function Navigation({ currentView, onViewChange }) {
     { id: 'race', label: 'Rennen' },
     { id: 'leaderboard', label: 'Rangliste' }
   ];
-  
+
+  const handleViewChange = (viewId) => {
+    if (viewId === 'stable') {
+      window.dispatchEvent(new CustomEvent('stableViewClick'));
+    }
+    onViewChange(viewId);
+  };
+
   return (
     <nav className="main-nav">
       {views.map(view => (
         <button
           key={view.id}
           className={`nav-btn ${currentView === view.id ? 'active' : ''}`}
-          onClick={() => onViewChange(view.id)}
+          onClick={() => handleViewChange(view.id)}
         >
           {view.label}
         </button>

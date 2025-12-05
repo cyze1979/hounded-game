@@ -1,29 +1,39 @@
+import { useEffect } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
 export default function DogDetailFull({ dog, player, allDogs, gameState, setGameState, onClose, isRaceView = false, isPlayerDog = true }) {
-  
+
   const currentDogIndex = allDogs.findIndex(d => d.id === dog.id);
-  
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const goToPrevious = () => {
-    if (currentDogIndex > 0) {
-      const prevDog = allDogs[currentDogIndex - 1];
-      onClose();
-      setTimeout(() => {
-        const event = new CustomEvent('showDogDetail', { detail: prevDog });
-        window.dispatchEvent(event);
-      }, 10);
-    }
+    const prevIndex = currentDogIndex > 0 ? currentDogIndex - 1 : allDogs.length - 1;
+    const prevDog = allDogs[prevIndex];
+    onClose();
+    setTimeout(() => {
+      const event = new CustomEvent('showDogDetail', { detail: prevDog });
+      window.dispatchEvent(event);
+    }, 10);
   };
-  
+
   const goToNext = () => {
-    if (currentDogIndex < allDogs.length - 1) {
-      const nextDog = allDogs[currentDogIndex + 1];
-      onClose();
-      setTimeout(() => {
-        const event = new CustomEvent('showDogDetail', { detail: nextDog });
-        window.dispatchEvent(event);
-      }, 10);
-    }
+    const nextIndex = currentDogIndex < allDogs.length - 1 ? currentDogIndex + 1 : 0;
+    const nextDog = allDogs[nextIndex];
+    onClose();
+    setTimeout(() => {
+      const event = new CustomEvent('showDogDetail', { detail: nextDog });
+      window.dispatchEvent(event);
+    }, 10);
   };
   
   const handleSell = () => {
@@ -57,8 +67,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
           <button
             className="detail-nav-arrow detail-nav-left"
             onClick={goToPrevious}
-            disabled={currentDogIndex === 0}
-            style={{ opacity: currentDogIndex === 0 ? 0.3 : 1 }}
           >
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <path d="M25 10L15 20L25 30" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -67,8 +75,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
           <button
             className="detail-nav-arrow detail-nav-right"
             onClick={goToNext}
-            disabled={currentDogIndex === allDogs.length - 1}
-            style={{ opacity: currentDogIndex === allDogs.length - 1 ? 0.3 : 1 }}
           >
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <path d="M15 10L25 20L15 30" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
