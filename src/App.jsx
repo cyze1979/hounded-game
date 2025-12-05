@@ -4,8 +4,7 @@ import './components/GameStyles.css';
 import { Player } from './models/Player';
 import { Dog } from './models/Dog';
 import { dogBreeds, resetUsedNames } from './data/dogData';
-import { createGameSession, loadGameSession, saveGameSession } from './utils/supabaseGame';
-import { hasSave } from './utils/saveGame';
+import { createGameSession, loadGameSession, saveGameSession, hasSave } from './utils/supabaseGame';
 
 // Import components
 import Setup from './components/Setup';

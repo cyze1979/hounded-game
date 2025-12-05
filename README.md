@@ -13,8 +13,9 @@ React-basiertes Hunderennen-Management-Spiel
 
 ✅ **Speichersystem**
 - Auto-Save bei jedem State-Change
-- LocalStorage-basiert
+- Supabase-basiert
 - Load Game auf Start-Screen
+- Race-History Tracking
 
 ✅ **Strategische Tiefe**
 - 6 verschiedene Trainer
@@ -56,7 +57,10 @@ src/
 │   ├── dogData.js
 │   └── trainers.js
 ├── utils/          # Utilities
-│   └── saveGame.js
+│   ├── supabaseGame.js
+│   └── assetLoader.js
+├── lib/            # External Services
+│   └── supabase.js
 ├── App.jsx         # Main App Component
 └── main.jsx        # Entry Point
 ```
@@ -71,7 +75,8 @@ src/
 
 ## Tech Stack
 
-- React 18
+- React 19
 - Vite
-- LocalStorage API
+- Supabase (Database & Auth)
+- Framer Motion
 - Pure CSS (no frameworks)
