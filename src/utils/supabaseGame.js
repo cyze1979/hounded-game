@@ -86,17 +86,39 @@ export const loadGameSession = async (sessionKey) => {
 
   if (racesError) throw racesError;
 
+  const { data: marketDogsData } = await supabase
+    .from('market_dogs')
+    .select()
+    .eq('session_id', sessionData.id)
+    .order('slot');
+
+  const marketDogs = marketDogsData
+    ? marketDogsData.map(md => Dog.fromJSON(md.dog_data))
+    : [];
+
   return {
     sessionId: sessionData.id,
     sessionKey,
     players,
     raceHistory: racesData || [],
+    marketDogs,
+    currentMonth: sessionData.current_month || 1,
+    currentYear: sessionData.current_year || 2048,
     createdAt: sessionData.created_at
   };
 };
 
 export const saveGameSession = async (sessionId, gameState) => {
   if (!sessionId) throw new Error('Session ID required');
+
+  await supabase
+    .from('game_sessions')
+    .update({
+      current_month: gameState.currentMonth || 1,
+      current_year: gameState.currentYear || 2048,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', sessionId);
 
   const { data: existingPlayersData } = await supabase
     .from('players')
@@ -189,10 +211,23 @@ export const saveGameSession = async (sessionId, gameState) => {
     }
   }
 
-  await supabase
-    .from('game_sessions')
-    .update({ updated_at: new Date().toISOString() })
-    .eq('id', sessionId);
+  if (gameState.marketDogs && gameState.marketDogs.length > 0) {
+    await supabase
+      .from('market_dogs')
+      .delete()
+      .eq('session_id', sessionId);
+
+    for (let i = 0; i < gameState.marketDogs.length; i++) {
+      const dog = gameState.marketDogs[i];
+      await supabase
+        .from('market_dogs')
+        .insert({
+          session_id: sessionId,
+          dog_data: dog.toJSON(),
+          slot: i
+        });
+    }
+  }
 };
 
 export const saveRace = async (sessionId, gameDay, trackName, distance, winnerDogId, prizeMoney, participantIds) => {
@@ -209,6 +244,53 @@ export const saveRace = async (sessionId, gameDay, trackName, distance, winnerDo
     });
 
   if (error) throw error;
+};
+
+export const saveTrackRecords = async (sessionId, tracks) => {
+  if (!tracks) return;
+
+  for (const [trackName, trackData] of Object.entries(tracks)) {
+    const recordData = {
+      session_id: sessionId,
+      track_name: trackName,
+      best_time: trackData.bestTime,
+      best_time_holder: trackData.bestTimeHolder,
+      races_held: trackData.racesHeld || 0,
+      last_winner: trackData.lastWinner
+    };
+
+    const { error } = await supabase
+      .from('track_records')
+      .upsert(recordData, {
+        onConflict: 'session_id,track_name'
+      });
+
+    if (error) console.error('Error saving track record:', error);
+  }
+};
+
+export const loadTrackRecords = async (sessionId) => {
+  const { data, error } = await supabase
+    .from('track_records')
+    .select()
+    .eq('session_id', sessionId);
+
+  if (error) {
+    console.error('Error loading track records:', error);
+    return null;
+  }
+
+  const tracks = {};
+  data.forEach(record => {
+    tracks[record.track_name] = {
+      bestTime: record.best_time,
+      bestTimeHolder: record.best_time_holder,
+      racesHeld: record.races_held,
+      lastWinner: record.last_winner
+    };
+  });
+
+  return tracks;
 };
 
 export const hasSave = async () => {

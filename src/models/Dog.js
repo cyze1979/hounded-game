@@ -25,7 +25,6 @@ export class Dog {
         this.lastTrainedMonth = null; // NEW: Track when last trained
         this.purchasePrice = null; // NEW: Track purchase price for profit calculation
         this.totalEarnings = 0; // NEW: Total prize money earned
-        this.lastTrainedMonth = null; // NEW: Track when dog was last trained
         
         // Special traits
         const traits = [

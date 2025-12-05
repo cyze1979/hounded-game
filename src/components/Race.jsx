@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { dogBreeds } from '../data/dogData';
 import { getAllTracks, getTrackForMonth, RACE_PRIZES } from '../data/trackData';
-import { saveRace } from '../utils/supabaseGame';
+import { saveRace, saveTrackRecords } from '../utils/supabaseGame';
 import RaceOverview from './RaceOverview';
 import RaceAnimation from './RaceAnimation';
 import RaceResults from './RaceResults';
@@ -68,7 +68,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
 
         const fitnessFactor = Math.max(0.85, dog.fitness / 100);
         const focusFactor = dog.focus / 100;
-        const distanceMultiplier = 800 / currentTrack.distance;
+        const distanceMultiplier = currentTrack.distance / 800;
 
         return {
           id: `racer-${index}`,
@@ -137,6 +137,8 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     });
 
     raceData.lastResults = { race: completedRaceState };
+    raceData.racesHeld = (raceData.racesHeld || 0) + 1;
+
     setGameState(updatedGameState);
     setRaceState(completedRaceState);
     setShowResults(true);
@@ -148,13 +150,16 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
 
       saveRace(
         gameState.sessionId,
-        gameState.gameDay,
+        gameState.currentMonth,
         currentTrack.name,
         currentTrack.distance,
         winnerDog.id,
         totalPrizes,
         participantIds
       ).catch(err => console.error('Failed to save race:', err));
+
+      saveTrackRecords(gameState.sessionId, updatedGameState.tracks)
+        .catch(err => console.error('Failed to save track records:', err));
     }
   };
 
@@ -165,17 +170,10 @@ export default function Race({ gameState, setGameState, getCurrentPlayer }) {
     setRaceState(null);
     setShowResults(false);
 
-    gameState.players.forEach(player => {
-      player.dogs.forEach(dog => {
-        dog.ageInMonths += 1;
-      });
-    });
-
     setGameState({
       ...gameState,
       currentRace: null,
-      raceCompleted: false,
-      currentMonth: (gameState.currentMonth || 1) + 1
+      raceCompleted: true
     });
   };
 

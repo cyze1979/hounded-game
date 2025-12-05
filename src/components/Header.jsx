@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { getDogImage } from '../utils/assetLoader';
 
-export default function Header({ currentPlayer, gameDay, currentMonth, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
+export default function Header({ currentPlayer, currentMonth, currentYear, players, onPlayerSwitch, currentView, onViewChange, marketNotifications = 0, onMenuClick, onNextDay, raceCompleted }) {
   const [showSwitcher, setShowSwitcher] = useState(false);
 
   // Month names
   const monthNames = ['JANUAR', 'FEBRUAR', 'MÄRZ', 'APRIL', 'MAI', 'JUNI', 'JULI', 'AUGUST', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DEZEMBER'];
   const currentMonthName = monthNames[(currentMonth - 1) % 12];
-  const currentYear = 2048 + Math.floor((currentMonth - 1) / 12);
   
   // Get player's first dog for avatar, or use placeholder
   const playerAvatar = currentPlayer.dogs.length > 0 

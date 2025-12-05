@@ -4,7 +4,7 @@ import './components/GameStyles.css';
 import { Player } from './models/Player';
 import { Dog } from './models/Dog';
 import { dogBreeds, resetUsedNames } from './data/dogData';
-import { createGameSession, loadGameSession, saveGameSession, hasSave } from './utils/supabaseGame';
+import { createGameSession, loadGameSession, saveGameSession, hasSave, loadTrackRecords } from './utils/supabaseGame';
 
 // Import components
 import Setup from './components/Setup';
@@ -26,8 +26,8 @@ function App() {
     marketDogs: [],
     currentRace: null,
     raceHistory: [],
-    gameDay: 1,
     currentMonth: 1,
+    currentYear: 2048,
     isSetup: true,
     stableLimit: 4,
     raceCompleted: false
@@ -58,14 +58,19 @@ function App() {
     const lastSessionKey = localStorage.getItem('hounded_last_session');
     if (lastSessionKey) {
       loadGameSession(lastSessionKey)
-        .then(session => {
+        .then(async session => {
           if (session) {
+            const trackRecords = await loadTrackRecords(session.sessionId);
+
             setGameState(prev => ({
               ...prev,
               sessionId: session.sessionId,
               players: session.players,
               raceHistory: session.raceHistory,
-              marketDogs: generateMarketDogs(),
+              marketDogs: session.marketDogs.length > 0 ? session.marketDogs : generateMarketDogs(),
+              currentMonth: session.currentMonth || 1,
+              currentYear: session.currentYear || 2048,
+              tracks: trackRecords,
               currentRace: null,
               isSetup: false
             }));
@@ -134,14 +139,15 @@ function App() {
   
   const handleNewGame = () => {
     resetUsedNames();
-    
+
     setGameState({
       players: [],
       currentPlayerIndex: 0,
       marketDogs: [],
       currentRace: null,
       raceHistory: [],
-      gameDay: 1,
+      currentMonth: 1,
+      currentYear: 2048,
       isSetup: true,
       stableLimit: 4,
       raceCompleted: false
@@ -156,49 +162,63 @@ function App() {
       setCurrentView('race');
       return;
     }
-    
-    // State 2: Race completed → Next week
+
+    // State 2: Race completed → Next month
     const newGameState = { ...gameState };
-    
-    // Increase week
-    newGameState.gameDay += 1;
-    
+
+    // Increase month/year
+    newGameState.currentMonth += 1;
+    if (newGameState.currentMonth > 12) {
+      newGameState.currentMonth = 1;
+      newGameState.currentYear += 1;
+    }
+
+    // Age ALL dogs by 1 month
+    newGameState.players.forEach(player => {
+      player.dogs.forEach(dog => {
+        dog.ageInMonths += 1;
+      });
+    });
+
     // Dogs that raced lose fitness (-20)
     // Dogs that didn't race lose less (-5)
     if (gameState.currentRace && gameState.currentRace.results) {
       const racedDogIds = new Set(
         gameState.currentRace.results.map(result => result.dog.id)
       );
-      
+
       newGameState.players.forEach(player => {
         player.dogs.forEach(dog => {
           if (racedDogIds.has(dog.id)) {
-            dog.fitness = Math.max(0, dog.fitness - 20); // Raced: -20
+            dog.fitness = Math.max(0, dog.fitness - 20);
           } else {
-            dog.fitness = Math.max(0, dog.fitness - 5);  // Didn't race: -5
+            dog.fitness = Math.max(0, dog.fitness - 5);
           }
         });
       });
     } else {
-      // Fallback if no race data: all dogs -5
       newGameState.players.forEach(player => {
         player.dogs.forEach(dog => {
           dog.fitness = Math.max(0, dog.fitness - 5);
         });
       });
     }
-    
+
     // Refresh market
     newGameState.marketDogs = generateMarketDogs();
-    
+
     // Reset race status
     newGameState.currentRace = null;
     newGameState.raceCompleted = false;
-    
+
     setGameState(newGameState);
-    
-    // Show notification
-    alert(`⏭️ Woche ${newGameState.gameDay}\n\n🏥 Gerannte Hunde: -20 Fitness\n🏥 Andere Hunde: -5 Fitness\n🛒 Neuer Hundemarkt verfügbar!`);
+
+    // Get month name
+    const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                        'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    const monthName = monthNames[newGameState.currentMonth - 1];
+
+    alert(`⏭️ ${monthName} ${newGameState.currentYear}\n\n🐕 Alle Hunde sind 1 Monat älter\n🏥 Gerannte Hunde: -20 Fitness\n🏥 Andere Hunde: -5 Fitness\n🛒 Neuer Hundemarkt verfügbar!`);
   };
   
   const getCurrentPlayer = () => {
@@ -211,12 +231,17 @@ function App() {
       try {
         const session = await loadGameSession(lastSessionKey);
         if (session) {
+          const trackRecords = await loadTrackRecords(session.sessionId);
+
           setGameState(prev => ({
             ...prev,
             sessionId: session.sessionId,
             players: session.players,
             raceHistory: session.raceHistory,
-            marketDogs: generateMarketDogs(),
+            marketDogs: session.marketDogs.length > 0 ? session.marketDogs : generateMarketDogs(),
+            currentMonth: session.currentMonth || 1,
+            currentYear: session.currentYear || 2048,
+            tracks: trackRecords,
             currentRace: null,
             isSetup: false
           }));
@@ -234,10 +259,10 @@ function App() {
   
   return (
     <div className="game-container">
-      <Header 
-        currentPlayer={getCurrentPlayer()} 
-        gameDay={gameState.gameDay}
+      <Header
+        currentPlayer={getCurrentPlayer()}
         currentMonth={gameState.currentMonth || 1}
+        currentYear={gameState.currentYear || 2048}
         players={gameState.players}
         onPlayerSwitch={(index) => setGameState({...gameState, currentPlayerIndex: index})}
         currentView={currentView}

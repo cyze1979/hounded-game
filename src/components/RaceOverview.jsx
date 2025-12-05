@@ -28,7 +28,7 @@ export default function RaceOverview({ gameState, currentTrack, raceData, onRace
   const participants = [];
   gameState.players.forEach(player => {
     player.dogs.forEach(dog => {
-      if (dog.fitness >= 20) {
+      if (dog.fitness >= 40) {
         participants.push(dog);
       }
     });
