@@ -143,6 +143,21 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
           raceData.lastWinner = p.dog.name;
         }
 
+        const xpRewards = {
+          1: 30,
+          2: 25,
+          3: 20,
+          4: 15,
+          5: 12,
+          6: 10,
+          7: 8,
+          8: 5
+        };
+        const xpGained = xpRewards[position] || 5;
+        if (p.dog.addXp) {
+          p.dog.addXp(xpGained);
+        }
+
         if (isPlayerDog(p.dog)) {
           const owner = updatedGameState.players.find(pl => pl.dogs.includes(p.dog));
           if (owner) {

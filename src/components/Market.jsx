@@ -55,7 +55,7 @@ export default function Market({ player, marketDogs, stableLimit, gameState, set
               </div>
 
               <div className="stable-dog-breed">
-                {dog.breed.toUpperCase()}, {dog.getAgeInYears()} JAHRE
+                LEVEL {dog.level || 1}, {dog.getAgeInYears()} JAHRE
               </div>
 
               <div className="stable-dog-stats">

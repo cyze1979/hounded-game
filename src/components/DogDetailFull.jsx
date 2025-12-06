@@ -44,11 +44,14 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
       onClose();
     }
   };
-  
-  const handleTrain = () => {
-    onClose();
-    const event = new CustomEvent('changeView', { detail: 'training' });
-    window.dispatchEvent(event);
+
+  const handleSpendPoint = (attribute) => {
+    if (!dog.spendAttributePoint) return;
+
+    const result = dog.spendAttributePoint(attribute);
+    if (result.success) {
+      setGameState({...gameState});
+    }
   };
   
   // Calculate stats
@@ -83,12 +86,24 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
         </>
       )}
 
-      {/* Top Section: Name + Age + Rating */}
+      {/* Top Section: Name + Level + Age + XP Bar + Rating */}
       <div className="detail-hero">
         <div className="detail-name-section">
           <h1 className="display-lg">{dog.name}</h1>
-          <div className="label-md">
-            {dog.breed}, {dog.getAgeInYears()} Jahre
+          <div className="detail-level-age">
+            <div className="label-md">
+              {dog.getAgeInYears()} JAHRE • LEVEL {dog.level || 1}
+            </div>
+            <div className="detail-xp-bar">
+              <div className="xp-bar-container">
+                <div
+                  className="xp-bar-fill"
+                  style={{
+                    width: `${((dog.xp || 0) / (dog.getXpForNextLevel ? dog.getXpForNextLevel() : 100)) * 100}%`
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div className="detail-rating-badge">
@@ -109,25 +124,37 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
         
         {/* Middle Column: Attributes */}
         <div className="detail-attributes-column">
-          <h3 className="heading-sm">ATTRIBUTE</h3>
+          <h3 className="heading-sm">
+            ATTRIBUTE
+            {dog.availablePoints > 0 && ` (${dog.availablePoints} ${dog.availablePoints === 1 ? 'PUNKT' : 'PUNKTE'} VERFÜGBAR)`}
+          </h3>
           <div className="attributes-list">
             {[
-              { key: 'speed', label: 'GESCHWINDIGKEIT', value: dog.speed },
-              { key: 'stamina', label: 'AUSDAUER', value: dog.stamina },
-              { key: 'acceleration', label: 'BESCHLEUNIGUNG', value: dog.acceleration },
-              { key: 'focus', label: 'FOKUS', value: dog.focus },
-              { key: 'fitness', label: 'FITNESS', value: dog.fitness, isFitness: true }
+              { key: 'speed', label: 'GESCHWINDIGKEIT', value: dog.speed, upgradable: true },
+              { key: 'stamina', label: 'AUSDAUER', value: dog.stamina, upgradable: true },
+              { key: 'acceleration', label: 'BESCHLEUNIGUNG', value: dog.acceleration, upgradable: true },
+              { key: 'focus', label: 'FOKUS', value: dog.focus, upgradable: true },
+              { key: 'fitness', label: 'FITNESS', value: dog.fitness, isFitness: true, upgradable: false }
             ].map(attr => (
               <div key={attr.key} className="stat-bar-row">
                 <div className="label-sm">{attr.label}</div>
                 <div className="stat-bar-group">
                   <div className="stat-bar-container-new">
-                    <div 
+                    <div
                       className={`stat-bar-fill-new ${attr.isFitness && attr.value < 50 ? 'bar-red' : 'bar-cyan'}`}
                       style={{ width: `${attr.value}%` }}
                     />
                   </div>
                   <div className="text-lg">{attr.value}</div>
+                  {attr.upgradable && isPlayerDog && (
+                    <button
+                      className={`btn-attribute-plus ${dog.availablePoints > 0 && attr.value < 100 ? '' : 'disabled'}`}
+                      onClick={() => handleSpendPoint(attr.key)}
+                      disabled={dog.availablePoints <= 0 || attr.value >= 100}
+                    >
+                      +
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -166,9 +193,6 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
       {/* Bottom Actions */}
       {isPlayerDog && !isRaceView && (
         <div className="detail-bottom-actions">
-          <button className="btn-tab btn-tab-large" onClick={handleTrain}>
-            <span>TRAINIEREN</span>
-          </button>
           <button className="btn-tab btn-tab-large" onClick={handleSell}>
             <span>VERKAUFEN</span>
           </button>

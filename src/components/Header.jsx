@@ -13,7 +13,6 @@ export default function Header({ currentPlayer, currentMonth, currentYear, curre
   
   const navItems = [
     { id: 'stable', label: 'RENNSTALL' },
-    { id: 'training', label: 'TRAINING' },
     { id: 'market', label: 'HUNDEMARKT', badge: marketNotifications },
     { id: 'race', label: 'RENNEN' },
     { id: 'leaderboard', label: 'STATISTIKEN' }

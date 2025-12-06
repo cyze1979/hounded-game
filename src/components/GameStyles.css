@@ -4680,3 +4680,97 @@
     display: none;
   }
 }
+
+/* ============================================
+   XP/LEVEL SYSTEM STYLES
+============================================ */
+
+/* Detail View - Level & Age Section */
+.detail-level-age {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* XP Bar in Detail View */
+.detail-xp-bar {
+  width: 100%;
+  max-width: 300px;
+}
+
+.xp-bar-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #F4D03F 0%, #FFA500 100%);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(244, 208, 63, 0.5);
+}
+
+/* Attribute Plus Button */
+.btn-attribute-plus {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: 2px solid var(--cyan-primary);
+  background: rgba(0, 217, 255, 0.1);
+  color: var(--cyan-primary);
+  font-size: 1.5em;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+.btn-attribute-plus:hover:not(.disabled) {
+  background: var(--cyan-primary);
+  color: var(--bg-dark);
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.5);
+}
+
+.btn-attribute-plus.disabled {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+/* Level Up Badge in Stable */
+.level-up-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #F4D03F 0%, #FFA500 100%);
+  color: var(--bg-dark);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: 'Mona Sans', 'Roboto', sans-serif;
+  font-size: 0.75em;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 0 12px rgba(244, 208, 63, 0.6);
+  z-index: 10;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(244, 208, 63, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(244, 208, 63, 0.9);
+  }
+}

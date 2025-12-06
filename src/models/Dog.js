@@ -22,7 +22,6 @@ export class Dog {
         this.experience = 0;
         this.cupWins = 0;
         this.trackRecords = [];
-        this.lastTrainedMonth = null;
         this.purchasePrice = null;
         this.totalEarnings = 0;
         this.racesParticipated = 0;
@@ -30,7 +29,11 @@ export class Dog {
         this.worstPosition = null;
         this.averagePosition = null;
         this.totalPrizeMoney = 0;
-        this.trainingHistory = [];
+
+        // XP and Level System
+        this.level = 1;
+        this.xp = 0;
+        this.availablePoints = 0;
         
         // Special traits
         const traits = [
@@ -82,18 +85,6 @@ export class Dog {
             elder: 'Senior'
         };
         return categories[this.getAgeCategory()];
-    }
-    
-    getTrainingEfficiency() {
-        const category = this.getAgeCategory();
-        const efficiencies = {
-            juvenile: 1.5,  // +50%
-            young: 1.25,    // +25%
-            prime: 1.0,     // Normal
-            veteran: 0.75,  // -25%
-            elder: 0.5      // -50%
-        };
-        return efficiencies[category];
     }
     
     getRacingPenalty() {
@@ -175,34 +166,45 @@ export class Dog {
         return { success: true, message: `${this.name} wurde gefüttert. Fitness: ${this.fitness}`, cost: food.cost };
     }
     
-    assignTrainer(trainerId, trainers, currentDay) {
-        const trainer = trainers.find(t => t.id === trainerId);
-        if (!trainer) {
-            return { success: false, message: 'Trainer nicht gefunden!' };
+    // XP and Level System
+    getXpForNextLevel() {
+        return 100 + (this.level - 1) * 50;
+    }
+
+    addXp(amount) {
+        this.xp += amount;
+        let leveledUp = false;
+
+        while (this.xp >= this.getXpForNextLevel()) {
+            this.xp -= this.getXpForNextLevel();
+            this.level += 1;
+            this.availablePoints += 1;
+            leveledUp = true;
         }
-        
-        this.trainer = trainer;
-        this.trainingEndsDay = currentDay + trainer.duration;
-        
-        return { 
-            success: true, 
-            message: `${trainer.name} trainiert ${this.name} für ${trainer.duration} Tage!`,
-            cost: trainer.cost 
-        };
+
+        return leveledUp;
     }
-    
-    completeTraining() {
-        if (!this.trainer) return;
-        
-        this.speed = Math.min(100, this.speed + this.trainer.bonuses.speed);
-        this.stamina = Math.min(100, this.stamina + this.trainer.bonuses.stamina);
-        this.acceleration = Math.min(100, this.acceleration + this.trainer.bonuses.acceleration);
-        this.focus = Math.min(100, this.focus + this.trainer.bonuses.focus);
-        
-        this.trainer = null;
-        this.trainingEndsDay = null;
+
+    spendAttributePoint(attribute) {
+        if (this.availablePoints <= 0) {
+            return { success: false, message: 'Keine Attributpunkte verfügbar!' };
+        }
+
+        const validAttributes = ['speed', 'stamina', 'acceleration', 'focus'];
+        if (!validAttributes.includes(attribute)) {
+            return { success: false, message: 'Ungültiges Attribut!' };
+        }
+
+        if (this[attribute] >= 100) {
+            return { success: false, message: 'Attribut ist bereits auf Maximum!' };
+        }
+
+        this[attribute] = Math.min(100, this[attribute] + 1);
+        this.availablePoints -= 1;
+
+        return { success: true, message: `${attribute} erhöht!` };
     }
-    
+
     // Serialization
     toJSON() {
         return {
@@ -221,7 +223,6 @@ export class Dog {
             experience: this.experience,
             cupWins: this.cupWins,
             trackRecords: this.trackRecords,
-            lastTrainedMonth: this.lastTrainedMonth,
             purchasePrice: this.purchasePrice,
             totalEarnings: this.totalEarnings,
             racesParticipated: this.racesParticipated,
@@ -229,7 +230,9 @@ export class Dog {
             worstPosition: this.worstPosition,
             averagePosition: this.averagePosition,
             totalPrizeMoney: this.totalPrizeMoney,
-            trainingHistory: this.trainingHistory,
+            level: this.level,
+            xp: this.xp,
+            availablePoints: this.availablePoints,
             specialTrait: this.specialTrait,
             owner: this.owner,
             imageNumber: this.imageNumber
@@ -248,7 +251,6 @@ export class Dog {
         // Ensure new properties exist
         if (dog.cupWins === undefined) dog.cupWins = 0;
         if (dog.trackRecords === undefined) dog.trackRecords = [];
-        if (dog.lastTrainedMonth === undefined) dog.lastTrainedMonth = null;
         if (dog.purchasePrice === undefined) dog.purchasePrice = null;
         if (dog.totalEarnings === undefined) dog.totalEarnings = 0;
         if (dog.racesParticipated === undefined) dog.racesParticipated = 0;
@@ -256,7 +258,11 @@ export class Dog {
         if (dog.worstPosition === undefined) dog.worstPosition = null;
         if (dog.averagePosition === undefined) dog.averagePosition = null;
         if (dog.totalPrizeMoney === undefined) dog.totalPrizeMoney = 0;
-        if (dog.trainingHistory === undefined) dog.trainingHistory = [];
+
+        // XP/Level System migration
+        if (dog.level === undefined) dog.level = 1;
+        if (dog.xp === undefined) dog.xp = 0;
+        if (dog.availablePoints === undefined) dog.availablePoints = 0;
 
         return dog;
     }

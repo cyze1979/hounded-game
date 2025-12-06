@@ -5,7 +5,7 @@ import { Player } from './models/Player';
 import { Dog } from './models/Dog';
 import { dogBreeds, resetUsedNames } from './data/dogData';
 import { createGameSession, loadGameSession, saveGameSession, hasSave, loadTrackRecords } from './utils/supabaseGame';
-import { aiTrainDogs, aiBuyDogs } from './utils/aiActions';
+import { aiBuyDogs } from './utils/aiActions';
 
 // Import components
 import Setup from './components/Setup';
@@ -14,7 +14,6 @@ import GameMenu from './components/GameMenu';
 import Stable from './components/Stable';
 import Market from './components/Market';
 import Race from './components/Race';
-import Training from './components/Training';
 import Leaderboard from './components/Leaderboard';
 import Stats from './components/Stats';
 
@@ -199,10 +198,9 @@ function App() {
     // Refresh market
     newGameState.marketDogs = generateMarketDogs();
 
-    // AI actions: training and market
+    // AI actions: market
     newGameState.players.forEach(player => {
       if (player.isAi) {
-        aiTrainDogs(player, newGameState.currentMonth);
         aiBuyDogs(player, newGameState.marketDogs, newGameState.stableLimit);
       }
     });
@@ -295,13 +293,6 @@ function App() {
             getCurrentPlayer={getCurrentPlayer}
             onRaceComplete={handleNextDay}
             setCurrentView={setCurrentView}
-          />
-        )}
-        {currentView === 'training' && (
-          <Training 
-            gameState={gameState}
-            setGameState={setGameState}
-            getCurrentPlayer={getCurrentPlayer}
           />
         )}
         {currentView === 'leaderboard' && (

@@ -65,6 +65,10 @@ export default function Stable({ player, gameState, setGameState }) {
             className="stable-dog-card"
             onClick={() => setSelectedDog(dog)}
           >
+            {dog.availablePoints > 0 && (
+              <div className="level-up-badge">LEVEL UP</div>
+            )}
+
             <div className="stable-dog-image">
               <img
                 src={getDogImage(dog.imageNumber)}
@@ -81,7 +85,7 @@ export default function Stable({ player, gameState, setGameState }) {
             </div>
 
             <div className="stable-dog-breed">
-              {dog.breed.toUpperCase()}, {dog.getAgeInYears()} JAHRE
+              LEVEL {dog.level || 1}, {dog.getAgeInYears()} JAHRE
             </div>
 
             <div className="stable-dog-stats">
