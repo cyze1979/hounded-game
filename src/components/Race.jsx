@@ -52,6 +52,16 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
     }
   };
 
+  const getFitnessFactor = (fitness) => {
+    if (fitness >= 80) {
+      return 1.0;
+    } else if (fitness >= 50) {
+      return 0.85 + ((fitness - 50) / 30) * 0.15;
+    } else {
+      return 0.70 + (fitness / 50) * 0.15;
+    }
+  };
+
   const startRace = (raceDogs) => {
     raceDogs.sort(() => Math.random() - 0.5);
 
@@ -66,7 +76,7 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
           dog.focus * weights.focus
         ) / 100;
 
-        const fitnessFactor = Math.max(0.85, dog.fitness / 100);
+        const fitnessFactor = getFitnessFactor(dog.fitness);
         const focusFactor = dog.focus / 100;
         const distanceMultiplier = currentTrack.distance / 800;
 
@@ -125,7 +135,16 @@ export default function Race({ gameState, setGameState, getCurrentPlayer, onRace
         p.dog.races++;
         p.dog.racesParticipated++;
         p.dog.experience += 10;
-        p.dog.fitness = Math.max(0, p.dog.fitness - 15);
+
+        let fitnessLoss = 20;
+        if (p.dog.stamina > 70) {
+          fitnessLoss = 15;
+        }
+        if (p.dog.getAgeCategory && p.dog.getAgeCategory() === 'elder') {
+          fitnessLoss += 5;
+        }
+        p.dog.fitness = Math.max(0, p.dog.fitness - fitnessLoss);
+
         p.dog.totalPrizeMoney += prize;
 
         if (p.dog.bestPosition === null || position < p.dog.bestPosition) {

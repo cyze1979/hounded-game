@@ -5,6 +5,18 @@ import { getDogImage } from '../utils/assetLoader';
 export default function Stable({ player, gameState, setGameState }) {
   const [selectedDog, setSelectedDog] = useState(null);
 
+  const getPerformancePercent = (fitness) => {
+    if (fitness >= 80) {
+      return 100;
+    } else if (fitness >= 50) {
+      const factor = 0.85 + ((fitness - 50) / 30) * 0.15;
+      return Math.round(factor * 100);
+    } else {
+      const factor = 0.70 + (fitness / 50) * 0.15;
+      return Math.round(factor * 100);
+    }
+  };
+
   useEffect(() => {
     const handleShowDetail = (e) => {
       setSelectedDog(e.detail);
@@ -105,7 +117,11 @@ export default function Stable({ player, gameState, setGameState }) {
                 <span className="stable-stat-label">FOKUS</span>
                 <span className="stable-stat-value">{dog.focus}</span>
               </div>
-              <div className="stable-stat-row">
+              <div
+                className="stable-stat-row"
+                title={`Fitness: ${dog.fitness} - Performance ca. ${getPerformancePercent(dog.fitness)}%`}
+                style={{ cursor: 'help' }}
+              >
                 <span className="stable-stat-label">FITNESS</span>
                 <span className="stable-stat-value">{dog.fitness}</span>
               </div>

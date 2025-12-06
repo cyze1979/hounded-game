@@ -9,6 +9,18 @@ export default function RaceOverview({ gameState, currentTrack, raceData, onRace
   const [allParticipants, setAllParticipants] = useState([]);
   const [raceDogs, setRaceDogs] = useState([]);
 
+  const getPerformancePercent = (fitness) => {
+    if (fitness >= 80) {
+      return 100;
+    } else if (fitness >= 50) {
+      const factor = 0.85 + ((fitness - 50) / 30) * 0.15;
+      return Math.round(factor * 100);
+    } else {
+      const factor = 0.70 + (fitness / 50) * 0.15;
+      return Math.round(factor * 100);
+    }
+  };
+
   if (!raceData || !currentTrack) {
     return <div className="race-view">Loading track data...</div>;
   }
@@ -105,7 +117,13 @@ export default function RaceOverview({ gameState, currentTrack, raceData, onRace
                       className="participant-icon"
                     />
                     <div className="participant-dog-info">
-                      <span className="participant-name">{p.dog.name}</span>
+                      <span
+                        className="participant-name"
+                        title={`Fitness: ${p.dog.fitness} - Performance ca. ${getPerformancePercent(p.dog.fitness)}%`}
+                        style={{ cursor: 'help' }}
+                      >
+                        {p.dog.name}
+                      </span>
                       <span className="participant-breed">{p.dog.breed} • {owner}</span>
                     </div>
                   </div>

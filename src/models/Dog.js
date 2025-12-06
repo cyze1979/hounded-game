@@ -152,20 +152,6 @@ export class Dog {
         return { success: true, message: `${this.name} hat sich ausgeruht. Fitness: ${this.fitness}` };
     }
     
-    feed(type) {
-        const foodTypes = {
-            basic: { cost: 20, fitness: 10 },
-            premium: { cost: 50, fitness: 20 },
-            deluxe: { cost: 100, fitness: 30 }
-        };
-        
-        const food = foodTypes[type];
-        if (!food) return { success: false, message: 'Unbekannter Futtertyp!' };
-        
-        this.fitness = Math.min(100, this.fitness + food.fitness);
-        return { success: true, message: `${this.name} wurde gefüttert. Fitness: ${this.fitness}`, cost: food.cost };
-    }
-    
     // XP and Level System
     getXpForNextLevel() {
         return 100 + (this.level - 1) * 50;

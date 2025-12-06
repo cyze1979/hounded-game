@@ -5,6 +5,14 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
 
   const currentDogIndex = allDogs.findIndex(d => d.id === dog.id);
 
+  const handleRest = () => {
+    const result = dog.rest();
+    if (result.success) {
+      setGameState({...gameState});
+    }
+    alert(result.message);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -159,6 +167,27 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
               </div>
             ))}
           </div>
+
+          {/* Fitness Warnings */}
+          {isPlayerDog && (
+            <div style={{ marginTop: '20px' }}>
+              {dog.fitness < 50 && (
+                <div style={{ color: '#ef4444', fontSize: '0.9em', padding: '10px', background: 'rgba(239, 68, 68, 0.1)', borderRadius: '4px' }}>
+                  ⚠️ Dein Hund ist erschöpft! Performance stark reduziert (-20% bis -30%)
+                </div>
+              )}
+              {dog.fitness >= 50 && dog.fitness < 80 && (
+                <div style={{ color: '#f59e0b', fontSize: '0.9em', padding: '10px', background: 'rgba(245, 158, 11, 0.1)', borderRadius: '4px' }}>
+                  ⚠️ Dein Hund könnte fitter sein. Performance leicht reduziert (-5% bis -15%)
+                </div>
+              )}
+              {dog.fitness >= 80 && (
+                <div style={{ color: '#10b981', fontSize: '0.9em', padding: '10px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '4px' }}>
+                  ✓ Dein Hund ist in Topform! Volle Performance!
+                </div>
+              )}
+            </div>
+          )}
         </div>
         
         {/* Right Column: Statistics with Scrollbar */}
@@ -193,6 +222,9 @@ export default function DogDetailFull({ dog, player, allDogs, gameState, setGame
       {/* Bottom Actions */}
       {isPlayerDog && !isRaceView && (
         <div className="detail-bottom-actions">
+          <button className="btn-tab btn-tab-large" onClick={handleRest}>
+            <span>AUSRUHEN (+30 FITNESS)</span>
+          </button>
           <button className="btn-tab btn-tab-large" onClick={handleSell}>
             <span>VERKAUFEN</span>
           </button>

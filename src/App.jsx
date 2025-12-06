@@ -188,10 +188,23 @@ function App() {
       });
     });
 
-    // Fitness regeneration: +20 for all dogs (max 100)
+    // Fitness regeneration: age-dependent
     newGameState.players.forEach(player => {
       player.dogs.forEach(dog => {
-        dog.fitness = Math.min(100, dog.fitness + 20);
+        const ageCategory = dog.getAgeCategory();
+        let regeneration = 25;
+
+        if (ageCategory === 'juvenile' || ageCategory === 'young') {
+          regeneration = 30;
+        } else if (ageCategory === 'prime') {
+          regeneration = 25;
+        } else if (ageCategory === 'veteran') {
+          regeneration = 20;
+        } else if (ageCategory === 'elder') {
+          regeneration = 15;
+        }
+
+        dog.fitness = Math.min(100, dog.fitness + regeneration);
       });
     });
 
